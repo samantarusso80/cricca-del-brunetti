@@ -18,29 +18,26 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
 .nav-user { width: 30px; height: 30px; border-radius: 50%; background: #e8f4ff; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; color: #185FA5; cursor: pointer; }
 .layout { max-width: 1060px; margin: 0 auto; padding: 24px 16px; display: grid; grid-template-columns: 1fr 260px; gap: 20px; }
 .main { display: flex; flex-direction: column; gap: 16px; }
-
-/* COMPOSER INLINE */
 .composer-box { background: #fff; border: 1px solid #e5e5e5; border-radius: 12px; overflow: hidden; }
 .composer-trigger { display: flex; align-items: center; gap: 12px; padding: 14px 16px; cursor: text; }
 .composer-trigger-text { flex: 1; font-size: 14px; color: #aaa; }
-.composer-expanded { display: none; flex-direction: column; gap: 0; }
+.composer-expanded { display: none; flex-direction: column; }
 .composer-expanded.open { display: flex; }
 .composer-title-input { border: none; border-bottom: 1px solid #f0f0f0; padding: 12px 16px; font-size: 15px; font-weight: 600; color: #1a1a1a; font-family: inherit; outline: none; background: none; width: 100%; }
 .composer-body-input { border: none; border-bottom: 1px solid #f0f0f0; padding: 12px 16px; font-size: 14px; color: #1a1a1a; font-family: inherit; outline: none; background: none; width: 100%; resize: none; min-height: 80px; }
-.composer-footer { display: flex; align-items: center; gap: 10px; padding: 10px 16px; background: #fafafa; }
-.composer-cat { border: 1px solid #e5e5e5; border-radius: 8px; padding: 6px 12px; font-size: 13px; color: #666; font-family: inherit; outline: none; background: #fff; }
+.composer-footer { display: flex; align-items: center; gap: 10px; padding: 10px 16px; background: #fafafa; flex-wrap: wrap; }
 .composer-actions { margin-left: auto; display: flex; gap: 8px; }
 .btn-cancel { border: 1px solid #e5e5e5; background: none; color: #666; border-radius: 8px; padding: 7px 16px; font-size: 13px; cursor: pointer; }
 .btn-publish { background: #1D9E75; color: #fff; border: none; border-radius: 8px; padding: 7px 16px; font-size: 13px; font-weight: 600; cursor: pointer; }
 .btn-publish:hover { background: #0F6E56; }
-
-/* SEARCH */
+.attach-btn { display: flex; align-items: center; gap: 5px; border: 1px solid #e5e5e5; background: none; border-radius: 8px; padding: 6px 12px; font-size: 12px; cursor: pointer; color: #666; }
+.attach-btn:hover { background: #f0f0f0; }
+.attach-preview { display: flex; align-items: center; gap: 6px; background: #f0f0f0; border-radius: 6px; padding: 4px 10px; font-size: 12px; color: #444; }
+.attach-remove { cursor: pointer; color: #999; font-size: 14px; margin-left: 4px; }
 .search-bar { position: relative; }
 .search-input { width: 100%; border: 1px solid #e5e5e5; border-radius: 10px; padding: 10px 14px 10px 38px; font-size: 14px; background: #fff; color: #1a1a1a; font-family: inherit; outline: none; }
 .search-input:focus { border-color: #1D9E75; }
 .search-icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); font-size: 16px; color: #aaa; pointer-events: none; }
-
-/* POSTS */
 .post-card { background: #fff; border: 1px solid #e5e5e5; border-radius: 12px; padding: 18px; display: flex; flex-direction: column; gap: 12px; }
 .post-card.pinned { border-color: #1D9E75; border-width: 2px; }
 .post-header { display: flex; align-items: center; gap: 10px; }
@@ -48,19 +45,20 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
 .post-meta { flex: 1; }
 .post-author { font-size: 14px; font-weight: 600; }
 .post-time { font-size: 12px; color: #999; }
-.post-badge { font-size: 11px; padding: 2px 10px; border-radius: 20px; font-weight: 600; background: #e8f4ff; color: #185FA5; }
 .pin-badge { font-size: 11px; color: #1D9E75; font-weight: 600; }
 .post-title { font-size: 15px; font-weight: 600; line-height: 1.4; }
 .post-body { font-size: 14px; color: #555; line-height: 1.6; }
+.post-image { max-width: 100%; border-radius: 8px; max-height: 400px; object-fit: cover; cursor: pointer; }
+.post-file { display: flex; align-items: center; gap: 8px; background: #f5f5f5; border-radius: 8px; padding: 10px 14px; font-size: 13px; color: #444; text-decoration: none; }
+.post-file:hover { background: #ebebeb; }
 .post-actions { display: flex; align-items: center; gap: 10px; padding-top: 8px; border-top: 1px solid #f0f0f0; flex-wrap: wrap; }
 .action-btn { display: flex; align-items: center; gap: 5px; font-size: 13px; color: #888; cursor: pointer; border: none; background: none; padding: 4px 8px; border-radius: 6px; }
 .action-btn:hover { background: #f5f5f5; color: #1a1a1a; }
+.pin-btn { font-size: 12px; color: #1D9E75; cursor: pointer; border: 1px solid #1D9E75; background: none; border-radius: 6px; padding: 3px 10px; }
+.pin-btn:hover { background: #e1f5ee; }
 .del-btn { font-size: 12px; color: #e53e3e; cursor: pointer; border: 1px solid #e53e3e; background: none; border-radius: 6px; padding: 3px 10px; }
 .del-btn:hover { background: #fff5f5; }
-.pin-btn { margin-left: auto; font-size: 12px; color: #1D9E75; cursor: pointer; border: 1px solid #1D9E75; background: none; border-radius: 6px; padding: 3px 10px; }
-.pin-btn:hover { background: #e1f5ee; }
-
-/* COMMENTS */
+.admin-actions { margin-left: auto; display: flex; gap: 6px; }
 .comments-section { border-top: 1px solid #f0f0f0; padding-top: 12px; display: none; flex-direction: column; gap: 10px; }
 .comments-section.open { display: flex; }
 .comment { display: flex; gap: 10px; align-items: flex-start; }
@@ -73,8 +71,6 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
 .comment-input { flex: 1; border: 1px solid #e5e5e5; border-radius: 20px; padding: 7px 14px; font-size: 13px; background: #f9f9f9; color: #1a1a1a; font-family: inherit; outline: none; }
 .comment-input:focus { border-color: #1D9E75; }
 .comment-send { background: #1D9E75; color: #fff; border: none; border-radius: 20px; padding: 7px 16px; font-size: 13px; font-weight: 600; cursor: pointer; }
-.comment-send:hover { background: #0F6E56; }
-
 .section-feed { display: flex; flex-direction: column; gap: 16px; }
 .section-aula, .section-membri { display: none; flex-direction: column; gap: 12px; }
 .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px; }
@@ -86,8 +82,12 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
 .file-info { flex: 1; }
 .file-name { font-size: 14px; font-weight: 600; margin-bottom: 3px; }
 .file-desc { font-size: 13px; color: #888; }
+.file-actions { display: flex; gap: 8px; align-items: center; }
 .file-dl { background: none; border: 1px solid #e5e5e5; border-radius: 8px; padding: 6px 14px; font-size: 12px; cursor: pointer; color: #666; text-decoration: none; }
 .file-dl:hover { background: #f5f5f5; }
+.file-del { background: none; border: 1px solid #e53e3e; border-radius: 8px; padding: 6px 14px; font-size: 12px; cursor: pointer; color: #e53e3e; }
+.file-del:hover { background: #fff5f5; }
+.upload-progress { font-size: 12px; color: #1D9E75; padding: 4px 0; }
 .member-row { background: #fff; border: 1px solid #e5e5e5; border-radius: 12px; padding: 14px 16px; display: flex; align-items: center; gap: 12px; }
 .member-name { font-size: 14px; font-weight: 600; flex: 1; }
 .member-role { font-size: 12px; padding: 2px 10px; border-radius: 20px; }
@@ -112,9 +112,11 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
 .modal { background: #fff; border-radius: 12px; padding: 24px; width: 480px; max-width: 94vw; }
 .modal-title { font-size: 16px; font-weight: 600; margin-bottom: 16px; }
 .modal-input { width: 100%; border: 1px solid #e5e5e5; border-radius: 8px; padding: 10px 14px; font-size: 14px; background: #f9f9f9; color: #1a1a1a; font-family: inherit; margin-bottom: 10px; outline: none; }
-.modal-actions { display: flex; justify-content: flex-end; gap: 10px; }
+.modal-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 6px; }
 .modal-cancel { border: 1px solid #e5e5e5; background: none; color: #666; border-radius: 8px; padding: 8px 18px; font-size: 13px; cursor: pointer; }
 .modal-submit { background: #1D9E75; color: #fff; border: none; border-radius: 8px; padding: 8px 18px; font-size: 13px; font-weight: 600; cursor: pointer; }
+.upload-area { border: 2px dashed #e5e5e5; border-radius: 8px; padding: 20px; text-align: center; cursor: pointer; margin-bottom: 10px; font-size: 13px; color: #aaa; }
+.upload-area:hover { border-color: #1D9E75; color: #1D9E75; }
 .invite-link-box { display: flex; gap: 8px; align-items: center; background: #f9f9f9; border: 1px solid #e5e5e5; border-radius: 8px; padding: 10px 14px; margin-bottom: 16px; }
 .invite-link-url { font-size: 13px; color: #666; flex: 1; word-break: break-all; }
 .copy-btn { background: none; border: 1px solid #e5e5e5; border-radius: 8px; padding: 5px 12px; font-size: 12px; cursor: pointer; color: #666; white-space: nowrap; }
@@ -164,8 +166,6 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
 <div class="layout">
   <div class="main">
     <div class="section-feed" id="section-feed">
-
-      <!-- COMPOSER INLINE -->
       <div class="composer-box">
         <div class="composer-trigger" id="composer-trigger" onclick="openComposer()">
           <div class="nav-user" id="composer-avatar">?</div>
@@ -174,13 +174,11 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
         <div class="composer-expanded" id="composer-expanded">
           <input class="composer-title-input" id="post-title-input" placeholder="Titolo del post" />
           <textarea class="composer-body-input" id="post-body-input" placeholder="Scrivi il tuo messaggio..." rows="4"></textarea>
+          <div id="post-attach-preview"></div>
           <div class="composer-footer">
-            <select class="composer-cat" id="post-cat-select">
-              <option value="discussione">Discussione</option>
-              <option value="domanda">Domanda</option>
-              <option value="risorsa">Risorsa</option>
-              <option value="vittoria">Vittoria</option>
-            </select>
+            <button class="attach-btn" onclick="document.getElementById('post-file-input').click()">📎 Allega</button>
+            <input type="file" id="post-file-input" accept="image/*,.pdf" style="display:none" onchange="handlePostAttach(this)" />
+            <div id="post-upload-progress"></div>
             <div class="composer-actions">
               <button class="btn-cancel" onclick="closeComposer()">Annulla</button>
               <button class="btn-publish" onclick="submitPost()">Pubblica</button>
@@ -188,13 +186,10 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
           </div>
         </div>
       </div>
-
-      <!-- SEARCH -->
       <div class="search-bar">
         <span class="search-icon">🔍</span>
         <input class="search-input" id="search-input" placeholder="Cerca nelle discussioni..." oninput="filterBySearch(this.value)" />
       </div>
-
       <div id="posts-container"><div class="empty"><div class="empty-icon">💬</div>Nessun post ancora.<br>Sii il primo a scrivere qualcosa!</div></div>
     </div>
 
@@ -233,16 +228,20 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
   </div>
 </div>
 
-<!-- MODAL file -->
+<!-- MODAL file aula -->
 <div class="modal-bg" id="file-modal">
   <div class="modal">
     <div class="modal-title">Aggiungi materiale</div>
-    <input class="modal-input" id="file-name-input" placeholder="Nome del file" />
-    <input class="modal-input" id="file-desc-input" placeholder="Descrizione breve" />
-    <input class="modal-input" id="file-url-input" placeholder="Link al file (Google Drive, Dropbox...)" />
+    <input class="modal-input" id="file-name-input" placeholder="Nome del materiale" />
+    <input class="modal-input" id="file-desc-input" placeholder="Descrizione breve (opzionale)" />
+    <div class="upload-area" onclick="document.getElementById('aula-file-input').click()">
+      📂 Clicca per caricare un file (PDF, DOC, DOCX)
+    </div>
+    <input type="file" id="aula-file-input" accept=".pdf,.doc,.docx" style="display:none" onchange="handleAulaFile(this)" />
+    <div id="aula-upload-progress"></div>
     <div class="modal-actions">
       <button class="modal-cancel" onclick="closeModal('file-modal')">Annulla</button>
-      <button class="modal-submit" onclick="submitFile()">Aggiungi</button>
+      <button class="modal-submit" id="aula-submit-btn" onclick="submitFile()">Aggiungi</button>
     </div>
   </div>
 </div>
@@ -266,7 +265,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getFirestore, collection, addDoc, onSnapshot, orderBy, query, serverTimestamp, doc, setDoc, getDocs, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import { getFirestore, collection, addDoc, onSnapshot, orderBy, query, serverTimestamp, doc, setDoc, getDocs, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyAV8eYoJstkfiSv2Uev1vEZAUq-jDSEl-I",
@@ -276,6 +275,9 @@ const firebaseConfig = {
   messagingSenderId: "756539038617",
   appId: "1:756539038617:web:7c130f0413317aef9f9108"
 };
+
+const CLOUDINARY_CLOUD = 'dvipaltpm';
+const CLOUDINARY_PRESET = 'cricca-upload';
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
@@ -287,6 +289,8 @@ let allPosts = [];
 let searchQuery = '';
 let commentsOpen = {};
 let commentsListeners = {};
+let pendingAttachment = null;
+let pendingAulaFile = null;
 
 function getInitials(name) {
   return name.trim().split(' ').filter(x=>x.length>0).map(x=>x[0].toUpperCase()).join('').slice(0,2)||'??';
@@ -301,6 +305,44 @@ function showToast(msg) {
   setTimeout(()=>t.classList.remove('show'),2500);
 }
 function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+
+async function uploadToCloudinary(file, onProgress) {
+  const fd = new FormData();
+  fd.append('file', file);
+  fd.append('upload_preset', CLOUDINARY_PRESET);
+  const resourceType = file.type.startsWith('image/') ? 'image' : 'raw';
+  const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD}/${resourceType}/upload`, {
+    method: 'POST', body: fd
+  });
+  const data = await res.json();
+  if(data.error) throw new Error(data.error.message);
+  return { url: data.secure_url, type: resourceType, name: file.name };
+}
+
+window.handlePostAttach = function(input) {
+  const file = input.files[0];
+  if(!file) return;
+  const preview = document.getElementById('post-attach-preview');
+  const isImg = file.type.startsWith('image/');
+  preview.innerHTML = `<div style="padding:8px 16px;display:flex;align-items:center;gap:8px;background:#f9f9f9;border-top:1px solid #f0f0f0">
+    <span style="font-size:13px">${isImg?'🖼':'📄'} ${file.name}</span>
+    <span class="attach-remove" onclick="removeAttach()">✕</span>
+  </div>`;
+  pendingAttachment = file;
+};
+
+window.removeAttach = function() {
+  pendingAttachment = null;
+  document.getElementById('post-attach-preview').innerHTML = '';
+  document.getElementById('post-file-input').value = '';
+};
+
+window.handleAulaFile = function(input) {
+  const file = input.files[0];
+  if(!file) return;
+  pendingAulaFile = file;
+  document.getElementById('aula-upload-progress').innerHTML = `<div style="font-size:12px;color:#666;padding:4px 0">📄 ${file.name} pronto per il caricamento</div>`;
+};
 
 window.doLogin = async function() {
   const name = document.getElementById('login-name').value.trim();
@@ -326,18 +368,16 @@ window.openComposer = function() {
   document.getElementById('composer-expanded').classList.add('open');
   document.getElementById('post-title-input').focus();
 };
-
 window.closeComposer = function() {
   document.getElementById('composer-trigger').style.display='flex';
   document.getElementById('composer-expanded').classList.remove('open');
   document.getElementById('post-title-input').value='';
   document.getElementById('post-body-input').value='';
+  document.getElementById('post-attach-preview').innerHTML='';
+  document.getElementById('post-upload-progress').innerHTML='';
+  pendingAttachment=null;
 };
-
-window.filterBySearch = function(val) {
-  searchQuery = val.toLowerCase();
-  renderPosts();
-};
+window.filterBySearch = function(val) { searchQuery=val.toLowerCase(); renderPosts(); };
 
 function listenPosts() {
   const q = query(collection(db,'posts'), orderBy('pinned','desc'), orderBy('createdAt','desc'));
@@ -356,17 +396,17 @@ function listenComments(postId) {
     const list = document.getElementById('clist-'+postId);
     if(!list) return;
     list.innerHTML = comments.length===0
-      ? '<div style="font-size:13px;color:#aaa;padding:4px 0">Nessun commento ancora. Sii il primo!</div>'
+      ? '<div style="font-size:13px;color:#aaa;padding:4px 0">Nessun commento ancora.</div>'
       : comments.map(c=>`
         <div class="comment">
           <div class="comment-avatar" style="background:${c.color}">${c.initials}</div>
           <div class="comment-bubble">
             <div class="comment-author">${c.author}</div>
             <div class="comment-text">${c.text}</div>
+            ${c.imageUrl?`<img src="${c.imageUrl}" style="max-width:100%;border-radius:6px;margin-top:6px;max-height:200px;object-fit:cover">`:''}
             <div class="comment-time">${c.time||''}</div>
           </div>
-        </div>
-      `).join('');
+        </div>`).join('');
   });
 }
 
@@ -404,52 +444,49 @@ async function loadMembers() {
       <div class="member-name">${m.name}</div>
       <span class="member-role ${m.role==='admin'?'role-admin':'role-member'}">${m.role==='admin'?'Admin':'Membro'}</span>
       <span class="member-joined">${m.joined}</span>
-    </div>
-  `).join('');
+    </div>`).join('');
   document.getElementById('online-list').innerHTML = members.slice(0,5).map(m=>`
-    <div class="online-item"><div class="online-dot"></div><span>${m.name}</span></div>
-  `).join('') || '<div style="font-size:13px;color:#aaa;">Nessuno online</div>';
+    <div class="online-item"><div class="online-dot"></div><span>${m.name}</span></div>`).join('') || '<div style="font-size:13px;color:#aaa;">Nessuno online</div>';
 }
 
 async function loadFiles() {
   const snap = await getDocs(collection(db,'files'));
-  const files = snap.docs.map(d=>d.data());
+  const files = snap.docs.map(d=>({id:d.id,...d.data()}));
   const c = document.getElementById('files-container');
   if(!files.length){ c.innerHTML='<div class="empty"><div class="empty-icon">📚</div>Nessun materiale ancora.'+(currentUser&&currentUser.isAdmin?' Aggiungine uno con il pulsante qui sopra.':'')+'</div>'; return; }
   c.innerHTML = files.map(f=>`
     <div class="file-card">
       <div class="file-icon">📄</div>
       <div class="file-info"><div class="file-name">${f.name}</div><div class="file-desc">${f.desc||''}</div></div>
-      ${f.url?`<a href="${f.url}" target="_blank" class="file-dl">⬇ Scarica</a>`:'<span style="font-size:12px;color:#aaa;">Nessun link</span>'}
-    </div>
-  `).join('');
+      <div class="file-actions">
+        ${f.url?`<a href="${f.url}" target="_blank" class="file-dl">⬇ Scarica</a>`:''}
+        ${currentUser&&currentUser.isAdmin?`<button class="file-del" onclick="deleteFile('${f.id}')">🗑</button>`:''}
+      </div>
+    </div>`).join('');
 }
 
 window.renderPosts = function() {
   const c=document.getElementById('posts-container');
   let filtered = allPosts;
   if(searchQuery) filtered = filtered.filter(p=>
-    p.title.toLowerCase().includes(searchQuery) ||
-    p.body.toLowerCase().includes(searchQuery) ||
-    p.author.toLowerCase().includes(searchQuery)
-  );
-  if(!filtered.length){
-    c.innerHTML='<div class="empty"><div class="empty-icon">💬</div>'+(searchQuery?'Nessun risultato trovato.':'Nessun post ancora.<br>Sii il primo a scrivere qualcosa!')+'</div>';
-    return;
-  }
+    p.title.toLowerCase().includes(searchQuery)||
+    p.body.toLowerCase().includes(searchQuery)||
+    p.author.toLowerCase().includes(searchQuery));
+  if(!filtered.length){ c.innerHTML='<div class="empty"><div class="empty-icon">💬</div>'+(searchQuery?'Nessun risultato.':'Nessun post ancora.<br>Sii il primo a scrivere qualcosa!')+'</div>'; return; }
   c.innerHTML=filtered.map(p=>`
     <div class="post-card ${p.pinned?'pinned':''}">
       <div class="post-header">
         <div class="post-avatar" style="background:${p.color}">${p.initials}</div>
         <div class="post-meta"><div class="post-author">${p.author}</div><div class="post-time">${p.time||''}</div></div>
-        <span class="post-badge">${p.cat.charAt(0).toUpperCase()+p.cat.slice(1)}</span>
         ${p.pinned?'<span class="pin-badge">📌 Fissato</span>':''}
       </div>
       <div class="post-title">${p.title}</div>
       <div class="post-body">${p.body}</div>
+      ${p.attachUrl && p.attachType==='image'?`<img src="${p.attachUrl}" class="post-image" onclick="window.open('${p.attachUrl}')">`:''}
+      ${p.attachUrl && p.attachType==='raw'?`<a href="${p.attachUrl}" target="_blank" class="post-file">📄 ${p.attachName||'Scarica allegato'}</a>`:''}
       <div class="post-actions">
         <button class="action-btn" onclick="toggleComments('${p.id}')">💬 ${p.comments||0} commenti</button>
-        ${currentUser&&currentUser.isAdmin?`<button class="del-btn" onclick="deletePost('${p.id}')">🗑 Elimina</button><button class="pin-btn" onclick="togglePin('${p.id}',${!!p.pinned})">${p.pinned?'📌 Sfissa':'📌 Fissa'}</button>`:''}
+        ${currentUser&&currentUser.isAdmin?`<div class="admin-actions"><button class="del-btn" onclick="deletePost('${p.id}')">🗑 Elimina</button><button class="pin-btn" onclick="togglePin('${p.id}',${!!p.pinned})">${p.pinned?'📌 Sfissa':'📌 Fissa'}</button></div>`:''}
       </div>
       <div class="comments-section ${commentsOpen[p.id]?'open':''}" id="cs-${p.id}">
         <div id="clist-${p.id}"><div style="font-size:13px;color:#aaa;">Caricamento...</div></div>
@@ -459,32 +496,43 @@ window.renderPosts = function() {
           <button class="comment-send" onclick="sendComment('${p.id}')">Invia</button>
         </div>
       </div>
-    </div>
-  `).join('');
+    </div>`).join('');
   Object.keys(commentsOpen).forEach(id=>{ if(commentsOpen[id]) listenComments(id); });
-};
-
-window.deletePost = async function(postId) {
-  if(!confirm('Sei sicura di voler eliminare questo post?')) return;
-  const { deleteDoc } = await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js");
-  await deleteDoc(doc(db,'posts',postId));
-  showToast('Post eliminato.');
 };
 
 window.togglePin = async function(postId, currentlyPinned) {
   await updateDoc(doc(db,'posts',postId), { pinned: !currentlyPinned });
   showToast(currentlyPinned ? 'Post sfissato' : 'Post fissato in cima!');
 };
+window.deletePost = async function(postId) {
+  if(!confirm('Eliminare questo post?')) return;
+  await deleteDoc(doc(db,'posts',postId));
+  showToast('Post eliminato.');
+};
+window.deleteFile = async function(fileId) {
+  if(!confirm('Eliminare questo materiale?')) return;
+  await deleteDoc(doc(db,'files',fileId));
+  loadFiles();
+  showToast('Materiale eliminato.');
+};
 
 window.submitPost = async function() {
   const title=document.getElementById('post-title-input').value.trim();
   const body=document.getElementById('post-body-input').value.trim();
-  const cat=document.getElementById('post-cat-select').value;
   if(!title||!body){ showToast('Inserisci titolo e testo'); return; }
+  let attachUrl=null, attachType=null, attachName=null;
+  if(pendingAttachment){
+    document.getElementById('post-upload-progress').innerHTML='<div class="upload-progress">⬆️ Caricamento in corso...</div>';
+    try {
+      const result = await uploadToCloudinary(pendingAttachment);
+      attachUrl=result.url; attachType=result.type; attachName=result.name;
+    } catch(e){ showToast('Errore caricamento file'); return; }
+  }
   const now=new Date();
   await addDoc(collection(db,'posts'),{
     author:currentUser.name, initials:currentUser.initials, color:currentUser.color,
-    title, body, cat, likes:0, comments:0, pinned:false,
+    title, body, cat:'discussione', likes:0, comments:0, pinned:false,
+    attachUrl, attachType, attachName,
     time:'Oggi alle '+now.toLocaleTimeString('it',{hour:'2-digit',minute:'2-digit'}),
     createdAt:serverTimestamp()
   });
@@ -496,27 +544,36 @@ window.submitFile = async function() {
   if(!currentUser||!currentUser.isAdmin){ showToast('Solo gli admin possono aggiungere file'); return; }
   const name=document.getElementById('file-name-input').value.trim();
   const desc=document.getElementById('file-desc-input').value.trim();
-  const url=document.getElementById('file-url-input').value.trim();
-  if(!name){ showToast('Inserisci il nome del file'); return; }
-  await addDoc(collection(db,'files'),{name,desc,url,createdAt:serverTimestamp()});
-  document.getElementById('file-name-input').value='';
-  document.getElementById('file-desc-input').value='';
-  document.getElementById('file-url-input').value='';
-  closeModal('file-modal');
-  loadFiles();
-  showToast('Materiale aggiunto!');
+  if(!name){ showToast('Inserisci il nome del materiale'); return; }
+  if(!pendingAulaFile){ showToast('Seleziona un file da caricare'); return; }
+  document.getElementById('aula-upload-progress').innerHTML='<div class="upload-progress">⬆️ Caricamento in corso...</div>';
+  document.getElementById('aula-submit-btn').disabled=true;
+  try {
+    const result = await uploadToCloudinary(pendingAulaFile);
+    await addDoc(collection(db,'files'),{name,desc,url:result.url,fileName:result.name,createdAt:serverTimestamp()});
+    document.getElementById('file-name-input').value='';
+    document.getElementById('file-desc-input').value='';
+    document.getElementById('aula-upload-progress').innerHTML='';
+    document.getElementById('aula-submit-btn').disabled=false;
+    pendingAulaFile=null;
+    document.getElementById('aula-file-input').value='';
+    closeModal('file-modal');
+    loadFiles();
+    showToast('Materiale caricato!');
+  } catch(e){
+    document.getElementById('aula-upload-progress').innerHTML='<div style="color:#e53e3e;font-size:12px">Errore nel caricamento</div>';
+    document.getElementById('aula-submit-btn').disabled=false;
+  }
 };
 
-window.openFileModal = function() { document.getElementById('file-modal').classList.add('open'); };
+window.openFileModal = function() { pendingAulaFile=null; document.getElementById('aula-upload-progress').innerHTML=''; document.getElementById('file-modal').classList.add('open'); };
 window.openInviteModal = function() { document.getElementById('invite-modal').classList.add('open'); };
 window.closeModal = closeModal;
-
 window.copyInvite = function() {
   const url=document.getElementById('invite-url').textContent;
   if(navigator.clipboard) navigator.clipboard.writeText(url).catch(()=>{});
   showToast('Link copiato!');
 };
-
 window.switchTab = function(tab,el) {
   document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
   el.classList.add('active');
