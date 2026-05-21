@@ -158,7 +158,8 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
     <button class="nav-tab" onclick="switchTab('aula',this)">Aula</button>
     <button class="nav-tab" onclick="switchTab('membri',this)">Membri</button>
   </div>
-  <div class="nav-right">
+  <div class="nav-right" style="display:flex;align-items:center;gap:10px;">
+    <button onclick="doLogout()" style="border:1px solid #e5e5e5;background:none;border-radius:8px;padding:5px 12px;font-size:12px;color:#666;cursor:pointer;">Esci</button>
     <div class="nav-user" id="nav-user-initials">?</div>
   </div>
 </div>
@@ -365,6 +366,7 @@ window.doLogin = async function() {
   const name = document.getElementById('login-name').value.trim();
   if(!name){ showToast('Inserisci il tuo nome'); return; }
   currentUser = { name, initials: getInitials(name), color: getColor(name), isAdmin: isAdmin(name) };
+  localStorage.setItem('cricca_user', name);
   document.getElementById('login-screen').style.display='none';
   document.getElementById('nav-user-initials').textContent=currentUser.initials;
   document.getElementById('nav-user-initials').style.background=currentUser.color;
@@ -520,6 +522,10 @@ window.renderPosts = function() {
   Object.keys(commentsOpen).forEach(id=>{ if(commentsOpen[id]) listenComments(id); });
 };
 
+window.doLogout = function() {
+  localStorage.removeItem('cricca_user');
+  location.reload();
+};
 window.openEditPost = function(postId) {
   const post = allPosts.find(p=>p.id===postId);
   if(!post) return;
@@ -626,6 +632,11 @@ window.switchTab = function(tab,el) {
 
 document.querySelectorAll('.modal-bg').forEach(m=>m.addEventListener('click',e=>{ if(e.target===m) m.classList.remove('open'); }));
 document.getElementById('login-name').addEventListener('keypress',e=>{ if(e.key==='Enter') doLogin(); });
+const savedName = localStorage.getItem('cricca_user');
+if(savedName) {
+  document.getElementById('login-name').value = savedName;
+  doLogin();
+}
 document.getElementById('section-feed').style.display='flex';
 document.getElementById('section-aula').style.display='none';
 document.getElementById('section-membri').style.display='none';
