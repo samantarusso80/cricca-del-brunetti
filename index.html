@@ -178,6 +178,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
           <div class="composer-footer">
             <button class="attach-btn" onclick="document.getElementById('post-file-input').click()">📎 Allega</button>
             <input type="file" id="post-file-input" accept="image/*,.pdf" style="display:none" onchange="handlePostAttach(this)" />
+            <input id="post-link-input" placeholder="🔗 Incolla un link (opzionale)" style="flex:1;border:1px solid #e5e5e5;border-radius:8px;padding:6px 12px;font-size:12px;background:#fff;color:#1a1a1a;font-family:inherit;outline:none;" />
             <div id="post-upload-progress"></div>
             <div class="composer-actions">
               <button class="btn-cancel" onclick="closeComposer()">Annulla</button>
@@ -376,6 +377,7 @@ window.closeComposer = function() {
   document.getElementById('post-attach-preview').innerHTML='';
   document.getElementById('post-upload-progress').innerHTML='';
   pendingAttachment=null;
+  document.getElementById('post-link-input').value='';
 };
 window.filterBySearch = function(val) { searchQuery=val.toLowerCase(); renderPosts(); };
 
@@ -484,6 +486,7 @@ window.renderPosts = function() {
       <div class="post-body">${p.body}</div>
       ${p.attachUrl && p.attachType==='image'?`<img src="${p.attachUrl}" class="post-image" onclick="window.open('${p.attachUrl}')">`:''}
       ${p.attachUrl && p.attachType==='raw'?`<a href="${p.attachUrl}" target="_blank" class="post-file">📄 ${p.attachName||'Scarica allegato'}</a>`:''}
+      ${p.postLink?`<a href="${p.postLink}" target="_blank" class="post-file">🔗 ${p.postLink}</a>`:''}
       <div class="post-actions">
         <button class="action-btn" onclick="toggleComments('${p.id}')">💬 ${p.comments||0} commenti</button>
         ${currentUser&&currentUser.isAdmin?`<div class="admin-actions"><button class="del-btn" onclick="deletePost('${p.id}')">🗑 Elimina</button><button class="pin-btn" onclick="togglePin('${p.id}',${!!p.pinned})">${p.pinned?'📌 Sfissa':'📌 Fissa'}</button></div>`:''}
@@ -521,6 +524,7 @@ window.submitPost = async function() {
   const body=document.getElementById('post-body-input').value.trim();
   if(!title||!body){ showToast('Inserisci titolo e testo'); return; }
   let attachUrl=null, attachType=null, attachName=null;
+  const postLink=document.getElementById("post-link-input").value.trim();
   if(pendingAttachment){
     document.getElementById('post-upload-progress').innerHTML='<div class="upload-progress">⬆️ Caricamento in corso...</div>';
     try {
@@ -532,7 +536,7 @@ window.submitPost = async function() {
   await addDoc(collection(db,'posts'),{
     author:currentUser.name, initials:currentUser.initials, color:currentUser.color,
     title, body, cat:'discussione', likes:0, comments:0, pinned:false,
-    attachUrl, attachType, attachName,
+    attachUrl, attachType, attachName, postLink: postLink||null,
     time:'Oggi alle '+now.toLocaleTimeString('it',{hour:'2-digit',minute:'2-digit'}),
     createdAt:serverTimestamp()
   });
