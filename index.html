@@ -590,7 +590,7 @@ window.renderPosts = function() {
       </div>
       ${p.attachUrl && p.attachType==='image'?`<img src="${p.attachUrl}" class="post-image" onclick="window.open('${p.attachUrl}')">`:''}
       ${p.attachUrl && p.attachType==='raw'?`<a href="${p.attachUrl}" target="_blank" class="post-file">📄 ${p.attachName||'Scarica allegato'}</a>`:''}
-      ${p.postLink?`<a href="${p.postLink}" target="_blank" class="post-file">🔗 ${p.postLink}</a>`:''}
+      ${p.postLink?`<a href="${p.postLink.startsWith('http')?p.postLink:'https://'+p.postLink}" target="_blank" class="post-file">🔗 ${p.postLink}</a>`:''}
       <div class="post-actions">
         <button class="action-btn" onclick="toggleComments('${p.id}')">💬 ${p.comments||0} commenti</button>
         ${currentUser&&(currentUser.isAdmin||currentUser.name===p.author)?`<button class="attach-btn" style="font-size:12px" onclick="openEditPost('${p.id}')">✏️ Modifica</button>`:''}
