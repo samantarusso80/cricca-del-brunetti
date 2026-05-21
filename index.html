@@ -18,15 +18,29 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
 .nav-user { width: 30px; height: 30px; border-radius: 50%; background: #e8f4ff; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; color: #185FA5; cursor: pointer; }
 .layout { max-width: 1060px; margin: 0 auto; padding: 24px 16px; display: grid; grid-template-columns: 1fr 260px; gap: 20px; }
 .main { display: flex; flex-direction: column; gap: 16px; }
-.composer { background: #fff; border: 1px solid #e5e5e5; border-radius: 12px; padding: 16px; display: flex; gap: 12px; }
-.composer-input { flex: 1; border: 1px solid #e5e5e5; border-radius: 8px; padding: 10px 14px; font-size: 14px; background: #f9f9f9; color: #1a1a1a; font-family: inherit; resize: none; outline: none; }
-.composer-input:focus { border-color: #1D9E75; }
-.composer-btn { background: #1D9E75; color: #fff; border: none; border-radius: 8px; padding: 10px 18px; font-size: 13px; font-weight: 600; cursor: pointer; white-space: nowrap; }
-.composer-btn:hover { background: #0F6E56; }
-.filters { display: flex; gap: 8px; flex-wrap: wrap; }
-.filter-chip { padding: 5px 14px; border-radius: 20px; font-size: 13px; cursor: pointer; border: 1px solid #e5e5e5; background: #fff; color: #666; }
-.filter-chip:hover { border-color: #999; color: #1a1a1a; }
-.filter-chip.active { background: #1D9E75; color: #fff; border-color: #1D9E75; }
+
+/* COMPOSER INLINE */
+.composer-box { background: #fff; border: 1px solid #e5e5e5; border-radius: 12px; overflow: hidden; }
+.composer-trigger { display: flex; align-items: center; gap: 12px; padding: 14px 16px; cursor: text; }
+.composer-trigger-text { flex: 1; font-size: 14px; color: #aaa; }
+.composer-expanded { display: none; flex-direction: column; gap: 0; }
+.composer-expanded.open { display: flex; }
+.composer-title-input { border: none; border-bottom: 1px solid #f0f0f0; padding: 12px 16px; font-size: 15px; font-weight: 600; color: #1a1a1a; font-family: inherit; outline: none; background: none; width: 100%; }
+.composer-body-input { border: none; border-bottom: 1px solid #f0f0f0; padding: 12px 16px; font-size: 14px; color: #1a1a1a; font-family: inherit; outline: none; background: none; width: 100%; resize: none; min-height: 80px; }
+.composer-footer { display: flex; align-items: center; gap: 10px; padding: 10px 16px; background: #fafafa; }
+.composer-cat { border: 1px solid #e5e5e5; border-radius: 8px; padding: 6px 12px; font-size: 13px; color: #666; font-family: inherit; outline: none; background: #fff; }
+.composer-actions { margin-left: auto; display: flex; gap: 8px; }
+.btn-cancel { border: 1px solid #e5e5e5; background: none; color: #666; border-radius: 8px; padding: 7px 16px; font-size: 13px; cursor: pointer; }
+.btn-publish { background: #1D9E75; color: #fff; border: none; border-radius: 8px; padding: 7px 16px; font-size: 13px; font-weight: 600; cursor: pointer; }
+.btn-publish:hover { background: #0F6E56; }
+
+/* SEARCH */
+.search-bar { position: relative; }
+.search-input { width: 100%; border: 1px solid #e5e5e5; border-radius: 10px; padding: 10px 14px 10px 38px; font-size: 14px; background: #fff; color: #1a1a1a; font-family: inherit; outline: none; }
+.search-input:focus { border-color: #1D9E75; }
+.search-icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); font-size: 16px; color: #aaa; pointer-events: none; }
+
+/* POSTS */
 .post-card { background: #fff; border: 1px solid #e5e5e5; border-radius: 12px; padding: 18px; display: flex; flex-direction: column; gap: 12px; }
 .post-card.pinned { border-color: #1D9E75; border-width: 2px; }
 .post-header { display: flex; align-items: center; gap: 10px; }
@@ -34,32 +48,31 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
 .post-meta { flex: 1; }
 .post-author { font-size: 14px; font-weight: 600; }
 .post-time { font-size: 12px; color: #999; }
-.post-badge { font-size: 11px; padding: 2px 10px; border-radius: 20px; font-weight: 600; }
-.badge-discussione { background: #e8f4ff; color: #185FA5; }
-.badge-domanda { background: #fff8e8; color: #854F0B; }
-.badge-risorsa { background: #eaf7e8; color: #3B6D11; }
-.badge-vittoria { background: #fce8f3; color: #993556; }
+.post-badge { font-size: 11px; padding: 2px 10px; border-radius: 20px; font-weight: 600; background: #e8f4ff; color: #185FA5; }
 .pin-badge { font-size: 11px; color: #1D9E75; font-weight: 600; }
 .post-title { font-size: 15px; font-weight: 600; line-height: 1.4; }
 .post-body { font-size: 14px; color: #555; line-height: 1.6; }
-.post-actions { display: flex; align-items: center; gap: 12px; padding-top: 8px; border-top: 1px solid #f0f0f0; flex-wrap: wrap; }
+.post-actions { display: flex; align-items: center; gap: 10px; padding-top: 8px; border-top: 1px solid #f0f0f0; flex-wrap: wrap; }
 .action-btn { display: flex; align-items: center; gap: 5px; font-size: 13px; color: #888; cursor: pointer; border: none; background: none; padding: 4px 8px; border-radius: 6px; }
 .action-btn:hover { background: #f5f5f5; color: #1a1a1a; }
-.action-btn.liked { color: #1D9E75; }
 .pin-btn { margin-left: auto; font-size: 12px; color: #1D9E75; cursor: pointer; border: 1px solid #1D9E75; background: none; border-radius: 6px; padding: 3px 10px; }
 .pin-btn:hover { background: #e1f5ee; }
-.comments-section { border-top: 1px solid #f0f0f0; padding-top: 12px; display: flex; flex-direction: column; gap: 10px; }
+
+/* COMMENTS */
+.comments-section { border-top: 1px solid #f0f0f0; padding-top: 12px; display: none; flex-direction: column; gap: 10px; }
+.comments-section.open { display: flex; }
 .comment { display: flex; gap: 10px; align-items: flex-start; }
 .comment-avatar { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 600; color: #fff; flex-shrink: 0; margin-top: 2px; }
 .comment-bubble { background: #f9f9f9; border-radius: 8px; padding: 8px 12px; flex: 1; }
 .comment-author { font-size: 12px; font-weight: 600; margin-bottom: 2px; }
 .comment-text { font-size: 13px; color: #444; line-height: 1.5; }
 .comment-time { font-size: 11px; color: #aaa; margin-top: 3px; }
-.comment-composer { display: flex; gap: 8px; align-items: center; margin-top: 4px; }
+.comment-composer { display: flex; gap: 8px; align-items: center; }
 .comment-input { flex: 1; border: 1px solid #e5e5e5; border-radius: 20px; padding: 7px 14px; font-size: 13px; background: #f9f9f9; color: #1a1a1a; font-family: inherit; outline: none; }
 .comment-input:focus { border-color: #1D9E75; }
-.comment-send { background: #1D9E75; color: #fff; border: none; border-radius: 20px; padding: 7px 16px; font-size: 13px; font-weight: 600; cursor: pointer; white-space: nowrap; }
+.comment-send { background: #1D9E75; color: #fff; border: none; border-radius: 20px; padding: 7px 16px; font-size: 13px; font-weight: 600; cursor: pointer; }
 .comment-send:hover { background: #0F6E56; }
+
 .section-feed { display: flex; flex-direction: column; gap: 16px; }
 .section-aula, .section-membri { display: none; flex-direction: column; gap: 12px; }
 .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px; }
@@ -97,8 +110,6 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
 .modal { background: #fff; border-radius: 12px; padding: 24px; width: 480px; max-width: 94vw; }
 .modal-title { font-size: 16px; font-weight: 600; margin-bottom: 16px; }
 .modal-input { width: 100%; border: 1px solid #e5e5e5; border-radius: 8px; padding: 10px 14px; font-size: 14px; background: #f9f9f9; color: #1a1a1a; font-family: inherit; margin-bottom: 10px; outline: none; }
-.modal-textarea { width: 100%; border: 1px solid #e5e5e5; border-radius: 8px; padding: 10px 14px; font-size: 14px; background: #f9f9f9; color: #1a1a1a; font-family: inherit; resize: vertical; min-height: 100px; outline: none; margin-bottom: 10px; }
-.modal-select { width: 100%; border: 1px solid #e5e5e5; border-radius: 8px; padding: 10px 14px; font-size: 14px; background: #f9f9f9; color: #1a1a1a; font-family: inherit; margin-bottom: 16px; outline: none; }
 .modal-actions { display: flex; justify-content: flex-end; gap: 10px; }
 .modal-cancel { border: 1px solid #e5e5e5; background: none; color: #666; border-radius: 8px; padding: 8px 18px; font-size: 13px; cursor: pointer; }
 .modal-submit { background: #1D9E75; color: #fff; border: none; border-radius: 8px; padding: 8px 18px; font-size: 13px; font-weight: 600; cursor: pointer; }
@@ -151,20 +162,40 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
 <div class="layout">
   <div class="main">
     <div class="section-feed" id="section-feed">
-      <div class="composer">
-        <div class="nav-user" id="composer-avatar">?</div>
-        <textarea class="composer-input" id="composer-text" rows="2" placeholder="Scrivi qualcosa alla community..."></textarea>
-        <button class="composer-btn" onclick="openPostModal()">Pubblica</button>
+
+      <!-- COMPOSER INLINE -->
+      <div class="composer-box">
+        <div class="composer-trigger" id="composer-trigger" onclick="openComposer()">
+          <div class="nav-user" id="composer-avatar">?</div>
+          <div class="composer-trigger-text">Scrivi qualcosa alla community...</div>
+        </div>
+        <div class="composer-expanded" id="composer-expanded">
+          <input class="composer-title-input" id="post-title-input" placeholder="Titolo del post" />
+          <textarea class="composer-body-input" id="post-body-input" placeholder="Scrivi il tuo messaggio..." rows="4"></textarea>
+          <div class="composer-footer">
+            <select class="composer-cat" id="post-cat-select">
+              <option value="discussione">Discussione</option>
+              <option value="domanda">Domanda</option>
+              <option value="risorsa">Risorsa</option>
+              <option value="vittoria">Vittoria</option>
+            </select>
+            <div class="composer-actions">
+              <button class="btn-cancel" onclick="closeComposer()">Annulla</button>
+              <button class="btn-publish" onclick="submitPost()">Pubblica</button>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="filters">
-        <div class="filter-chip active" onclick="filterPosts('tutto',this)">Tutto</div>
-        <div class="filter-chip" onclick="filterPosts('discussione',this)">Discussione</div>
-        <div class="filter-chip" onclick="filterPosts('domanda',this)">Domanda</div>
-        <div class="filter-chip" onclick="filterPosts('risorsa',this)">Risorsa</div>
-        <div class="filter-chip" onclick="filterPosts('vittoria',this)">Vittoria</div>
+
+      <!-- SEARCH -->
+      <div class="search-bar">
+        <span class="search-icon">🔍</span>
+        <input class="search-input" id="search-input" placeholder="Cerca nelle discussioni..." oninput="filterBySearch(this.value)" />
       </div>
+
       <div id="posts-container"><div class="empty"><div class="empty-icon">💬</div>Nessun post ancora.<br>Sii il primo a scrivere qualcosa!</div></div>
     </div>
+
     <div class="section-aula" id="section-aula">
       <div class="section-header">
         <span class="section-title">Materiali del corso</span>
@@ -172,6 +203,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
       </div>
       <div id="files-container"><div class="empty"><div class="empty-icon">📚</div>Nessun materiale ancora.</div></div>
     </div>
+
     <div class="section-membri" id="section-membri">
       <div class="section-header">
         <span class="section-title">Membri della community</span>
@@ -180,6 +212,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
       <div id="members-container"></div>
     </div>
   </div>
+
   <div class="sidebar">
     <div class="sidebar-card">
       <div class="nav-avatar" style="width:48px;height:48px;font-size:16px;margin-bottom:12px;">CB</div>
@@ -198,28 +231,11 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
   </div>
 </div>
 
-<div class="modal-bg" id="post-modal">
-  <div class="modal">
-    <div class="modal-title">Nuovo post</div>
-    <input class="modal-input" id="post-title-input" placeholder="Titolo del post" />
-    <textarea class="modal-textarea" id="post-body-input" placeholder="Scrivi il tuo messaggio..."></textarea>
-    <select class="modal-select" id="post-cat-select">
-      <option value="discussione">Discussione generale</option>
-      <option value="domanda">Domanda</option>
-      <option value="risorsa">Risorsa</option>
-      <option value="vittoria">Vittoria</option>
-    </select>
-    <div class="modal-actions">
-      <button class="modal-cancel" onclick="closeModal('post-modal')">Annulla</button>
-      <button class="modal-submit" onclick="submitPost()">Pubblica</button>
-    </div>
-  </div>
-</div>
-
+<!-- MODAL file -->
 <div class="modal-bg" id="file-modal">
   <div class="modal">
     <div class="modal-title">Aggiungi materiale</div>
-    <input class="modal-input" id="file-name-input" placeholder="Nome del file (es. Modulo 1.pdf)" />
+    <input class="modal-input" id="file-name-input" placeholder="Nome del file" />
     <input class="modal-input" id="file-desc-input" placeholder="Descrizione breve" />
     <input class="modal-input" id="file-url-input" placeholder="Link al file (Google Drive, Dropbox...)" />
     <div class="modal-actions">
@@ -229,10 +245,11 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
   </div>
 </div>
 
+<!-- MODAL invito -->
 <div class="modal-bg" id="invite-modal">
   <div class="modal">
     <div class="modal-title">Link di invito</div>
-    <p style="font-size:13px;color:#666;margin-bottom:14px;">Condividi questo link con chi vuoi far entrare. Solo chi ha il link può accedere.</p>
+    <p style="font-size:13px;color:#666;margin-bottom:14px;">Condividi questo link. Solo chi ha il link può accedere.</p>
     <div class="invite-link-box">
       <span class="invite-link-url" id="invite-url"></span>
       <button class="copy-btn" onclick="copyInvite()">Copia</button>
@@ -264,8 +281,9 @@ const db = getFirestore(app);
 const ADMINS = ['samanta', 'michela'];
 const COLORS = ['#1D9E75','#185FA5','#BA7517','#993556','#534AB7','#D85A30','#639922','#A32D2D'];
 let currentUser = null;
-let currentFilter = 'tutto';
 let allPosts = [];
+let searchQuery = '';
+let commentsOpen = {};
 let commentsListeners = {};
 
 function getInitials(name) {
@@ -301,6 +319,24 @@ window.doLogin = async function() {
   loadFiles();
 };
 
+window.openComposer = function() {
+  document.getElementById('composer-trigger').style.display='none';
+  document.getElementById('composer-expanded').classList.add('open');
+  document.getElementById('post-title-input').focus();
+};
+
+window.closeComposer = function() {
+  document.getElementById('composer-trigger').style.display='flex';
+  document.getElementById('composer-expanded').classList.remove('open');
+  document.getElementById('post-title-input').value='';
+  document.getElementById('post-body-input').value='';
+};
+
+window.filterBySearch = function(val) {
+  searchQuery = val.toLowerCase();
+  renderPosts();
+};
+
 function listenPosts() {
   const q = query(collection(db,'posts'), orderBy('pinned','desc'), orderBy('createdAt','desc'));
   onSnapshot(q, snap => {
@@ -315,9 +351,7 @@ function listenComments(postId) {
   const q = query(collection(db,'posts',postId,'comments'), orderBy('createdAt','asc'));
   commentsListeners[postId] = onSnapshot(q, snap => {
     const comments = snap.docs.map(d=>({id:d.id,...d.data()}));
-    const container = document.getElementById('comments-'+postId);
-    if(!container) return;
-    const list = container.querySelector('.comments-list');
+    const list = document.getElementById('clist-'+postId);
     if(!list) return;
     list.innerHTML = comments.length===0
       ? '<div style="font-size:13px;color:#aaa;padding:4px 0">Nessun commento ancora. Sii il primo!</div>'
@@ -335,27 +369,25 @@ function listenComments(postId) {
 }
 
 window.toggleComments = function(postId) {
-  const section = document.getElementById('comments-'+postId);
+  const section = document.getElementById('cs-'+postId);
   if(!section) return;
-  const isOpen = section.style.display !== 'none';
-  section.style.display = isOpen ? 'none' : 'flex';
-  if(!isOpen) listenComments(postId);
+  commentsOpen[postId] = !commentsOpen[postId];
+  section.classList.toggle('open', commentsOpen[postId]);
+  if(commentsOpen[postId]) listenComments(postId);
 };
 
 window.sendComment = async function(postId) {
-  const input = document.getElementById('comment-input-'+postId);
-  const text = input.value.trim();
+  const input = document.getElementById('cinput-'+postId);
+  const text = input ? input.value.trim() : '';
   if(!text) return;
   const now = new Date();
   await addDoc(collection(db,'posts',postId,'comments'), {
-    author: currentUser.name,
-    initials: currentUser.initials,
-    color: currentUser.color,
-    text,
-    time: now.toLocaleTimeString('it',{hour:'2-digit',minute:'2-digit'}),
-    createdAt: serverTimestamp()
+    author:currentUser.name, initials:currentUser.initials, color:currentUser.color,
+    text, time:now.toLocaleTimeString('it',{hour:'2-digit',minute:'2-digit'}),
+    createdAt:serverTimestamp()
   });
-  await updateDoc(doc(db,'posts',postId), { comments: (allPosts.find(p=>p.id===postId)?.comments||0)+1 });
+  const post = allPosts.find(p=>p.id===postId);
+  await updateDoc(doc(db,'posts',postId), { comments:(post?.comments||0)+1 });
   input.value='';
 };
 
@@ -393,14 +425,22 @@ async function loadFiles() {
 
 window.renderPosts = function() {
   const c=document.getElementById('posts-container');
-  const filtered=currentFilter==='tutto'?allPosts:allPosts.filter(p=>p.cat===currentFilter);
-  if(!filtered.length){ c.innerHTML='<div class="empty"><div class="empty-icon">💬</div>Nessun post ancora.<br>Sii il primo a scrivere qualcosa!</div>'; return; }
+  let filtered = allPosts;
+  if(searchQuery) filtered = filtered.filter(p=>
+    p.title.toLowerCase().includes(searchQuery) ||
+    p.body.toLowerCase().includes(searchQuery) ||
+    p.author.toLowerCase().includes(searchQuery)
+  );
+  if(!filtered.length){
+    c.innerHTML='<div class="empty"><div class="empty-icon">💬</div>'+(searchQuery?'Nessun risultato trovato.':'Nessun post ancora.<br>Sii il primo a scrivere qualcosa!')+'</div>';
+    return;
+  }
   c.innerHTML=filtered.map(p=>`
     <div class="post-card ${p.pinned?'pinned':''}">
       <div class="post-header">
         <div class="post-avatar" style="background:${p.color}">${p.initials}</div>
         <div class="post-meta"><div class="post-author">${p.author}</div><div class="post-time">${p.time||''}</div></div>
-        <span class="post-badge badge-${p.cat}">${p.cat.charAt(0).toUpperCase()+p.cat.slice(1)}</span>
+        <span class="post-badge">${p.cat.charAt(0).toUpperCase()+p.cat.slice(1)}</span>
         ${p.pinned?'<span class="pin-badge">📌 Fissato</span>':''}
       </div>
       <div class="post-title">${p.title}</div>
@@ -409,34 +449,23 @@ window.renderPosts = function() {
         <button class="action-btn" onclick="toggleComments('${p.id}')">💬 ${p.comments||0} commenti</button>
         ${currentUser&&currentUser.isAdmin?`<button class="pin-btn" onclick="togglePin('${p.id}',${!!p.pinned})">${p.pinned?'📌 Sfissa':'📌 Fissa'}</button>`:''}
       </div>
-      <div class="comments-section" id="comments-${p.id}" style="display:none">
-        <div class="comments-list"><div style="font-size:13px;color:#aaa;padding:4px 0">Caricamento...</div></div>
+      <div class="comments-section ${commentsOpen[p.id]?'open':''}" id="cs-${p.id}">
+        <div id="clist-${p.id}"><div style="font-size:13px;color:#aaa;">Caricamento...</div></div>
         <div class="comment-composer">
           <div class="comment-avatar" style="background:${currentUser?currentUser.color:'#ccc'}">${currentUser?currentUser.initials:'?'}</div>
-          <input class="comment-input" id="comment-input-${p.id}" placeholder="Scrivi un commento..." onkeypress="if(event.key==='Enter') sendComment('${p.id}')" />
+          <input class="comment-input" id="cinput-${p.id}" placeholder="Scrivi un commento..." onkeypress="if(event.key==='Enter') sendComment('${p.id}')" />
           <button class="comment-send" onclick="sendComment('${p.id}')">Invia</button>
         </div>
       </div>
     </div>
   `).join('');
+  Object.keys(commentsOpen).forEach(id=>{ if(commentsOpen[id]) listenComments(id); });
 };
 
 window.togglePin = async function(postId, currentlyPinned) {
   await updateDoc(doc(db,'posts',postId), { pinned: !currentlyPinned });
   showToast(currentlyPinned ? 'Post sfissato' : 'Post fissato in cima!');
 };
-
-window.filterPosts = function(cat,el) {
-  currentFilter=cat;
-  document.querySelectorAll('.filter-chip').forEach(c=>c.classList.remove('active'));
-  el.classList.add('active');
-  renderPosts();
-};
-
-window.openPostModal = function() { document.getElementById('post-modal').classList.add('open'); };
-window.openFileModal = function() { document.getElementById('file-modal').classList.add('open'); };
-window.openInviteModal = function() { document.getElementById('invite-modal').classList.add('open'); };
-window.closeModal = closeModal;
 
 window.submitPost = async function() {
   const title=document.getElementById('post-title-input').value.trim();
@@ -450,12 +479,7 @@ window.submitPost = async function() {
     time:'Oggi alle '+now.toLocaleTimeString('it',{hour:'2-digit',minute:'2-digit'}),
     createdAt:serverTimestamp()
   });
-  document.getElementById('post-title-input').value='';
-  document.getElementById('post-body-input').value='';
-  document.getElementById('composer-text').value='';
-  closeModal('post-modal');
-  currentFilter='tutto';
-  document.querySelectorAll('.filter-chip').forEach((c,i)=>c.classList.toggle('active',i===0));
+  closeComposer();
   showToast('Post pubblicato!');
 };
 
@@ -473,6 +497,10 @@ window.submitFile = async function() {
   loadFiles();
   showToast('Materiale aggiunto!');
 };
+
+window.openFileModal = function() { document.getElementById('file-modal').classList.add('open'); };
+window.openInviteModal = function() { document.getElementById('invite-modal').classList.add('open'); };
+window.closeModal = closeModal;
 
 window.copyInvite = function() {
   const url=document.getElementById('invite-url').textContent;
