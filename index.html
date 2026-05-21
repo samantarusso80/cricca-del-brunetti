@@ -68,7 +68,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
 .sidebar-card { background: #fff; border: 1px solid #e5e5e5; border-radius: 12px; padding: 16px; }
 .sidebar-name { font-size: 15px; font-weight: 600; margin-bottom: 4px; }
 .sidebar-desc { font-size: 13px; color: #666; line-height: 1.5; margin-bottom: 14px; }
-.sidebar-stats { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 14px; }
+.sidebar-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 14px; }
 .stat { text-align: center; }
 .stat-num { font-size: 16px; font-weight: 700; }
 .stat-label { font-size: 11px; color: #aaa; }
@@ -93,11 +93,33 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
 .copy-btn:hover { background: #f5f5f5; }
 .toast { position: fixed; bottom: 24px; right: 24px; background: #1D9E75; color: #fff; padding: 10px 20px; border-radius: 8px; font-size: 13px; font-weight: 600; z-index: 300; opacity: 0; transition: opacity 0.3s; pointer-events: none; }
 .toast.show { opacity: 1; }
-.empty { text-align: center; padding: 40px; color: #aaa; font-size: 14px; }
+.empty { text-align: center; padding: 60px 20px; color: #aaa; font-size: 14px; line-height: 1.6; }
+.empty-icon { font-size: 36px; margin-bottom: 12px; }
+.login-screen { position: fixed; inset: 0; background: #f5f5f0; display: flex; align-items: center; justify-content: center; z-index: 500; }
+.login-box { background: #fff; border: 1px solid #e5e5e5; border-radius: 16px; padding: 32px; width: 360px; max-width: 94vw; text-align: center; }
+.login-logo { width: 56px; height: 56px; border-radius: 50%; background: #1D9E75; display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: 700; color: #fff; margin: 0 auto 16px; }
+.login-title { font-size: 20px; font-weight: 700; margin-bottom: 6px; }
+.login-sub { font-size: 13px; color: #888; margin-bottom: 24px; }
+.login-input { width: 100%; border: 1px solid #e5e5e5; border-radius: 8px; padding: 10px 14px; font-size: 14px; background: #f9f9f9; color: #1a1a1a; font-family: inherit; margin-bottom: 12px; outline: none; text-align: left; }
+.login-btn { width: 100%; background: #1D9E75; color: #fff; border: none; border-radius: 8px; padding: 12px; font-size: 14px; font-weight: 600; cursor: pointer; }
+.login-btn:hover { background: #0F6E56; }
+.login-note { font-size: 12px; color: #aaa; margin-top: 16px; }
 @media (max-width: 700px) { .layout { grid-template-columns: 1fr; } .sidebar { display: none; } }
 </style>
 </head>
 <body>
+
+<!-- LOGIN -->
+<div class="login-screen" id="login-screen">
+  <div class="login-box">
+    <div class="login-logo">CB</div>
+    <div class="login-title">La Cricca del Brunetti</div>
+    <div class="login-sub">Gruppo riservato agli studenti della masterclass</div>
+    <input class="login-input" id="login-name" placeholder="Il tuo nome e cognome" />
+    <button class="login-btn" onclick="doLogin()">Entra nella Cricca</button>
+    <div class="login-note">Solo chi ha il link può accedere</div>
+  </div>
+</div>
 
 <div class="nav">
   <div class="nav-avatar">CB</div>
@@ -108,7 +130,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
     <button class="nav-tab" onclick="switchTab('membri',this)">Membri</button>
   </div>
   <div class="nav-right">
-    <div class="nav-user" id="nav-user-initials">TU</div>
+    <div class="nav-user" id="nav-user-initials">?</div>
   </div>
 </div>
 
@@ -116,7 +138,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
   <div class="main">
     <div class="section-feed" id="section-feed">
       <div class="composer">
-        <div class="nav-user" id="composer-avatar">TU</div>
+        <div class="nav-user" id="composer-avatar">?</div>
         <textarea class="composer-input" id="composer-text" rows="2" placeholder="Scrivi qualcosa alla community..."></textarea>
         <button class="composer-btn" onclick="openPostModal()">Pubblica</button>
       </div>
@@ -132,7 +154,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
     <div class="section-aula" id="section-aula">
       <div class="section-header">
         <span class="section-title">Materiali del corso</span>
-        <button class="add-btn" onclick="openFileModal()">+ Aggiungi file</button>
+        <button class="add-btn" id="btn-add-file" style="display:none" onclick="openFileModal()">+ Aggiungi file</button>
       </div>
       <div id="files-container"></div>
     </div>
@@ -151,14 +173,13 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
       <div class="sidebar-desc">Il gruppo riservato agli studenti della masterclass. Confrontati, chiedi aiuto, condividi i tuoi progressi.</div>
       <div class="sidebar-stats">
         <div class="stat"><div class="stat-num" id="stat-members">0</div><div class="stat-label">Membri</div></div>
-        <div class="stat"><div class="stat-num" id="stat-online">0</div><div class="stat-label">Online</div></div>
         <div class="stat"><div class="stat-num" id="stat-posts">0</div><div class="stat-label">Post</div></div>
       </div>
       <button class="invite-btn" onclick="openInviteModal()">🔗 Copia link invito</button>
     </div>
-    <div class="sidebar-card">
+    <div class="sidebar-card" id="online-card">
       <div class="sidebar-section-title">Online adesso</div>
-      <div id="online-list"></div>
+      <div id="online-list"><div style="font-size:13px;color:#aaa;">Nessuno online</div></div>
     </div>
   </div>
 </div>
@@ -188,6 +209,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
     <div class="modal-title">Aggiungi materiale</div>
     <input class="modal-input" id="file-name-input" placeholder="Nome del file (es. Modulo 1.pdf)" />
     <input class="modal-input" id="file-desc-input" placeholder="Descrizione breve" />
+    <input class="modal-input" id="file-url-input" placeholder="Link al file (Google Drive, Dropbox...)" />
     <div class="modal-actions">
       <button class="modal-cancel" onclick="closeModal('file-modal')">Annulla</button>
       <button class="modal-submit" onclick="submitFile()">Aggiungi</button>
@@ -199,9 +221,9 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
 <div class="modal-bg" id="invite-modal">
   <div class="modal">
     <div class="modal-title">Link di invito</div>
-    <p style="font-size:13px;color:#666;margin-bottom:14px;">Condividi questo link con chi vuoi far entrare nel gruppo. Solo chi ha il link può accedere.</p>
+    <p style="font-size:13px;color:#666;margin-bottom:14px;">Condividi questo link con chi vuoi far entrare. Solo chi ha il link può accedere.</p>
     <div class="invite-link-box">
-      <span class="invite-link-url" id="invite-url">cricca-del-brunetti.vercel.app</span>
+      <span class="invite-link-url" id="invite-url"></span>
       <button class="copy-btn" onclick="copyInvite()">Copia</button>
     </div>
     <div class="modal-actions">
@@ -213,35 +235,48 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
 <div class="toast" id="toast"></div>
 
 <script>
-const COLORS = ['#1D9E75','#185FA5','#BA7517','#993556','#534AB7','#D85A30','#639922'];
-const SAMPLE_NAMES = ['Marco R.','Giulia T.','Luca B.','Sara M.','Andrea F.','Chiara V.','Paolo D.','Elena C.','Matteo G.','Francesca N.','Roberto S.','Anna P.'];
+const ADMIN_NAME = 'Samanta';
+const COLORS = ['#1D9E75','#185FA5','#BA7517','#993556','#534AB7','#D85A30','#639922','#A32D2D'];
 
-let currentUser = { name: 'Tu', initials: 'TU', color: '#1D9E75' };
+let currentUser = null;
 let currentFilter = 'tutto';
+let posts = [];
+let files = [];
+let members = [];
 
-let posts = [
-  { id:1, author:'Admin', initials:'AD', color:'#1D9E75', title:'Benvenuti nella Cricca!', body:'Questo è il vostro spazio. Presentatevi, fate domande, condividete progressi. Siamo qui per crescere insieme.', cat:'discussione', likes:14, liked:false, comments:7, pinned:true, time:'Oggi' },
-  { id:2, author:'Marco R.', initials:'MR', color:'#185FA5', title:'Dubbio sul modulo 3 — qualcuno mi aiuta?', body:'Ho rivisto la lezione due volte ma non riesco a capire la parte sulla ricerca delle keyword long-tail. Qualcuno ha un approccio diverso da condividere?', cat:'domanda', likes:5, liked:false, comments:3, pinned:false, time:'2 ore fa' },
-  { id:3, author:'Sara M.', initials:'SM', color:'#993556', title:'Prima vendita dopo la masterclass!', body:'Ragazzi, dopo 3 settimane di applicazione ho fatto la mia prima vendita organica. Il metodo funziona. Continuate a crederci!', cat:'vittoria', likes:22, liked:false, comments:11, pinned:false, time:'Ieri' },
-  { id:4, author:'Luca B.', initials:'LB', color:'#BA7517', title:'Risorsa: tool gratuito per analisi competitor', body:'Ho trovato questo strumento che uso per monitorare i competitor su Amazon. Lo condivido perché mi ha fatto risparmiare ore di lavoro manuale.', cat:'risorsa', likes:18, liked:false, comments:6, pinned:false, time:'3 giorni fa' },
-];
+function getInitials(name) {
+  return name.split(' ').map(x=>x[0]).toUpperCase().join('').slice(0,2);
+}
+function getColor(name) {
+  let h = 0; for(let c of name) h = (h*31+c.charCodeAt(0))%COLORS.length;
+  return COLORS[h];
+}
 
-let files = [
-  { id:1, name:'Modulo 1 — Fondamenta editoriali.pdf', desc:'Introduzione al metodo, posizionamento e scelta della nicchia' },
-  { id:2, name:'Modulo 2 — Ricerca e validazione.pdf', desc:'Come trovare e validare idee di prodotto ad alto potenziale' },
-  { id:3, name:'Checklist lancio prodotto.pdf', desc:'Lista completa delle azioni prima, durante e dopo il lancio' },
-];
-
-let members = [
-  { name:'Admin', initials:'AD', color:'#1D9E75', role:'admin', joined:'Fondatore' },
-  ...SAMPLE_NAMES.map((n,i)=>({ name:n, initials:n.split(' ').map(x=>x[0]).join(''), color:COLORS[i%COLORS.length], role:'member', joined:'Maggio 2026' }))
-];
+function doLogin() {
+  const name = document.getElementById('login-name').value.trim();
+  if(!name) { showToast('Inserisci il tuo nome'); return; }
+  currentUser = { name, initials: getInitials(name), color: getColor(name), isAdmin: name.toLowerCase()===ADMIN_NAME.toLowerCase() };
+  document.getElementById('login-screen').style.display = 'none';
+  document.getElementById('nav-user-initials').textContent = currentUser.initials;
+  document.getElementById('nav-user-initials').style.background = currentUser.color;
+  document.getElementById('nav-user-initials').style.color = '#fff';
+  document.getElementById('composer-avatar').textContent = currentUser.initials;
+  document.getElementById('composer-avatar').style.background = currentUser.color;
+  document.getElementById('composer-avatar').style.color = '#fff';
+  document.getElementById('invite-url').textContent = window.location.href;
+  if(currentUser.isAdmin) document.getElementById('btn-add-file').style.display='flex';
+  if(!members.find(m=>m.name===name)) members.push({ name, initials:currentUser.initials, color:currentUser.color, role:currentUser.isAdmin?'admin':'member', joined:'Oggi' });
+  renderAll();
+}
 
 function renderPosts() {
   const c = document.getElementById('posts-container');
-  const filtered = currentFilter==='tutto' ? posts : posts.filter(p=>p.cat===currentFilter);
   document.getElementById('stat-posts').textContent = posts.length;
-  if(!filtered.length){ c.innerHTML='<div class="empty">Nessun post in questa categoria.</div>'; return; }
+  const filtered = currentFilter==='tutto' ? posts : posts.filter(p=>p.cat===currentFilter);
+  if(!filtered.length){
+    c.innerHTML='<div class="empty"><div class="empty-icon">💬</div>Nessun post ancora.<br>Sii il primo a scrivere qualcosa!</div>';
+    return;
+  }
   c.innerHTML = filtered.map(p=>`
     <div class="post-card">
       <div class="post-header">
@@ -251,7 +286,6 @@ function renderPosts() {
           <div class="post-time">${p.time}</div>
         </div>
         <span class="post-badge badge-${p.cat}">${p.cat.charAt(0).toUpperCase()+p.cat.slice(1)}</span>
-        ${p.pinned?'<span class="post-pinned">📌 Fissato</span>':''}
       </div>
       <div class="post-title">${p.title}</div>
       <div class="post-body">${p.body}</div>
@@ -265,7 +299,11 @@ function renderPosts() {
 
 function renderFiles() {
   const c = document.getElementById('files-container');
-  if(!files.length){ c.innerHTML='<div class="empty">Nessun materiale ancora.</div>'; return; }
+  if(!files.length){
+    c.innerHTML='<div class="empty"><div class="empty-icon">📚</div>Nessun materiale ancora.<br>'+
+    (currentUser&&currentUser.isAdmin ? 'Aggiungine uno con il pulsante qui sopra.' : 'I materiali verranno caricati dall\'admin.')+'</div>';
+    return;
+  }
   c.innerHTML = files.map(f=>`
     <div class="file-card">
       <div class="file-icon">📄</div>
@@ -273,7 +311,7 @@ function renderFiles() {
         <div class="file-name">${f.name}</div>
         <div class="file-desc">${f.desc}</div>
       </div>
-      <button class="file-dl">⬇ Scarica</button>
+      ${f.url ? `<a href="${f.url}" target="_blank"><button class="file-dl">⬇ Scarica</button></a>` : '<button class="file-dl" disabled>Link assente</button>'}
     </div>
   `).join('');
 }
@@ -282,6 +320,7 @@ function renderMembers() {
   document.getElementById('member-count').textContent = members.length + ' membri';
   document.getElementById('stat-members').textContent = members.length;
   const c = document.getElementById('members-container');
+  if(!members.length){ c.innerHTML='<div class="empty">Nessun membro ancora.</div>'; return; }
   c.innerHTML = members.map(m=>`
     <div class="member-row">
       <div class="post-avatar" style="background:${m.color};width:36px;height:36px;font-size:13px">${m.initials}</div>
@@ -293,12 +332,14 @@ function renderMembers() {
 }
 
 function renderOnline() {
-  const online = members.slice(0,5);
-  document.getElementById('stat-online').textContent = online.length;
+  const online = members.slice(-5);
+  if(!online.length){ document.getElementById('online-list').innerHTML='<div style="font-size:13px;color:#aaa;">Nessuno online</div>'; return; }
   document.getElementById('online-list').innerHTML = online.map(m=>`
     <div class="online-item"><div class="online-dot"></div><span>${m.name}</span></div>
   `).join('');
 }
+
+function renderAll() { renderPosts(); renderMembers(); renderOnline(); }
 
 function switchTab(tab, el) {
   document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
@@ -334,7 +375,9 @@ function submitPost() {
   const body = document.getElementById('post-body-input').value.trim();
   const cat = document.getElementById('post-cat-select').value;
   if(!title||!body){ showToast('Inserisci titolo e testo'); return; }
-  posts.unshift({ id:Date.now(), author:currentUser.name, initials:currentUser.initials, color:currentUser.color, title, body, cat, likes:0, liked:false, comments:0, pinned:false, time:'Adesso' });
+  const now = new Date();
+  const time = now.toLocaleTimeString('it',{hour:'2-digit',minute:'2-digit'});
+  posts.unshift({ id:Date.now(), author:currentUser.name, initials:currentUser.initials, color:currentUser.color, title, body, cat, likes:0, liked:false, comments:0, time:'Oggi alle '+time });
   document.getElementById('post-title-input').value='';
   document.getElementById('post-body-input').value='';
   document.getElementById('composer-text').value='';
@@ -346,12 +389,15 @@ function submitPost() {
 }
 
 function submitFile() {
+  if(!currentUser||!currentUser.isAdmin){ showToast('Solo l\'admin può aggiungere file'); return; }
   const name = document.getElementById('file-name-input').value.trim();
   const desc = document.getElementById('file-desc-input').value.trim();
+  const url = document.getElementById('file-url-input').value.trim();
   if(!name){ showToast('Inserisci il nome del file'); return; }
-  files.push({ id:Date.now(), name, desc:desc||'Nessuna descrizione' });
+  files.push({ id:Date.now(), name, desc:desc||'', url });
   document.getElementById('file-name-input').value='';
   document.getElementById('file-desc-input').value='';
+  document.getElementById('file-url-input').value='';
   closeModal('file-modal');
   renderFiles();
   showToast('Materiale aggiunto!');
@@ -370,13 +416,11 @@ function showToast(msg) {
 }
 
 document.querySelectorAll('.modal-bg').forEach(m=>m.addEventListener('click',e=>{ if(e.target===m) m.classList.remove('open'); }));
-
+document.getElementById('login-name').addEventListener('keypress',e=>{ if(e.key==='Enter') doLogin(); });
 document.getElementById('section-feed').style.display='flex';
 document.getElementById('section-aula').style.display='none';
 document.getElementById('section-membri').style.display='none';
 renderPosts();
-renderMembers();
-renderOnline();
 </script>
 </body>
 </html>
