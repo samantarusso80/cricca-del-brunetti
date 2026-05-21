@@ -505,7 +505,7 @@ window.renderPosts = function() {
       ${p.postLink?`<a href="${p.postLink}" target="_blank" class="post-file">🔗 ${p.postLink}</a>`:''}
       <div class="post-actions">
         <button class="action-btn" onclick="toggleComments('${p.id}')">💬 ${p.comments||0} commenti</button>
-        ${currentUser&&(currentUser.isAdmin||currentUser.name===p.author)?`<button class="attach-btn" style="font-size:12px" onclick="openEditPost('${p.id}','${p.title.replace(/'/g,\"\\'\")}','${p.body.replace(/'/g,\"\\'\")}','${p.postLink||''}')">✏️ Modifica</button>`:''}
+        ${currentUser&&(currentUser.isAdmin||currentUser.name===p.author)?`<button class="attach-btn" style="font-size:12px" onclick="openEditPost('${p.id}')">✏️ Modifica</button>`:''}
         ${currentUser&&currentUser.isAdmin?`<div class="admin-actions"><button class="del-btn" onclick="deletePost('${p.id}')">🗑 Elimina</button><button class="pin-btn" onclick="togglePin('${p.id}',${!!p.pinned})">${p.pinned?'📌 Sfissa':'📌 Fissa'}</button></div>`:''}
       </div>
       <div class="comments-section ${commentsOpen[p.id]?'open':''}" id="cs-${p.id}">
@@ -520,11 +520,13 @@ window.renderPosts = function() {
   Object.keys(commentsOpen).forEach(id=>{ if(commentsOpen[id]) listenComments(id); });
 };
 
-window.openEditPost = function(postId, title, body, link) {
+window.openEditPost = function(postId) {
+  const post = allPosts.find(p=>p.id===postId);
+  if(!post) return;
   document.getElementById('edit-post-id').value = postId;
-  document.getElementById('edit-title-input').value = title;
-  document.getElementById('edit-body-input').value = body;
-  document.getElementById('edit-link-input').value = link || '';
+  document.getElementById('edit-title-input').value = post.title || '';
+  document.getElementById('edit-body-input').value = post.body || '';
+  document.getElementById('edit-link-input').value = post.postLink || '';
   document.getElementById('edit-modal').classList.add('open');
 };
 window.saveEditPost = async function() {
