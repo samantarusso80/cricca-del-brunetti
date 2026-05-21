@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>La Cricca del Brunetti</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f5f5f0; color: #1a1a1a; min-height: 100vh; }
+.nav { background: #fff; border-bottom: 1px solid #e5e5e5; padding: 0 24px; display: flex; align-items: center; gap: 16px; height: 52px; position: sticky; top: 0; z-index: 100; }
+.nav-avatar { width: 28px; height: 28px; border-radius: 50%; background: #1D9E75; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; color: #fff; flex-shrink: 0; }
+.nav-brand { font-size: 15px; font-weight: 600; }
+.nav-tabs { display: flex; gap: 4px; margin-left: 16px; }
+.nav-tab { padding: 6px 14px; border-radius: 8px; font-size: 13px; cursor: pointer; color: #666; border: none; background: none; transition: background 0.15s; }
+.nav-tab:hover { background: #f0f0f0; color: #1a1a1a; }
+.nav-tab.active { background: #f0f0f0; color: #1a1a1a; font-weight: 600; }
+.nav-right { margin-left: auto; display: flex; align-items: center; gap: 12px; }
+.nav-user { width: 30px; height: 30px; border-radius: 50%; background: #e8f4ff; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; color: #185FA5; cursor: pointer; }
+.layout { max-width: 1060px; margin: 0 auto; padding: 24px 16px; display: grid; grid-template-columns: 1fr 260px; gap: 20px; }
+.main { display: flex; flex-direction: column; gap: 16px; }
+.composer { background: #fff; border: 1px solid #e5e5e5; border-radius: 12px; padding: 16px; display: flex; gap: 12px; }
+.composer-input { flex: 1; border: 1px solid #e5e5e5; border-radius: 8px; padding: 10px 14px; font-size: 14px; background: #f9f9f9; color: #1a1a1a; font-family: inherit; resize: none; outline: none; }
+.composer-input:focus { border-color: #1D9E75; }
+.composer-btn { background: #1D9E75; color: #fff; border: none; border-radius: 8px; padding: 10px 18px; font-size: 13px; font-weight: 600; cursor: pointer; white-space: nowrap; }
+.composer-btn:hover { background: #0F6E56; }
+.filters { display: flex; gap: 8px; flex-wrap: wrap; }
+.filter-chip { padding: 5px 14px; border-radius: 20px; font-size: 13px; cursor: pointer; border: 1px solid #e5e5e5; background: #fff; color: #666; transition: all 0.15s; }
+.filter-chip:hover { border-color: #999; color: #1a1a1a; }
+.filter-chip.active { background: #1D9E75; color: #fff; border-color: #1D9E75; }
+.post-card { background: #fff; border: 1px solid #e5e5e5; border-radius: 12px; padding: 18px; display: flex; flex-direction: column; gap: 12px; }
+.post-header { display: flex; align-items: center; gap: 10px; }
+.post-avatar { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 600; color: #fff; flex-shrink: 0; }
+.post-meta { flex: 1; }
+.post-author { font-size: 14px; font-weight: 600; }
+.post-time { font-size: 12px; color: #999; }
+.post-badge { font-size: 11px; padding: 2px 10px; border-radius: 20px; font-weight: 600; }
+.badge-discussione { background: #e8f4ff; color: #185FA5; }
+.badge-domanda { background: #fff8e8; color: #854F0B; }
+.badge-risorsa { background: #eaf7e8; color: #3B6D11; }
+.badge-vittoria { background: #fce8f3; color: #993556; }
+.post-pinned { font-size: 12px; color: #999; }
+.post-title { font-size: 15px; font-weight: 600; line-height: 1.4; }
+.post-body { font-size: 14px; color: #555; line-height: 1.6; }
+.post-actions { display: flex; align-items: center; gap: 16px; padding-top: 8px; border-top: 1px solid #f0f0f0; }
+.action-btn { display: flex; align-items: center; gap: 5px; font-size: 13px; color: #888; cursor: pointer; border: none; background: none; padding: 4px 8px; border-radius: 6px; transition: all 0.15s; }
+.action-btn:hover { background: #f5f5f5; color: #1a1a1a; }
+.action-btn.liked { color: #1D9E75; }
+.section-feed { display: flex; flex-direction: column; gap: 16px; }
+.section-aula, .section-membri { display: none; flex-direction: column; gap: 12px; }
+.section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px; }
+.section-title { font-size: 16px; font-weight: 600; }
+.add-btn { display: flex; align-items: center; gap: 5px; background: none; border: 1px solid #e5e5e5; border-radius: 8px; padding: 6px 14px; font-size: 13px; cursor: pointer; color: #666; }
+.add-btn:hover { background: #f5f5f5; color: #1a1a1a; }
+.file-card { background: #fff; border: 1px solid #e5e5e5; border-radius: 12px; padding: 16px; display: flex; align-items: center; gap: 14px; }
+.file-icon { width: 40px; height: 40px; background: #e8f4ff; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
+.file-info { flex: 1; }
+.file-name { font-size: 14px; font-weight: 600; margin-bottom: 3px; }
+.file-desc { font-size: 13px; color: #888; }
+.file-dl { background: none; border: 1px solid #e5e5e5; border-radius: 8px; padding: 6px 14px; font-size: 12px; cursor: pointer; color: #666; }
+.file-dl:hover { background: #f5f5f5; }
+.member-row { background: #fff; border: 1px solid #e5e5e5; border-radius: 12px; padding: 14px 16px; display: flex; align-items: center; gap: 12px; }
+.member-name { font-size: 14px; font-weight: 600; flex: 1; }
+.member-role { font-size: 12px; padding: 2px 10px; border-radius: 20px; }
+.role-admin { background: #e1f5ee; color: #0F6E56; }
+.role-member { background: #f5f5f5; color: #666; }
+.member-joined { font-size: 12px; color: #aaa; }
+.sidebar { display: flex; flex-direction: column; gap: 16px; }
+.sidebar-card { background: #fff; border: 1px solid #e5e5e5; border-radius: 12px; padding: 16px; }
+.sidebar-name { font-size: 15px; font-weight: 600; margin-bottom: 4px; }
+.sidebar-desc { font-size: 13px; color: #666; line-height: 1.5; margin-bottom: 14px; }
+.sidebar-stats { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 14px; }
+.stat { text-align: center; }
+.stat-num { font-size: 16px; font-weight: 700; }
+.stat-label { font-size: 11px; color: #aaa; }
+.invite-btn { width: 100%; background: #1D9E75; color: #fff; border: none; border-radius: 8px; padding: 10px; font-size: 13px; font-weight: 600; cursor: pointer; }
+.invite-btn:hover { background: #0F6E56; }
+.sidebar-section-title { font-size: 12px; font-weight: 600; color: #aaa; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 10px; }
+.online-item { display: flex; align-items: center; gap: 8px; font-size: 13px; margin-bottom: 8px; }
+.online-dot { width: 7px; height: 7px; border-radius: 50%; background: #1D9E75; flex-shrink: 0; }
+.modal-bg { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 200; align-items: center; justify-content: center; }
+.modal-bg.open { display: flex; }
+.modal { background: #fff; border-radius: 12px; padding: 24px; width: 480px; max-width: 94vw; }
+.modal-title { font-size: 16px; font-weight: 600; margin-bottom: 16px; }
+.modal-input { width: 100%; border: 1px solid #e5e5e5; border-radius: 8px; padding: 10px 14px; font-size: 14px; background: #f9f9f9; color: #1a1a1a; font-family: inherit; margin-bottom: 10px; outline: none; }
+.modal-textarea { width: 100%; border: 1px solid #e5e5e5; border-radius: 8px; padding: 10px 14px; font-size: 14px; background: #f9f9f9; color: #1a1a1a; font-family: inherit; resize: vertical; min-height: 100px; outline: none; margin-bottom: 10px; }
+.modal-select { width: 100%; border: 1px solid #e5e5e5; border-radius: 8px; padding: 10px 14px; font-size: 14px; background: #f9f9f9; color: #1a1a1a; font-family: inherit; margin-bottom: 16px; outline: none; }
+.modal-actions { display: flex; justify-content: flex-end; gap: 10px; }
+.modal-cancel { border: 1px solid #e5e5e5; background: none; color: #666; border-radius: 8px; padding: 8px 18px; font-size: 13px; cursor: pointer; }
+.modal-submit { background: #1D9E75; color: #fff; border: none; border-radius: 8px; padding: 8px 18px; font-size: 13px; font-weight: 600; cursor: pointer; }
+.invite-link-box { display: flex; gap: 8px; align-items: center; background: #f9f9f9; border: 1px solid #e5e5e5; border-radius: 8px; padding: 10px 14px; margin-bottom: 16px; }
+.invite-link-url { font-size: 13px; color: #666; flex: 1; word-break: break-all; }
+.copy-btn { background: none; border: 1px solid #e5e5e5; border-radius: 8px; padding: 5px 12px; font-size: 12px; cursor: pointer; color: #666; white-space: nowrap; }
+.copy-btn:hover { background: #f5f5f5; }
+.toast { position: fixed; bottom: 24px; right: 24px; background: #1D9E75; color: #fff; padding: 10px 20px; border-radius: 8px; font-size: 13px; font-weight: 600; z-index: 300; opacity: 0; transition: opacity 0.3s; pointer-events: none; }
+.toast.show { opacity: 1; }
+.empty { text-align: center; padding: 40px; color: #aaa; font-size: 14px; }
+@media (max-width: 700px) { .layout { grid-template-columns: 1fr; } .sidebar { display: none; } }
+</style>
+</head>
+<body>
+
+<div class="nav">
+  <div class="nav-avatar">CB</div>
+  <div class="nav-brand">La Cricca del Brunetti</div>
+  <div class="nav-tabs">
+    <button class="nav-tab active" onclick="switchTab('feed',this)">Comunità</button>
+    <button class="nav-tab" onclick="switchTab('aula',this)">Aula</button>
+    <button class="nav-tab" onclick="switchTab('membri',this)">Membri</button>
+  </div>
+  <div class="nav-right">
+    <div class="nav-user" id="nav-user-initials">TU</div>
+  </div>
+</div>
+
+<div class="layout">
+  <div class="main">
+    <div class="section-feed" id="section-feed">
+      <div class="composer">
+        <div class="nav-user" id="composer-avatar">TU</div>
+        <textarea class="composer-input" id="composer-text" rows="2" placeholder="Scrivi qualcosa alla community..."></textarea>
+        <button class="composer-btn" onclick="openPostModal()">Pubblica</button>
+      </div>
+      <div class="filters">
+        <div class="filter-chip active" onclick="filterPosts('tutto',this)">Tutto</div>
+        <div class="filter-chip" onclick="filterPosts('discussione',this)">Discussione</div>
+        <div class="filter-chip" onclick="filterPosts('domanda',this)">Domanda</div>
+        <div class="filter-chip" onclick="filterPosts('risorsa',this)">Risorsa</div>
+        <div class="filter-chip" onclick="filterPosts('vittoria',this)">Vittoria</div>
+      </div>
+      <div id="posts-container"></div>
+    </div>
+    <div class="section-aula" id="section-aula">
+      <div class="section-header">
+        <span class="section-title">Materiali del corso</span>
+        <button class="add-btn" onclick="openFileModal()">+ Aggiungi file</button>
+      </div>
+      <div id="files-container"></div>
+    </div>
+    <div class="section-membri" id="section-membri">
+      <div class="section-header">
+        <span class="section-title">Membri della community</span>
+        <span style="font-size:13px;color:#aaa;" id="member-count"></span>
+      </div>
+      <div id="members-container"></div>
+    </div>
+  </div>
+  <div class="sidebar">
+    <div class="sidebar-card">
+      <div class="nav-avatar" style="width:48px;height:48px;font-size:16px;margin-bottom:12px;">CB</div>
+      <div class="sidebar-name">La Cricca del Brunetti</div>
+      <div class="sidebar-desc">Il gruppo riservato agli studenti della masterclass. Confrontati, chiedi aiuto, condividi i tuoi progressi.</div>
+      <div class="sidebar-stats">
+        <div class="stat"><div class="stat-num" id="stat-members">0</div><div class="stat-label">Membri</div></div>
+        <div class="stat"><div class="stat-num" id="stat-online">0</div><div class="stat-label">Online</div></div>
+        <div class="stat"><div class="stat-num" id="stat-posts">0</div><div class="stat-label">Post</div></div>
+      </div>
+      <button class="invite-btn" onclick="openInviteModal()">🔗 Copia link invito</button>
+    </div>
+    <div class="sidebar-card">
+      <div class="sidebar-section-title">Online adesso</div>
+      <div id="online-list"></div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL nuovo post -->
+<div class="modal-bg" id="post-modal">
+  <div class="modal">
+    <div class="modal-title">Nuovo post</div>
+    <input class="modal-input" id="post-title-input" placeholder="Titolo del post" />
+    <textarea class="modal-textarea" id="post-body-input" placeholder="Scrivi il tuo messaggio..."></textarea>
+    <select class="modal-select" id="post-cat-select">
+      <option value="discussione">Discussione generale</option>
+      <option value="domanda">Domanda</option>
+      <option value="risorsa">Risorsa</option>
+      <option value="vittoria">Vittoria</option>
+    </select>
+    <div class="modal-actions">
+      <button class="modal-cancel" onclick="closeModal('post-modal')">Annulla</button>
+      <button class="modal-submit" onclick="submitPost()">Pubblica</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL nuovo file -->
+<div class="modal-bg" id="file-modal">
+  <div class="modal">
+    <div class="modal-title">Aggiungi materiale</div>
+    <input class="modal-input" id="file-name-input" placeholder="Nome del file (es. Modulo 1.pdf)" />
+    <input class="modal-input" id="file-desc-input" placeholder="Descrizione breve" />
+    <div class="modal-actions">
+      <button class="modal-cancel" onclick="closeModal('file-modal')">Annulla</button>
+      <button class="modal-submit" onclick="submitFile()">Aggiungi</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL invito -->
+<div class="modal-bg" id="invite-modal">
+  <div class="modal">
+    <div class="modal-title">Link di invito</div>
+    <p style="font-size:13px;color:#666;margin-bottom:14px;">Condividi questo link con chi vuoi far entrare nel gruppo. Solo chi ha il link può accedere.</p>
+    <div class="invite-link-box">
+      <span class="invite-link-url" id="invite-url">cricca-del-brunetti.vercel.app</span>
+      <button class="copy-btn" onclick="copyInvite()">Copia</button>
+    </div>
+    <div class="modal-actions">
+      <button class="modal-submit" onclick="closeModal('invite-modal')">Chiudi</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const COLORS = ['#1D9E75','#185FA5','#BA7517','#993556','#534AB7','#D85A30','#639922'];
+const SAMPLE_NAMES = ['Marco R.','Giulia T.','Luca B.','Sara M.','Andrea F.','Chiara V.','Paolo D.','Elena C.','Matteo G.','Francesca N.','Roberto S.','Anna P.'];
+
+let currentUser = { name: 'Tu', initials: 'TU', color: '#1D9E75' };
+let currentFilter = 'tutto';
+
+let posts = [
+  { id:1, author:'Admin', initials:'AD', color:'#1D9E75', title:'Benvenuti nella Cricca!', body:'Questo è il vostro spazio. Presentatevi, fate domande, condividete progressi. Siamo qui per crescere insieme.', cat:'discussione', likes:14, liked:false, comments:7, pinned:true, time:'Oggi' },
+  { id:2, author:'Marco R.', initials:'MR', color:'#185FA5', title:'Dubbio sul modulo 3 — qualcuno mi aiuta?', body:'Ho rivisto la lezione due volte ma non riesco a capire la parte sulla ricerca delle keyword long-tail. Qualcuno ha un approccio diverso da condividere?', cat:'domanda', likes:5, liked:false, comments:3, pinned:false, time:'2 ore fa' },
+  { id:3, author:'Sara M.', initials:'SM', color:'#993556', title:'Prima vendita dopo la masterclass!', body:'Ragazzi, dopo 3 settimane di applicazione ho fatto la mia prima vendita organica. Il metodo funziona. Continuate a crederci!', cat:'vittoria', likes:22, liked:false, comments:11, pinned:false, time:'Ieri' },
+  { id:4, author:'Luca B.', initials:'LB', color:'#BA7517', title:'Risorsa: tool gratuito per analisi competitor', body:'Ho trovato questo strumento che uso per monitorare i competitor su Amazon. Lo condivido perché mi ha fatto risparmiare ore di lavoro manuale.', cat:'risorsa', likes:18, liked:false, comments:6, pinned:false, time:'3 giorni fa' },
+];
+
+let files = [
+  { id:1, name:'Modulo 1 — Fondamenta editoriali.pdf', desc:'Introduzione al metodo, posizionamento e scelta della nicchia' },
+  { id:2, name:'Modulo 2 — Ricerca e validazione.pdf', desc:'Come trovare e validare idee di prodotto ad alto potenziale' },
+  { id:3, name:'Checklist lancio prodotto.pdf', desc:'Lista completa delle azioni prima, durante e dopo il lancio' },
+];
+
+let members = [
+  { name:'Admin', initials:'AD', color:'#1D9E75', role:'admin', joined:'Fondatore' },
+  ...SAMPLE_NAMES.map((n,i)=>({ name:n, initials:n.split(' ').map(x=>x[0]).join(''), color:COLORS[i%COLORS.length], role:'member', joined:'Maggio 2026' }))
+];
+
+function renderPosts() {
+  const c = document.getElementById('posts-container');
+  const filtered = currentFilter==='tutto' ? posts : posts.filter(p=>p.cat===currentFilter);
+  document.getElementById('stat-posts').textContent = posts.length;
+  if(!filtered.length){ c.innerHTML='<div class="empty">Nessun post in questa categoria.</div>'; return; }
+  c.innerHTML = filtered.map(p=>`
+    <div class="post-card">
+      <div class="post-header">
+        <div class="post-avatar" style="background:${p.color}">${p.initials}</div>
+        <div class="post-meta">
+          <div class="post-author">${p.author}</div>
+          <div class="post-time">${p.time}</div>
+        </div>
+        <span class="post-badge badge-${p.cat}">${p.cat.charAt(0).toUpperCase()+p.cat.slice(1)}</span>
+        ${p.pinned?'<span class="post-pinned">📌 Fissato</span>':''}
+      </div>
+      <div class="post-title">${p.title}</div>
+      <div class="post-body">${p.body}</div>
+      <div class="post-actions">
+        <button class="action-btn ${p.liked?'liked':''}" onclick="toggleLike(${p.id})">👍 ${p.likes}</button>
+        <button class="action-btn">💬 ${p.comments}</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderFiles() {
+  const c = document.getElementById('files-container');
+  if(!files.length){ c.innerHTML='<div class="empty">Nessun materiale ancora.</div>'; return; }
+  c.innerHTML = files.map(f=>`
+    <div class="file-card">
+      <div class="file-icon">📄</div>
+      <div class="file-info">
+        <div class="file-name">${f.name}</div>
+        <div class="file-desc">${f.desc}</div>
+      </div>
+      <button class="file-dl">⬇ Scarica</button>
+    </div>
+  `).join('');
+}
+
+function renderMembers() {
+  document.getElementById('member-count').textContent = members.length + ' membri';
+  document.getElementById('stat-members').textContent = members.length;
+  const c = document.getElementById('members-container');
+  c.innerHTML = members.map(m=>`
+    <div class="member-row">
+      <div class="post-avatar" style="background:${m.color};width:36px;height:36px;font-size:13px">${m.initials}</div>
+      <div class="member-name">${m.name}</div>
+      <span class="member-role ${m.role==='admin'?'role-admin':'role-member'}">${m.role==='admin'?'Admin':'Membro'}</span>
+      <span class="member-joined">${m.joined}</span>
+    </div>
+  `).join('');
+}
+
+function renderOnline() {
+  const online = members.slice(0,5);
+  document.getElementById('stat-online').textContent = online.length;
+  document.getElementById('online-list').innerHTML = online.map(m=>`
+    <div class="online-item"><div class="online-dot"></div><span>${m.name}</span></div>
+  `).join('');
+}
+
+function switchTab(tab, el) {
+  document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('section-feed').style.display = tab==='feed'?'flex':'none';
+  document.getElementById('section-aula').style.display = tab==='aula'?'flex':'none';
+  document.getElementById('section-membri').style.display = tab==='membri'?'flex':'none';
+  if(tab==='aula') renderFiles();
+  if(tab==='membri') renderMembers();
+}
+
+function filterPosts(cat, el) {
+  currentFilter = cat;
+  document.querySelectorAll('.filter-chip').forEach(c=>c.classList.remove('active'));
+  el.classList.add('active');
+  renderPosts();
+}
+
+function toggleLike(id) {
+  const p = posts.find(x=>x.id===id);
+  if(!p) return;
+  p.liked=!p.liked; p.likes+=p.liked?1:-1;
+  renderPosts();
+}
+
+function openPostModal() { document.getElementById('post-modal').classList.add('open'); }
+function openFileModal() { document.getElementById('file-modal').classList.add('open'); }
+function openInviteModal() { document.getElementById('invite-modal').classList.add('open'); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+
+function submitPost() {
+  const title = document.getElementById('post-title-input').value.trim();
+  const body = document.getElementById('post-body-input').value.trim();
+  const cat = document.getElementById('post-cat-select').value;
+  if(!title||!body){ showToast('Inserisci titolo e testo'); return; }
+  posts.unshift({ id:Date.now(), author:currentUser.name, initials:currentUser.initials, color:currentUser.color, title, body, cat, likes:0, liked:false, comments:0, pinned:false, time:'Adesso' });
+  document.getElementById('post-title-input').value='';
+  document.getElementById('post-body-input').value='';
+  document.getElementById('composer-text').value='';
+  closeModal('post-modal');
+  currentFilter='tutto';
+  document.querySelectorAll('.filter-chip').forEach((c,i)=>c.classList.toggle('active',i===0));
+  renderPosts();
+  showToast('Post pubblicato!');
+}
+
+function submitFile() {
+  const name = document.getElementById('file-name-input').value.trim();
+  const desc = document.getElementById('file-desc-input').value.trim();
+  if(!name){ showToast('Inserisci il nome del file'); return; }
+  files.push({ id:Date.now(), name, desc:desc||'Nessuna descrizione' });
+  document.getElementById('file-name-input').value='';
+  document.getElementById('file-desc-input').value='';
+  closeModal('file-modal');
+  renderFiles();
+  showToast('Materiale aggiunto!');
+}
+
+function copyInvite() {
+  const url = document.getElementById('invite-url').textContent;
+  if(navigator.clipboard) navigator.clipboard.writeText(url).catch(()=>{});
+  showToast('Link copiato!');
+}
+
+function showToast(msg) {
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2500);
+}
+
+document.querySelectorAll('.modal-bg').forEach(m=>m.addEventListener('click',e=>{ if(e.target===m) m.classList.remove('open'); }));
+
+document.getElementById('section-feed').style.display='flex';
+document.getElementById('section-aula').style.display='none';
+document.getElementById('section-membri').style.display='none';
+renderPosts();
+renderMembers();
+renderOnline();
+</script>
+</body>
+</html>
