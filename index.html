@@ -11,10 +11,10 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
 .nav-avatar { width: 28px; height: 28px; border-radius: 50%; background: #1D9E75; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; color: #fff; flex-shrink: 0; }
 .nav-brand { font-size: 15px; font-weight: 600; }
 .nav-tabs { display: flex; gap: 4px; margin-left: 16px; }
-.nav-tab { padding: 6px 14px; border-radius: 8px; font-size: 13px; cursor: pointer; color: #666; border: none; background: none; transition: background 0.15s; }
+.nav-tab { padding: 6px 14px; border-radius: 8px; font-size: 13px; cursor: pointer; color: #666; border: none; background: none; }
 .nav-tab:hover { background: #f0f0f0; color: #1a1a1a; }
 .nav-tab.active { background: #f0f0f0; color: #1a1a1a; font-weight: 600; }
-.nav-right { margin-left: auto; display: flex; align-items: center; gap: 12px; }
+.nav-right { margin-left: auto; }
 .nav-user { width: 30px; height: 30px; border-radius: 50%; background: #e8f4ff; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; color: #185FA5; cursor: pointer; }
 .layout { max-width: 1060px; margin: 0 auto; padding: 24px 16px; display: grid; grid-template-columns: 1fr 260px; gap: 20px; }
 .main { display: flex; flex-direction: column; gap: 16px; }
@@ -24,10 +24,11 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
 .composer-btn { background: #1D9E75; color: #fff; border: none; border-radius: 8px; padding: 10px 18px; font-size: 13px; font-weight: 600; cursor: pointer; white-space: nowrap; }
 .composer-btn:hover { background: #0F6E56; }
 .filters { display: flex; gap: 8px; flex-wrap: wrap; }
-.filter-chip { padding: 5px 14px; border-radius: 20px; font-size: 13px; cursor: pointer; border: 1px solid #e5e5e5; background: #fff; color: #666; transition: all 0.15s; }
+.filter-chip { padding: 5px 14px; border-radius: 20px; font-size: 13px; cursor: pointer; border: 1px solid #e5e5e5; background: #fff; color: #666; }
 .filter-chip:hover { border-color: #999; color: #1a1a1a; }
 .filter-chip.active { background: #1D9E75; color: #fff; border-color: #1D9E75; }
 .post-card { background: #fff; border: 1px solid #e5e5e5; border-radius: 12px; padding: 18px; display: flex; flex-direction: column; gap: 12px; }
+.post-card.pinned { border-color: #1D9E75; border-width: 2px; }
 .post-header { display: flex; align-items: center; gap: 10px; }
 .post-avatar { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 600; color: #fff; flex-shrink: 0; }
 .post-meta { flex: 1; }
@@ -38,25 +39,39 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
 .badge-domanda { background: #fff8e8; color: #854F0B; }
 .badge-risorsa { background: #eaf7e8; color: #3B6D11; }
 .badge-vittoria { background: #fce8f3; color: #993556; }
-.post-pinned { font-size: 12px; color: #999; }
+.pin-badge { font-size: 11px; color: #1D9E75; font-weight: 600; }
 .post-title { font-size: 15px; font-weight: 600; line-height: 1.4; }
 .post-body { font-size: 14px; color: #555; line-height: 1.6; }
-.post-actions { display: flex; align-items: center; gap: 16px; padding-top: 8px; border-top: 1px solid #f0f0f0; }
-.action-btn { display: flex; align-items: center; gap: 5px; font-size: 13px; color: #888; cursor: pointer; border: none; background: none; padding: 4px 8px; border-radius: 6px; transition: all 0.15s; }
+.post-actions { display: flex; align-items: center; gap: 12px; padding-top: 8px; border-top: 1px solid #f0f0f0; flex-wrap: wrap; }
+.action-btn { display: flex; align-items: center; gap: 5px; font-size: 13px; color: #888; cursor: pointer; border: none; background: none; padding: 4px 8px; border-radius: 6px; }
 .action-btn:hover { background: #f5f5f5; color: #1a1a1a; }
 .action-btn.liked { color: #1D9E75; }
+.pin-btn { margin-left: auto; font-size: 12px; color: #1D9E75; cursor: pointer; border: 1px solid #1D9E75; background: none; border-radius: 6px; padding: 3px 10px; }
+.pin-btn:hover { background: #e1f5ee; }
+.comments-section { border-top: 1px solid #f0f0f0; padding-top: 12px; display: flex; flex-direction: column; gap: 10px; }
+.comment { display: flex; gap: 10px; align-items: flex-start; }
+.comment-avatar { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 600; color: #fff; flex-shrink: 0; margin-top: 2px; }
+.comment-bubble { background: #f9f9f9; border-radius: 8px; padding: 8px 12px; flex: 1; }
+.comment-author { font-size: 12px; font-weight: 600; margin-bottom: 2px; }
+.comment-text { font-size: 13px; color: #444; line-height: 1.5; }
+.comment-time { font-size: 11px; color: #aaa; margin-top: 3px; }
+.comment-composer { display: flex; gap: 8px; align-items: center; margin-top: 4px; }
+.comment-input { flex: 1; border: 1px solid #e5e5e5; border-radius: 20px; padding: 7px 14px; font-size: 13px; background: #f9f9f9; color: #1a1a1a; font-family: inherit; outline: none; }
+.comment-input:focus { border-color: #1D9E75; }
+.comment-send { background: #1D9E75; color: #fff; border: none; border-radius: 20px; padding: 7px 16px; font-size: 13px; font-weight: 600; cursor: pointer; white-space: nowrap; }
+.comment-send:hover { background: #0F6E56; }
 .section-feed { display: flex; flex-direction: column; gap: 16px; }
 .section-aula, .section-membri { display: none; flex-direction: column; gap: 12px; }
 .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px; }
 .section-title { font-size: 16px; font-weight: 600; }
 .add-btn { display: flex; align-items: center; gap: 5px; background: none; border: 1px solid #e5e5e5; border-radius: 8px; padding: 6px 14px; font-size: 13px; cursor: pointer; color: #666; }
-.add-btn:hover { background: #f5f5f5; color: #1a1a1a; }
-.file-card { background: #fff; border: 1px solid #e5e5e5; border-radius: 12px; padding: 16px; display: flex; align-items: center; gap: 14px; }
+.add-btn:hover { background: #f5f5f5; }
+.file-card { background: #fff; border: 1px solid #e5e5e5; border-radius: 12px; padding: 16px; display: flex; align-items: center; gap: 14px; margin-bottom: 12px; }
 .file-icon { width: 40px; height: 40px; background: #e8f4ff; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
 .file-info { flex: 1; }
 .file-name { font-size: 14px; font-weight: 600; margin-bottom: 3px; }
 .file-desc { font-size: 13px; color: #888; }
-.file-dl { background: none; border: 1px solid #e5e5e5; border-radius: 8px; padding: 6px 14px; font-size: 12px; cursor: pointer; color: #666; }
+.file-dl { background: none; border: 1px solid #e5e5e5; border-radius: 8px; padding: 6px 14px; font-size: 12px; cursor: pointer; color: #666; text-decoration: none; }
 .file-dl:hover { background: #f5f5f5; }
 .member-row { background: #fff; border: 1px solid #e5e5e5; border-radius: 12px; padding: 14px 16px; display: flex; align-items: center; gap: 12px; }
 .member-name { font-size: 14px; font-weight: 600; flex: 1; }
@@ -109,7 +124,6 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
 </head>
 <body>
 
-<!-- LOGIN -->
 <div class="login-screen" id="login-screen">
   <div class="login-box">
     <div class="login-logo">CB</div>
@@ -149,19 +163,19 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
         <div class="filter-chip" onclick="filterPosts('risorsa',this)">Risorsa</div>
         <div class="filter-chip" onclick="filterPosts('vittoria',this)">Vittoria</div>
       </div>
-      <div id="posts-container"></div>
+      <div id="posts-container"><div class="empty"><div class="empty-icon">💬</div>Nessun post ancora.<br>Sii il primo a scrivere qualcosa!</div></div>
     </div>
     <div class="section-aula" id="section-aula">
       <div class="section-header">
         <span class="section-title">Materiali del corso</span>
         <button class="add-btn" id="btn-add-file" style="display:none" onclick="openFileModal()">+ Aggiungi file</button>
       </div>
-      <div id="files-container"></div>
+      <div id="files-container"><div class="empty"><div class="empty-icon">📚</div>Nessun materiale ancora.</div></div>
     </div>
     <div class="section-membri" id="section-membri">
       <div class="section-header">
         <span class="section-title">Membri della community</span>
-        <span style="font-size:13px;color:#aaa;" id="member-count"></span>
+        <span style="font-size:13px;color:#aaa;" id="member-count">0 membri</span>
       </div>
       <div id="members-container"></div>
     </div>
@@ -177,14 +191,13 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
       </div>
       <button class="invite-btn" onclick="openInviteModal()">🔗 Copia link invito</button>
     </div>
-    <div class="sidebar-card" id="online-card">
+    <div class="sidebar-card">
       <div class="sidebar-section-title">Online adesso</div>
       <div id="online-list"><div style="font-size:13px;color:#aaa;">Nessuno online</div></div>
     </div>
   </div>
 </div>
 
-<!-- MODAL nuovo post -->
 <div class="modal-bg" id="post-modal">
   <div class="modal">
     <div class="modal-title">Nuovo post</div>
@@ -203,7 +216,6 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
   </div>
 </div>
 
-<!-- MODAL nuovo file -->
 <div class="modal-bg" id="file-modal">
   <div class="modal">
     <div class="modal-title">Aggiungi materiale</div>
@@ -217,7 +229,6 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
   </div>
 </div>
 
-<!-- MODAL invito -->
 <div class="modal-bg" id="invite-modal">
   <div class="modal">
     <div class="modal-title">Link di invito</div>
@@ -234,94 +245,126 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
 
 <div class="toast" id="toast"></div>
 
-<script>
-const ADMIN_NAME = 'Samanta';
-const COLORS = ['#1D9E75','#185FA5','#BA7517','#993556','#534AB7','#D85A30','#639922','#A32D2D'];
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getFirestore, collection, addDoc, onSnapshot, orderBy, query, serverTimestamp, doc, setDoc, getDocs, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
+const firebaseConfig = {
+  apiKey: "AIzaSyAV8eYoJstkfiSv2Uev1vEZAUq-jDSEl-I",
+  authDomain: "cricca-del-brunetti.firebaseapp.com",
+  projectId: "cricca-del-brunetti",
+  storageBucket: "cricca-del-brunetti.firebasestorage.app",
+  messagingSenderId: "756539038617",
+  appId: "1:756539038617:web:7c130f0413317aef9f9108"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+const ADMINS = ['samanta', 'michela'];
+const COLORS = ['#1D9E75','#185FA5','#BA7517','#993556','#534AB7','#D85A30','#639922','#A32D2D'];
 let currentUser = null;
 let currentFilter = 'tutto';
-let posts = [];
-let files = [];
-let members = [];
+let allPosts = [];
+let commentsListeners = {};
 
 function getInitials(name) {
   return name.trim().split(' ').filter(x=>x.length>0).map(x=>x[0].toUpperCase()).join('').slice(0,2)||'??';
 }
 function getColor(name) {
-  let h = 0; for(let c of name) h = (h*31+c.charCodeAt(0))%COLORS.length;
-  return COLORS[h];
+  let h=0; for(let c of name) h=(h*31+c.charCodeAt(0))%COLORS.length; return COLORS[h];
 }
+function isAdmin(name) { return ADMINS.includes(name.toLowerCase().trim()); }
+function showToast(msg) {
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2500);
+}
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
 
-function doLogin() {
+window.doLogin = async function() {
   const name = document.getElementById('login-name').value.trim();
-  if(!name) { showToast('Inserisci il tuo nome'); return; }
-  currentUser = { name, initials: getInitials(name), color: getColor(name), isAdmin: name.toLowerCase()===ADMIN_NAME.toLowerCase() };
-  document.getElementById('login-screen').style.display = 'none';
-  document.getElementById('nav-user-initials').textContent = currentUser.initials;
-  document.getElementById('nav-user-initials').style.background = currentUser.color;
-  document.getElementById('nav-user-initials').style.color = '#fff';
-  document.getElementById('composer-avatar').textContent = currentUser.initials;
-  document.getElementById('composer-avatar').style.background = currentUser.color;
-  document.getElementById('composer-avatar').style.color = '#fff';
-  document.getElementById('invite-url').textContent = window.location.href;
+  if(!name){ showToast('Inserisci il tuo nome'); return; }
+  currentUser = { name, initials: getInitials(name), color: getColor(name), isAdmin: isAdmin(name) };
+  document.getElementById('login-screen').style.display='none';
+  document.getElementById('nav-user-initials').textContent=currentUser.initials;
+  document.getElementById('nav-user-initials').style.background=currentUser.color;
+  document.getElementById('nav-user-initials').style.color='#fff';
+  document.getElementById('composer-avatar').textContent=currentUser.initials;
+  document.getElementById('composer-avatar').style.background=currentUser.color;
+  document.getElementById('composer-avatar').style.color='#fff';
+  document.getElementById('invite-url').textContent=window.location.href;
   if(currentUser.isAdmin) document.getElementById('btn-add-file').style.display='flex';
-  if(!members.find(m=>m.name===name)) members.push({ name, initials:currentUser.initials, color:currentUser.color, role:currentUser.isAdmin?'admin':'member', joined:'Oggi' });
-  renderAll();
+  await setDoc(doc(db,'members',name), { name, initials:currentUser.initials, color:currentUser.color, role:currentUser.isAdmin?'admin':'member', joined:new Date().toLocaleDateString('it') }, {merge:true});
+  loadMembers();
+  listenPosts();
+  loadFiles();
+};
+
+function listenPosts() {
+  const q = query(collection(db,'posts'), orderBy('pinned','desc'), orderBy('createdAt','desc'));
+  onSnapshot(q, snap => {
+    allPosts = snap.docs.map(d=>({id:d.id,...d.data()}));
+    document.getElementById('stat-posts').textContent=allPosts.length;
+    renderPosts();
+  });
 }
 
-function renderPosts() {
-  const c = document.getElementById('posts-container');
-  document.getElementById('stat-posts').textContent = posts.length;
-  const filtered = currentFilter==='tutto' ? posts : posts.filter(p=>p.cat===currentFilter);
-  if(!filtered.length){
-    c.innerHTML='<div class="empty"><div class="empty-icon">💬</div>Nessun post ancora.<br>Sii il primo a scrivere qualcosa!</div>';
-    return;
-  }
-  c.innerHTML = filtered.map(p=>`
-    <div class="post-card">
-      <div class="post-header">
-        <div class="post-avatar" style="background:${p.color}">${p.initials}</div>
-        <div class="post-meta">
-          <div class="post-author">${p.author}</div>
-          <div class="post-time">${p.time}</div>
+function listenComments(postId) {
+  if(commentsListeners[postId]) return;
+  const q = query(collection(db,'posts',postId,'comments'), orderBy('createdAt','asc'));
+  commentsListeners[postId] = onSnapshot(q, snap => {
+    const comments = snap.docs.map(d=>({id:d.id,...d.data()}));
+    const container = document.getElementById('comments-'+postId);
+    if(!container) return;
+    const list = container.querySelector('.comments-list');
+    if(!list) return;
+    list.innerHTML = comments.length===0
+      ? '<div style="font-size:13px;color:#aaa;padding:4px 0">Nessun commento ancora. Sii il primo!</div>'
+      : comments.map(c=>`
+        <div class="comment">
+          <div class="comment-avatar" style="background:${c.color}">${c.initials}</div>
+          <div class="comment-bubble">
+            <div class="comment-author">${c.author}</div>
+            <div class="comment-text">${c.text}</div>
+            <div class="comment-time">${c.time||''}</div>
+          </div>
         </div>
-        <span class="post-badge badge-${p.cat}">${p.cat.charAt(0).toUpperCase()+p.cat.slice(1)}</span>
-      </div>
-      <div class="post-title">${p.title}</div>
-      <div class="post-body">${p.body}</div>
-      <div class="post-actions">
-        <button class="action-btn ${p.liked?'liked':''}" onclick="toggleLike(${p.id})">👍 ${p.likes}</button>
-        <button class="action-btn">💬 ${p.comments}</button>
-      </div>
-    </div>
-  `).join('');
+      `).join('');
+  });
 }
 
-function renderFiles() {
-  const c = document.getElementById('files-container');
-  if(!files.length){
-    c.innerHTML='<div class="empty"><div class="empty-icon">📚</div>Nessun materiale ancora.<br>'+
-    (currentUser&&currentUser.isAdmin ? 'Aggiungine uno con il pulsante qui sopra.' : 'I materiali verranno caricati dall\'admin.')+'</div>';
-    return;
-  }
-  c.innerHTML = files.map(f=>`
-    <div class="file-card">
-      <div class="file-icon">📄</div>
-      <div class="file-info">
-        <div class="file-name">${f.name}</div>
-        <div class="file-desc">${f.desc}</div>
-      </div>
-      ${f.url ? `<a href="${f.url}" target="_blank"><button class="file-dl">⬇ Scarica</button></a>` : '<button class="file-dl" disabled>Link assente</button>'}
-    </div>
-  `).join('');
-}
+window.toggleComments = function(postId) {
+  const section = document.getElementById('comments-'+postId);
+  if(!section) return;
+  const isOpen = section.style.display !== 'none';
+  section.style.display = isOpen ? 'none' : 'flex';
+  if(!isOpen) listenComments(postId);
+};
 
-function renderMembers() {
-  document.getElementById('member-count').textContent = members.length + ' membri';
-  document.getElementById('stat-members').textContent = members.length;
-  const c = document.getElementById('members-container');
-  if(!members.length){ c.innerHTML='<div class="empty">Nessun membro ancora.</div>'; return; }
-  c.innerHTML = members.map(m=>`
+window.sendComment = async function(postId) {
+  const input = document.getElementById('comment-input-'+postId);
+  const text = input.value.trim();
+  if(!text) return;
+  const now = new Date();
+  await addDoc(collection(db,'posts',postId,'comments'), {
+    author: currentUser.name,
+    initials: currentUser.initials,
+    color: currentUser.color,
+    text,
+    time: now.toLocaleTimeString('it',{hour:'2-digit',minute:'2-digit'}),
+    createdAt: serverTimestamp()
+  });
+  await updateDoc(doc(db,'posts',postId), { comments: (allPosts.find(p=>p.id===postId)?.comments||0)+1 });
+  input.value='';
+};
+
+async function loadMembers() {
+  const snap = await getDocs(collection(db,'members'));
+  const members = snap.docs.map(d=>d.data());
+  document.getElementById('stat-members').textContent=members.length;
+  document.getElementById('member-count').textContent=members.length+' membri';
+  document.getElementById('members-container').innerHTML = members.map(m=>`
     <div class="member-row">
       <div class="post-avatar" style="background:${m.color};width:36px;height:36px;font-size:13px">${m.initials}</div>
       <div class="member-name">${m.name}</div>
@@ -329,98 +372,129 @@ function renderMembers() {
       <span class="member-joined">${m.joined}</span>
     </div>
   `).join('');
+  document.getElementById('online-list').innerHTML = members.slice(0,5).map(m=>`
+    <div class="online-item"><div class="online-dot"></div><span>${m.name}</span></div>
+  `).join('') || '<div style="font-size:13px;color:#aaa;">Nessuno online</div>';
 }
 
-function renderOnline() {
-  const online = members.slice(-5);
-  if(!online.length){ document.getElementById('online-list').innerHTML='<div style="font-size:13px;color:#aaa;">Nessuno online</div>'; return; }
-  document.getElementById('online-list').innerHTML = online.map(m=>`
-    <div class="online-item"><div class="online-dot"></div><span>${m.name}</span></div>
+async function loadFiles() {
+  const snap = await getDocs(collection(db,'files'));
+  const files = snap.docs.map(d=>d.data());
+  const c = document.getElementById('files-container');
+  if(!files.length){ c.innerHTML='<div class="empty"><div class="empty-icon">📚</div>Nessun materiale ancora.'+(currentUser&&currentUser.isAdmin?' Aggiungine uno con il pulsante qui sopra.':'')+'</div>'; return; }
+  c.innerHTML = files.map(f=>`
+    <div class="file-card">
+      <div class="file-icon">📄</div>
+      <div class="file-info"><div class="file-name">${f.name}</div><div class="file-desc">${f.desc||''}</div></div>
+      ${f.url?`<a href="${f.url}" target="_blank" class="file-dl">⬇ Scarica</a>`:'<span style="font-size:12px;color:#aaa;">Nessun link</span>'}
+    </div>
   `).join('');
 }
 
-function renderAll() { renderPosts(); renderMembers(); renderOnline(); }
+window.renderPosts = function() {
+  const c=document.getElementById('posts-container');
+  const filtered=currentFilter==='tutto'?allPosts:allPosts.filter(p=>p.cat===currentFilter);
+  if(!filtered.length){ c.innerHTML='<div class="empty"><div class="empty-icon">💬</div>Nessun post ancora.<br>Sii il primo a scrivere qualcosa!</div>'; return; }
+  c.innerHTML=filtered.map(p=>`
+    <div class="post-card ${p.pinned?'pinned':''}">
+      <div class="post-header">
+        <div class="post-avatar" style="background:${p.color}">${p.initials}</div>
+        <div class="post-meta"><div class="post-author">${p.author}</div><div class="post-time">${p.time||''}</div></div>
+        <span class="post-badge badge-${p.cat}">${p.cat.charAt(0).toUpperCase()+p.cat.slice(1)}</span>
+        ${p.pinned?'<span class="pin-badge">📌 Fissato</span>':''}
+      </div>
+      <div class="post-title">${p.title}</div>
+      <div class="post-body">${p.body}</div>
+      <div class="post-actions">
+        <button class="action-btn" onclick="toggleComments('${p.id}')">💬 ${p.comments||0} commenti</button>
+        ${currentUser&&currentUser.isAdmin?`<button class="pin-btn" onclick="togglePin('${p.id}',${!!p.pinned})">${p.pinned?'📌 Sfissa':'📌 Fissa'}</button>`:''}
+      </div>
+      <div class="comments-section" id="comments-${p.id}" style="display:none">
+        <div class="comments-list"><div style="font-size:13px;color:#aaa;padding:4px 0">Caricamento...</div></div>
+        <div class="comment-composer">
+          <div class="comment-avatar" style="background:${currentUser?currentUser.color:'#ccc'}">${currentUser?currentUser.initials:'?'}</div>
+          <input class="comment-input" id="comment-input-${p.id}" placeholder="Scrivi un commento..." onkeypress="if(event.key==='Enter') sendComment('${p.id}')" />
+          <button class="comment-send" onclick="sendComment('${p.id}')">Invia</button>
+        </div>
+      </div>
+    </div>
+  `).join('');
+};
 
-function switchTab(tab, el) {
-  document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
-  el.classList.add('active');
-  document.getElementById('section-feed').style.display = tab==='feed'?'flex':'none';
-  document.getElementById('section-aula').style.display = tab==='aula'?'flex':'none';
-  document.getElementById('section-membri').style.display = tab==='membri'?'flex':'none';
-  if(tab==='aula') renderFiles();
-  if(tab==='membri') renderMembers();
-}
+window.togglePin = async function(postId, currentlyPinned) {
+  await updateDoc(doc(db,'posts',postId), { pinned: !currentlyPinned });
+  showToast(currentlyPinned ? 'Post sfissato' : 'Post fissato in cima!');
+};
 
-function filterPosts(cat, el) {
-  currentFilter = cat;
+window.filterPosts = function(cat,el) {
+  currentFilter=cat;
   document.querySelectorAll('.filter-chip').forEach(c=>c.classList.remove('active'));
   el.classList.add('active');
   renderPosts();
-}
+};
 
-function toggleLike(id) {
-  const p = posts.find(x=>x.id===id);
-  if(!p) return;
-  p.liked=!p.liked; p.likes+=p.liked?1:-1;
-  renderPosts();
-}
+window.openPostModal = function() { document.getElementById('post-modal').classList.add('open'); };
+window.openFileModal = function() { document.getElementById('file-modal').classList.add('open'); };
+window.openInviteModal = function() { document.getElementById('invite-modal').classList.add('open'); };
+window.closeModal = closeModal;
 
-function openPostModal() { document.getElementById('post-modal').classList.add('open'); }
-function openFileModal() { document.getElementById('file-modal').classList.add('open'); }
-function openInviteModal() { document.getElementById('invite-modal').classList.add('open'); }
-function closeModal(id) { document.getElementById(id).classList.remove('open'); }
-
-function submitPost() {
-  const title = document.getElementById('post-title-input').value.trim();
-  const body = document.getElementById('post-body-input').value.trim();
-  const cat = document.getElementById('post-cat-select').value;
+window.submitPost = async function() {
+  const title=document.getElementById('post-title-input').value.trim();
+  const body=document.getElementById('post-body-input').value.trim();
+  const cat=document.getElementById('post-cat-select').value;
   if(!title||!body){ showToast('Inserisci titolo e testo'); return; }
-  const now = new Date();
-  const time = now.toLocaleTimeString('it',{hour:'2-digit',minute:'2-digit'});
-  posts.unshift({ id:Date.now(), author:currentUser.name, initials:currentUser.initials, color:currentUser.color, title, body, cat, likes:0, liked:false, comments:0, time:'Oggi alle '+time });
+  const now=new Date();
+  await addDoc(collection(db,'posts'),{
+    author:currentUser.name, initials:currentUser.initials, color:currentUser.color,
+    title, body, cat, likes:0, comments:0, pinned:false,
+    time:'Oggi alle '+now.toLocaleTimeString('it',{hour:'2-digit',minute:'2-digit'}),
+    createdAt:serverTimestamp()
+  });
   document.getElementById('post-title-input').value='';
   document.getElementById('post-body-input').value='';
   document.getElementById('composer-text').value='';
   closeModal('post-modal');
   currentFilter='tutto';
   document.querySelectorAll('.filter-chip').forEach((c,i)=>c.classList.toggle('active',i===0));
-  renderPosts();
   showToast('Post pubblicato!');
-}
+};
 
-function submitFile() {
-  if(!currentUser||!currentUser.isAdmin){ showToast('Solo l\'admin può aggiungere file'); return; }
-  const name = document.getElementById('file-name-input').value.trim();
-  const desc = document.getElementById('file-desc-input').value.trim();
-  const url = document.getElementById('file-url-input').value.trim();
+window.submitFile = async function() {
+  if(!currentUser||!currentUser.isAdmin){ showToast('Solo gli admin possono aggiungere file'); return; }
+  const name=document.getElementById('file-name-input').value.trim();
+  const desc=document.getElementById('file-desc-input').value.trim();
+  const url=document.getElementById('file-url-input').value.trim();
   if(!name){ showToast('Inserisci il nome del file'); return; }
-  files.push({ id:Date.now(), name, desc:desc||'', url });
+  await addDoc(collection(db,'files'),{name,desc,url,createdAt:serverTimestamp()});
   document.getElementById('file-name-input').value='';
   document.getElementById('file-desc-input').value='';
   document.getElementById('file-url-input').value='';
   closeModal('file-modal');
-  renderFiles();
+  loadFiles();
   showToast('Materiale aggiunto!');
-}
+};
 
-function copyInvite() {
-  const url = document.getElementById('invite-url').textContent;
+window.copyInvite = function() {
+  const url=document.getElementById('invite-url').textContent;
   if(navigator.clipboard) navigator.clipboard.writeText(url).catch(()=>{});
   showToast('Link copiato!');
-}
+};
 
-function showToast(msg) {
-  const t=document.getElementById('toast');
-  t.textContent=msg; t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'),2500);
-}
+window.switchTab = function(tab,el) {
+  document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('section-feed').style.display=tab==='feed'?'flex':'none';
+  document.getElementById('section-aula').style.display=tab==='aula'?'flex':'none';
+  document.getElementById('section-membri').style.display=tab==='membri'?'flex':'none';
+  if(tab==='aula') loadFiles();
+  if(tab==='membri') loadMembers();
+};
 
 document.querySelectorAll('.modal-bg').forEach(m=>m.addEventListener('click',e=>{ if(e.target===m) m.classList.remove('open'); }));
 document.getElementById('login-name').addEventListener('keypress',e=>{ if(e.key==='Enter') doLogin(); });
 document.getElementById('section-feed').style.display='flex';
 document.getElementById('section-aula').style.display='none';
 document.getElementById('section-membri').style.display='none';
-renderPosts();
 </script>
 </body>
 </html>
