@@ -262,6 +262,22 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
   </div>
 </div>
 
+
+<!-- MODAL modifica post -->
+<div class="modal-bg" id="edit-modal">
+  <div class="modal">
+    <div class="modal-title">Modifica post</div>
+    <input class="modal-input" id="edit-title-input" placeholder="Titolo del post" />
+    <textarea class="modal-input" id="edit-body-input" placeholder="Testo del post..." rows="5" style="resize:vertical;min-height:100px;"></textarea>
+    <input class="modal-input" id="edit-link-input" placeholder="🔗 Link (opzionale)" />
+    <input type="hidden" id="edit-post-id" />
+    <div class="modal-actions">
+      <button class="modal-cancel" onclick="closeModal('edit-modal')">Annulla</button>
+      <button class="modal-submit" onclick="saveEditPost()">Salva</button>
+    </div>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
 
 <script type="module">
@@ -489,6 +505,7 @@ window.renderPosts = function() {
       ${p.postLink?`<a href="${p.postLink}" target="_blank" class="post-file">🔗 ${p.postLink}</a>`:''}
       <div class="post-actions">
         <button class="action-btn" onclick="toggleComments('${p.id}')">💬 ${p.comments||0} commenti</button>
+        ${currentUser&&(currentUser.isAdmin||currentUser.name===p.author)?`<button class="attach-btn" style="font-size:12px" onclick="openEditPost('${p.id}','${p.title.replace(/'/g,\"\\'\")}','${p.body.replace(/'/g,\"\\'\")}','${p.postLink||''}')">✏️ Modifica</button>`:''}
         ${currentUser&&currentUser.isAdmin?`<div class="admin-actions"><button class="del-btn" onclick="deletePost('${p.id}')">🗑 Elimina</button><button class="pin-btn" onclick="togglePin('${p.id}',${!!p.pinned})">${p.pinned?'📌 Sfissa':'📌 Fissa'}</button></div>`:''}
       </div>
       <div class="comments-section ${commentsOpen[p.id]?'open':''}" id="cs-${p.id}">
@@ -503,6 +520,23 @@ window.renderPosts = function() {
   Object.keys(commentsOpen).forEach(id=>{ if(commentsOpen[id]) listenComments(id); });
 };
 
+window.openEditPost = function(postId, title, body, link) {
+  document.getElementById('edit-post-id').value = postId;
+  document.getElementById('edit-title-input').value = title;
+  document.getElementById('edit-body-input').value = body;
+  document.getElementById('edit-link-input').value = link || '';
+  document.getElementById('edit-modal').classList.add('open');
+};
+window.saveEditPost = async function() {
+  const postId = document.getElementById('edit-post-id').value;
+  const title = document.getElementById('edit-title-input').value.trim();
+  const body = document.getElementById('edit-body-input').value.trim();
+  const postLink = document.getElementById('edit-link-input').value.trim();
+  if(!title||!body){ showToast('Inserisci titolo e testo'); return; }
+  await updateDoc(doc(db,'posts',postId), { title, body, postLink: postLink||null, edited: true });
+  closeModal('edit-modal');
+  showToast('Post modificato!');
+};
 window.togglePin = async function(postId, currentlyPinned) {
   await updateDoc(doc(db,'posts',postId), { pinned: !currentlyPinned });
   showToast(currentlyPinned ? 'Post sfissato' : 'Post fissato in cima!');
