@@ -78,6 +78,11 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
 .reaction-count { font-size: 12px; color: #666; }
 .add-reaction { border: 1px dashed #e5e5e5; border-radius: 20px; padding: 4px 10px; font-size: 14px; cursor: pointer; background: none; color: #aaa; }
 .add-reaction:hover { background: #f0f0f0; border-color: #ccc; color: #666; }
+.mention-dropdown { position: absolute; background: #fff; border: 1px solid #e5e5e5; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); z-index: 500; max-height: 180px; overflow-y: auto; min-width: 180px; }
+.mention-item { padding: 8px 14px; font-size: 13px; cursor: pointer; display: flex; align-items: center; gap: 8px; }
+.mention-item:hover { background: #f5f5f5; }
+.mention-avatar-sm { width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 9px; font-weight: 600; color: #fff; flex-shrink: 0; }
+.mention-highlight { color: #1D9E75; font-weight: 600; }
 .section-feed { display: flex; flex-direction: column; gap: 16px; }
 .section-aula, .section-membri { display: none; flex-direction: column; gap: 12px; }
 .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px; }
@@ -256,7 +261,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
         <div class="stat"><div class="stat-num" id="stat-members">0</div><div class="stat-label">Membri</div></div>
         <div class="stat"><div class="stat-num" id="stat-posts">0</div><div class="stat-label">Post</div></div>
       </div>
-      <button class="invite-btn" onclick="openInviteModal()">🔗 Copia link invito</button>
+      <div id="invite-btn-container"></div>
     </div>
     <div class="sidebar-card">
       <div class="sidebar-section-title">Online adesso</div>
@@ -435,7 +440,10 @@ window.doLogin = async function() {
   document.getElementById('composer-avatar').style.background=currentUser.color;
   document.getElementById('composer-avatar').style.color='#fff';
   document.getElementById('invite-url').textContent=window.location.href;
-  if(currentUser.isAdmin) document.getElementById('btn-add-file').style.display='flex';
+  if(currentUser.isAdmin) {
+    document.getElementById('btn-add-file').style.display='flex';
+    document.getElementById('invite-btn-container').innerHTML='<button class="invite-btn" onclick="openInviteModal()">🔗 Copia link invito</button>';
+  }
   await setDoc(doc(db,'members',name), { name, initials:currentUser.initials, color:currentUser.color, role:currentUser.isAdmin?'admin':'member', joined:new Date().toLocaleDateString('it') }, {merge:true});
   loadMembers();
   listenPosts();
@@ -482,7 +490,7 @@ function listenComments(postId) {
           <div class="comment-avatar" style="background:${c.color}">${c.initials}</div>
           <div class="comment-bubble">
             <div class="comment-author">${c.author}</div>
-            <div class="comment-text">${c.text}</div>
+            <div class="comment-text">${highlightMentions(c.text)}</div>
             ${c.imageUrl?`<img src="${c.imageUrl}" style="max-width:100%;border-radius:6px;margin-top:6px;max-height:200px;object-fit:cover">`:''}
             <div class="comment-time">${c.time||''}</div>
           </div>
@@ -516,6 +524,7 @@ window.sendComment = async function(postId) {
 async function loadMembers() {
   const snap = await getDocs(collection(db,'members'));
   const members = snap.docs.map(d=>({id:d.id,...d.data()}));
+  mentionMembers = members;
   document.getElementById('stat-members').textContent=members.length;
   document.getElementById('member-count').textContent=members.length+' membri';
   document.getElementById('members-container').innerHTML = members.map(m=>`
@@ -570,7 +579,7 @@ window.renderPosts = function() {
         ${p.pinned?'<span class="pin-badge">📌 Fissato</span>':''}
       </div>
       <div class="post-title">${p.title}</div>
-      <div class="post-body">${p.body}</div>
+      <div class="post-body">${highlightMentions(p.body)}</div>
       <div class="reactions" id="reactions-${p.id}">
         ${['👍','❤️','😂','🔥','👏'].map(e=>{
           const count = (p.reactions&&p.reactions[e])||0;
@@ -589,11 +598,12 @@ window.renderPosts = function() {
       </div>
       <div class="comments-section ${commentsOpen[p.id]?'open':''}" id="cs-${p.id}">
         <div id="clist-${p.id}"><div style="font-size:13px;color:#aaa;">Caricamento...</div></div>
+        <div style="position:relative" id="mention-container-wrapper"><div class="mention-dropdown" id="mention-dropdown" style="display:none;position:absolute;bottom:45px;left:0;"></div>
         <div class="comment-composer">
           <div class="comment-avatar" style="background:${currentUser?currentUser.color:'#ccc'}">${currentUser?currentUser.initials:'?'}</div>
-          <input class="comment-input" id="cinput-${p.id}" placeholder="Scrivi un commento..." onkeypress="if(event.key==='Enter') sendComment('${p.id}')" />
+          <input class="comment-input" id="cinput-${p.id}" placeholder="Scrivi un commento..." onkeypress="if(event.key==='Enter'&&!window.mentionActive) sendComment('${p.id}')" oninput="handleMentionInput(this,'${p.id}')" />
           <button class="comment-send" onclick="sendComment('${p.id}')">Invia</button>
-        </div>
+        </div></div>
       </div>
     </div>`).join('');
   Object.keys(commentsOpen).forEach(id=>{ if(commentsOpen[id]) listenComments(id); });
@@ -627,6 +637,51 @@ window.setMemberStatus = async function(memberName, status) {
   loadMembers();
   showToast(status==='normal' ? `${memberName} ripristinato` : `${memberName} ${status==='banned'?'bannato':'silenziato'}`);
 };
+function highlightMentions(text) {
+  if(!text) return '';
+  return text.replace(/@(\S+)/g, '<span class="mention-highlight">@$1</span>');
+}
+let mentionMembers = [];
+let mentionActive = false;
+let currentMentionInput = null;
+
+window.handleMentionInput = function(input, postId) {
+  currentMentionInput = input;
+  const val = input.value;
+  const cursor = input.selectionStart;
+  const textBefore = val.substring(0, cursor);
+  const atMatch = textBefore.match(/@(\w*)$/);
+  const dropdown = document.getElementById('mention-dropdown');
+  if(!atMatch) {
+    dropdown.style.display='none';
+    mentionActive=false;
+    return;
+  }
+  const query = atMatch[1].toLowerCase();
+  const filtered = mentionMembers.filter(m=>m.name.toLowerCase().includes(query) && m.name !== currentUser.name);
+  if(!filtered.length){ dropdown.style.display='none'; mentionActive=false; return; }
+  mentionActive=true;
+  dropdown.style.display='block';
+  dropdown.innerHTML = filtered.slice(0,6).map(m=>`
+    <div class="mention-item" onclick="insertMention('${m.name}')">
+      <div class="mention-avatar-sm" style="background:${m.color}">${m.initials}</div>
+      <span>${m.name}</span>
+    </div>`).join('');
+};
+
+window.insertMention = function(name) {
+  if(!currentMentionInput) return;
+  const val = currentMentionInput.value;
+  const cursor = currentMentionInput.selectionStart;
+  const textBefore = val.substring(0, cursor);
+  const textAfter = val.substring(cursor);
+  const newText = textBefore.replace(/@\w*$/, '@'+name+' ') + textAfter;
+  currentMentionInput.value = newText;
+  document.getElementById('mention-dropdown').style.display='none';
+  mentionActive=false;
+  currentMentionInput.focus();
+};
+
 window.doLogout = function() {
   localStorage.removeItem('cricca_user');
   location.reload();
