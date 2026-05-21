@@ -263,10 +263,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
       </div>
       <div id="invite-btn-container"></div>
     </div>
-    <div class="sidebar-card">
-      <div class="sidebar-section-title">Online adesso</div>
-      <div id="online-list"><div style="font-size:13px;color:#aaa;">Nessuno online</div></div>
-    </div>
+
   </div>
 </div>
 
@@ -543,8 +540,7 @@ async function loadMembers() {
             `<button class="del-btn" onclick="setMemberStatus('${m.name}','banned')">🚫 Banna</button>`}
         </div>`:''}
     </div>`).join('');
-  document.getElementById('online-list').innerHTML = members.slice(0,5).map(m=>`
-    <div class="online-item"><div class="online-dot"></div><span>${m.name}</span></div>`).join('') || '<div style="font-size:13px;color:#aaa;">Nessuno online</div>';
+
 }
 
 async function loadFiles() {
