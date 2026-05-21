@@ -245,7 +245,7 @@ let files = [];
 let members = [];
 
 function getInitials(name) {
-  return name.split(' ').map(x=>x[0]).toUpperCase().join('').slice(0,2);
+  return name.trim().split(' ').filter(x=>x.length>0).map(x=>x[0].toUpperCase()).join('').slice(0,2)||'??';
 }
 function getColor(name) {
   let h = 0; for(let c of name) h = (h*31+c.charCodeAt(0))%COLORS.length;
