@@ -553,7 +553,7 @@ async function loadFiles() {
       <div class="file-icon">📄</div>
       <div class="file-info"><div class="file-name">${f.name}</div><div class="file-desc">${f.desc||''}</div></div>
       <div class="file-actions">
-        ${f.url?`<a href="${f.url}" target="_blank" class="file-dl">⬇ Scarica</a>`:''}
+        ${f.url?`<a href="${f.url.replace('/upload/','/upload/fl_attachment/')}" target="_blank" class="file-dl">⬇ Scarica</a>`:''}
         ${currentUser&&currentUser.isAdmin?`<button class="file-del" onclick="deleteFile('${f.id}')">🗑</button>`:''}
       </div>
     </div>`).join('');
