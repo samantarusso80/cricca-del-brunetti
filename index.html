@@ -71,6 +71,13 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
 .comment-input { flex: 1; border: 1px solid #e5e5e5; border-radius: 20px; padding: 7px 14px; font-size: 13px; background: #f9f9f9; color: #1a1a1a; font-family: inherit; outline: none; }
 .comment-input:focus { border-color: #1D9E75; }
 .comment-send { background: #1D9E75; color: #fff; border: none; border-radius: 20px; padding: 7px 16px; font-size: 13px; font-weight: 600; cursor: pointer; }
+.reactions { display: flex; gap: 6px; flex-wrap: wrap; }
+.reaction-btn { display: flex; align-items: center; gap: 4px; border: 1px solid #e5e5e5; border-radius: 20px; padding: 4px 10px; font-size: 13px; cursor: pointer; background: #fff; transition: all 0.15s; }
+.reaction-btn:hover { background: #f0f0f0; border-color: #ccc; }
+.reaction-btn.reacted { background: #e1f5ee; border-color: #1D9E75; color: #0F6E56; font-weight: 600; }
+.reaction-count { font-size: 12px; color: #666; }
+.add-reaction { border: 1px dashed #e5e5e5; border-radius: 20px; padding: 4px 10px; font-size: 14px; cursor: pointer; background: none; color: #aaa; }
+.add-reaction:hover { background: #f0f0f0; border-color: #ccc; color: #666; }
 .section-feed { display: flex; flex-direction: column; gap: 16px; }
 .section-aula, .section-membri { display: none; flex-direction: column; gap: 12px; }
 .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px; }
@@ -291,6 +298,18 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
   </div>
 </div>
 
+
+<!-- MODAL reazioni -->
+<div class="modal-bg" id="reaction-modal">
+  <div class="modal" style="width:300px">
+    <div class="modal-title">Aggiungi reazione</div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center;padding:10px 0">
+      <input type="hidden" id="reaction-post-id">
+      ${['👍','❤️','😂','🔥','👏','😮','😢','💪'].map(e=>`<button onclick="toggleReaction(document.getElementById('reaction-post-id').value,'${e}');closeModal('reaction-modal')" style="font-size:28px;border:none;background:none;cursor:pointer;padding:8px;border-radius:8px" onmouseover="this.style.background='#f0f0f0'" onmouseout="this.style.background='none'">${e}</button>`).join('')}
+    </div>
+    <div class="modal-actions"><button class="modal-cancel" onclick="closeModal('reaction-modal')">Chiudi</button></div>
+  </div>
+</div>
 
 <!-- MODAL modifica post -->
 <div class="modal-bg" id="edit-modal">
@@ -545,6 +564,14 @@ window.renderPosts = function() {
       </div>
       <div class="post-title">${p.title}</div>
       <div class="post-body">${p.body}</div>
+      <div class="reactions" id="reactions-${p.id}">
+        ${['👍','❤️','😂','🔥','👏'].map(e=>{
+          const count = (p.reactions&&p.reactions[e])||0;
+          const reacted = p.reactedBy&&p.reactedBy[e]&&p.reactedBy[e].includes(currentUser?currentUser.name:'');
+          return count>0||reacted?`<button class="reaction-btn ${reacted?'reacted':''}" onclick="toggleReaction('${p.id}','${e}')">${e} <span class="reaction-count">${count}</span></button>`:''
+        }).join('')}
+        <button class="add-reaction" onclick="showReactionPicker('${p.id}')">😊 +</button>
+      </div>
       ${p.attachUrl && p.attachType==='image'?`<img src="${p.attachUrl}" class="post-image" onclick="window.open('${p.attachUrl}')">`:''}
       ${p.attachUrl && p.attachType==='raw'?`<a href="${p.attachUrl}" target="_blank" class="post-file">📄 ${p.attachName||'Scarica allegato'}</a>`:''}
       ${p.postLink?`<a href="${p.postLink}" target="_blank" class="post-file">🔗 ${p.postLink}</a>`:''}
@@ -565,6 +592,27 @@ window.renderPosts = function() {
   Object.keys(commentsOpen).forEach(id=>{ if(commentsOpen[id]) listenComments(id); });
 };
 
+window.showReactionPicker = function(postId) {
+  document.getElementById('reaction-post-id').value = postId;
+  document.getElementById('reaction-modal').classList.add('open');
+};
+window.toggleReaction = async function(postId, emoji) {
+  if(!currentUser) return;
+  const post = allPosts.find(p=>p.id===postId);
+  if(!post) return;
+  const reactions = post.reactions || {};
+  const reactedBy = post.reactedBy || {};
+  const users = reactedBy[emoji] || [];
+  const alreadyReacted = users.includes(currentUser.name);
+  if(alreadyReacted) {
+    reactions[emoji] = Math.max((reactions[emoji]||1)-1, 0);
+    reactedBy[emoji] = users.filter(u=>u!==currentUser.name);
+  } else {
+    reactions[emoji] = (reactions[emoji]||0)+1;
+    reactedBy[emoji] = [...users, currentUser.name];
+  }
+  await updateDoc(doc(db,'posts',postId), { reactions, reactedBy });
+};
 window.setMemberStatus = async function(memberName, status) {
   const labels = { silenced: 'silenziare', banned: 'bannare', normal: 'ripristinare' };
   if(!confirm(`Vuoi ${labels[status]} ${memberName}?`)) return;
