@@ -7,178 +7,269 @@
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f5f5f0; color: #1a1a1a; min-height: 100vh; }
-.nav { background: #fff; border-bottom: 1px solid #e5e5e5; padding: 0 24px; display: flex; align-items: center; gap: 16px; height: 52px; position: sticky; top: 0; z-index: 100; }
-.nav-avatar { width: 28px; height: 28px; border-radius: 50%; background: #1D9E75; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; color: #fff; flex-shrink: 0; }
-.nav-brand { font-size: 15px; font-weight: 600; }
-.nav-tabs { display: flex; gap: 4px; margin-left: 16px; }
-.nav-tab { padding: 6px 14px; border-radius: 8px; font-size: 13px; cursor: pointer; color: #666; border: none; background: none; }
+
+/* NAV */
+.nav { background: #fff; border-bottom: 1px solid #e5e5e5; padding: 0 16px; display: flex; align-items: center; gap: 12px; height: 52px; position: sticky; top: 0; z-index: 100; }
+.nav-logo { width: 28px; height: 28px; border-radius: 50%; background: #1D9E75; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; color: #fff; flex-shrink: 0; }
+.nav-brand { font-size: 15px; font-weight: 700; }
+.nav-tabs { display: flex; gap: 2px; margin-left: 12px; }
+.nav-tab { padding: 6px 12px; border-radius: 8px; font-size: 13px; cursor: pointer; color: #666; border: none; background: none; position: relative; }
 .nav-tab:hover { background: #f0f0f0; color: #1a1a1a; }
 .nav-tab.active { background: #f0f0f0; color: #1a1a1a; font-weight: 600; }
-.nav-right { margin-left: auto; }
-.nav-user { width: 30px; height: 30px; border-radius: 50%; background: #e8f4ff; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; color: #185FA5; cursor: pointer; }
-.layout { max-width: 1060px; margin: 0 auto; padding: 24px 16px; display: grid; grid-template-columns: 1fr 260px; gap: 20px; }
-.main { display: flex; flex-direction: column; gap: 16px; }
+.nav-badge { position: absolute; top: 2px; right: 2px; background: #e53e3e; color: #fff; border-radius: 50%; width: 16px; height: 16px; font-size: 10px; display: flex; align-items: center; justify-content: center; font-weight: 700; }
+.nav-right { margin-left: auto; display: flex; align-items: center; gap: 8px; }
+.nav-exit { border: 1px solid #e5e5e5; background: none; border-radius: 8px; padding: 5px 10px; font-size: 12px; color: #666; cursor: pointer; }
+.nav-exit:hover { background: #f5f5f5; }
+.nav-user { width: 30px; height: 30px; border-radius: 50%; background: #e8f4ff; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; color: #185FA5; overflow: hidden; }
+.nav-user img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
+
+/* LAYOUT */
+.layout { max-width: 1060px; margin: 0 auto; padding: 20px 16px; display: grid; grid-template-columns: 1fr 260px; gap: 20px; }
+.main { display: flex; flex-direction: column; gap: 14px; }
+
+/* COMPOSER */
 .composer-box { background: #fff; border: 1px solid #e5e5e5; border-radius: 12px; overflow: hidden; }
-.composer-trigger { display: flex; align-items: center; gap: 12px; padding: 14px 16px; cursor: text; }
+.composer-trigger { display: flex; align-items: center; gap: 10px; padding: 12px 16px; cursor: text; }
+.composer-trigger-avatar { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; color: #fff; flex-shrink: 0; overflow: hidden; }
+.composer-trigger-avatar img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
 .composer-trigger-text { flex: 1; font-size: 14px; color: #aaa; }
 .composer-expanded { display: none; flex-direction: column; }
 .composer-expanded.open { display: flex; }
-.composer-title-input { border: none; border-bottom: 1px solid #f0f0f0; padding: 12px 16px; font-size: 15px; font-weight: 600; color: #1a1a1a; font-family: inherit; outline: none; background: none; width: 100%; }
-.composer-body-input { border: none; border-bottom: 1px solid #f0f0f0; padding: 12px 16px; font-size: 14px; color: #1a1a1a; font-family: inherit; outline: none; background: none; width: 100%; resize: none; min-height: 80px; }
-.composer-footer { display: flex; align-items: center; gap: 10px; padding: 10px 16px; background: #fafafa; flex-wrap: wrap; }
+.composer-input-title { border: none; border-bottom: 1px solid #f0f0f0; padding: 10px 16px; font-size: 15px; font-weight: 600; color: #1a1a1a; font-family: inherit; outline: none; background: none; width: 100%; }
+.composer-input-body { border: none; border-bottom: 1px solid #f0f0f0; padding: 10px 16px; font-size: 14px; color: #1a1a1a; font-family: inherit; outline: none; background: none; width: 100%; resize: none; min-height: 80px; }
+.composer-footer { display: flex; align-items: center; gap: 8px; padding: 10px 16px; background: #fafafa; flex-wrap: wrap; }
 .composer-actions { margin-left: auto; display: flex; gap: 8px; }
-.btn-cancel { border: 1px solid #e5e5e5; background: none; color: #666; border-radius: 8px; padding: 7px 16px; font-size: 13px; cursor: pointer; }
-.btn-publish { background: #1D9E75; color: #fff; border: none; border-radius: 8px; padding: 7px 16px; font-size: 13px; font-weight: 600; cursor: pointer; }
+.btn-attach { display: flex; align-items: center; gap: 4px; border: 1px solid #e5e5e5; background: none; border-radius: 8px; padding: 5px 10px; font-size: 12px; cursor: pointer; color: #666; }
+.btn-attach:hover { background: #f0f0f0; }
+.btn-cancel { border: 1px solid #e5e5e5; background: none; color: #666; border-radius: 8px; padding: 7px 14px; font-size: 13px; cursor: pointer; }
+.btn-publish { background: #1D9E75; color: #fff; border: none; border-radius: 8px; padding: 7px 14px; font-size: 13px; font-weight: 600; cursor: pointer; }
 .btn-publish:hover { background: #0F6E56; }
-.attach-btn { display: flex; align-items: center; gap: 5px; border: 1px solid #e5e5e5; background: none; border-radius: 8px; padding: 6px 12px; font-size: 12px; cursor: pointer; color: #666; }
-.attach-btn:hover { background: #f0f0f0; }
-.attach-preview { display: flex; align-items: center; gap: 6px; background: #f0f0f0; border-radius: 6px; padding: 4px 10px; font-size: 12px; color: #444; }
-.attach-remove { cursor: pointer; color: #999; font-size: 14px; margin-left: 4px; }
-.search-bar { position: relative; }
-.search-input { width: 100%; border: 1px solid #e5e5e5; border-radius: 10px; padding: 10px 14px 10px 38px; font-size: 14px; background: #fff; color: #1a1a1a; font-family: inherit; outline: none; }
-.search-input:focus { border-color: #1D9E75; }
-.search-icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); font-size: 16px; color: #aaa; pointer-events: none; }
-.post-card { background: #fff; border: 1px solid #e5e5e5; border-radius: 12px; padding: 18px; display: flex; flex-direction: column; gap: 12px; }
+.attach-preview-bar { padding: 6px 16px; background: #f5f5f5; border-top: 1px solid #f0f0f0; font-size: 12px; display: flex; align-items: center; gap: 8px; }
+.attach-remove { cursor: pointer; color: #999; margin-left: auto; }
+.link-input { flex: 1; min-width: 120px; border: 1px solid #e5e5e5; border-radius: 8px; padding: 5px 10px; font-size: 12px; background: #fff; color: #1a1a1a; font-family: inherit; outline: none; }
+
+/* SEARCH */
+.search-wrap { position: relative; }
+.search-wrap input { width: 100%; border: 1px solid #e5e5e5; border-radius: 10px; padding: 9px 14px 9px 36px; font-size: 13px; background: #fff; color: #1a1a1a; font-family: inherit; outline: none; }
+.search-wrap input:focus { border-color: #1D9E75; }
+.search-icon { position: absolute; left: 11px; top: 50%; transform: translateY(-50%); font-size: 15px; color: #aaa; pointer-events: none; }
+
+/* POST CARD */
+.post-card { background: #fff; border: 1px solid #e5e5e5; border-radius: 12px; padding: 16px; display: flex; flex-direction: column; gap: 10px; }
 .post-card.pinned { border-color: #1D9E75; border-width: 2px; }
 .post-header { display: flex; align-items: center; gap: 10px; }
-.post-avatar { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 600; color: #fff; flex-shrink: 0; }
+.post-av { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; color: #fff; flex-shrink: 0; overflow: hidden; }
+.post-av img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
 .post-meta { flex: 1; }
 .post-author { font-size: 14px; font-weight: 600; }
-.post-time { font-size: 12px; color: #999; }
+.post-time { font-size: 11px; color: #999; }
 .pin-badge { font-size: 11px; color: #1D9E75; font-weight: 600; }
+.edited-badge { font-size: 10px; color: #aaa; }
 .post-title { font-size: 15px; font-weight: 600; line-height: 1.4; }
-.post-body { font-size: 14px; color: #555; line-height: 1.6; }
-.post-image { max-width: 100%; border-radius: 8px; max-height: 400px; object-fit: cover; cursor: pointer; }
-.post-file { display: flex; align-items: center; gap: 8px; background: #f5f5f5; border-radius: 8px; padding: 10px 14px; font-size: 13px; color: #444; text-decoration: none; }
-.post-file:hover { background: #ebebeb; }
-.post-actions { display: flex; align-items: center; gap: 10px; padding-top: 8px; border-top: 1px solid #f0f0f0; flex-wrap: wrap; }
-.action-btn { display: flex; align-items: center; gap: 5px; font-size: 13px; color: #888; cursor: pointer; border: none; background: none; padding: 4px 8px; border-radius: 6px; }
-.action-btn:hover { background: #f5f5f5; color: #1a1a1a; }
-.pin-btn { font-size: 12px; color: #1D9E75; cursor: pointer; border: 1px solid #1D9E75; background: none; border-radius: 6px; padding: 3px 10px; }
-.pin-btn:hover { background: #e1f5ee; }
-.del-btn { font-size: 12px; color: #e53e3e; cursor: pointer; border: 1px solid #e53e3e; background: none; border-radius: 6px; padding: 3px 10px; }
-.del-btn:hover { background: #fff5f5; }
-.admin-actions { margin-left: auto; display: flex; gap: 6px; }
-.comments-section { border-top: 1px solid #f0f0f0; padding-top: 12px; display: none; flex-direction: column; gap: 10px; }
-.comments-section.open { display: flex; }
-.comment { display: flex; gap: 10px; align-items: flex-start; }
-.comment-avatar { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 600; color: #fff; flex-shrink: 0; margin-top: 2px; }
-.comment-bubble { background: #f9f9f9; border-radius: 8px; padding: 8px 12px; flex: 1; }
-.comment-author { font-size: 12px; font-weight: 600; margin-bottom: 2px; }
-.comment-text { font-size: 13px; color: #444; line-height: 1.5; }
-.comment-time { font-size: 11px; color: #aaa; margin-top: 3px; }
-.comment-composer { display: flex; gap: 8px; align-items: center; }
-.comment-input { flex: 1; border: 1px solid #e5e5e5; border-radius: 20px; padding: 7px 14px; font-size: 13px; background: #f9f9f9; color: #1a1a1a; font-family: inherit; outline: none; }
-.comment-input:focus { border-color: #1D9E75; }
-.comment-send { background: #1D9E75; color: #fff; border: none; border-radius: 20px; padding: 7px 16px; font-size: 13px; font-weight: 600; cursor: pointer; }
-.reactions { display: flex; gap: 6px; flex-wrap: wrap; }
-.reaction-btn { display: flex; align-items: center; gap: 4px; border: 1px solid #e5e5e5; border-radius: 20px; padding: 4px 10px; font-size: 13px; cursor: pointer; background: #fff; transition: all 0.15s; }
-.reaction-btn:hover { background: #f0f0f0; border-color: #ccc; }
-.reaction-btn.reacted { background: #e1f5ee; border-color: #1D9E75; color: #0F6E56; font-weight: 600; }
-.reaction-count { font-size: 12px; color: #666; }
-.add-reaction { border: 1px dashed #e5e5e5; border-radius: 20px; padding: 4px 10px; font-size: 14px; cursor: pointer; background: none; color: #aaa; }
-.add-reaction:hover { background: #f0f0f0; border-color: #ccc; color: #666; }
-.mention-dropdown { position: absolute; background: #fff; border: 1px solid #e5e5e5; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); z-index: 500; max-height: 180px; overflow-y: auto; min-width: 180px; }
-.mention-item { padding: 8px 14px; font-size: 13px; cursor: pointer; display: flex; align-items: center; gap: 8px; }
-.mention-item:hover { background: #f5f5f5; }
-.mention-avatar-sm { width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 9px; font-weight: 600; color: #fff; flex-shrink: 0; }
+.post-body { font-size: 14px; color: #555; line-height: 1.6; white-space: pre-wrap; word-break: break-word; }
+.post-img { max-width: 100%; border-radius: 8px; max-height: 400px; object-fit: cover; cursor: pointer; }
+.post-link { display: flex; align-items: center; gap: 8px; background: #f5f5f5; border-radius: 8px; padding: 9px 12px; font-size: 13px; color: #185FA5; text-decoration: none; }
+.post-link:hover { background: #ebebeb; }
 .mention-highlight { color: #1D9E75; font-weight: 600; }
-.section-feed { display: flex; flex-direction: column; gap: 16px; }
-.section-aula, .section-membri { display: none; flex-direction: column; gap: 12px; }
+
+/* REACTIONS */
+.reactions-row { display: flex; gap: 5px; flex-wrap: wrap; align-items: center; }
+.react-btn { display: flex; align-items: center; gap: 3px; border: 1px solid #e5e5e5; border-radius: 16px; padding: 3px 8px; font-size: 13px; cursor: pointer; background: #fff; }
+.react-btn:hover { background: #f5f5f5; }
+.react-btn.active { background: #e1f5ee; border-color: #1D9E75; }
+.react-count { font-size: 12px; color: #555; }
+.add-react { border: 1px dashed #ddd; border-radius: 16px; padding: 3px 8px; font-size: 13px; cursor: pointer; background: none; color: #aaa; }
+.add-react:hover { background: #f5f5f5; }
+
+/* POST ACTIONS */
+.post-actions { display: flex; align-items: center; gap: 8px; padding-top: 6px; border-top: 1px solid #f0f0f0; flex-wrap: wrap; }
+.act-btn { display: flex; align-items: center; gap: 4px; font-size: 12px; color: #888; cursor: pointer; border: none; background: none; padding: 4px 8px; border-radius: 6px; }
+.act-btn:hover { background: #f5f5f5; color: #1a1a1a; }
+.act-pin { font-size: 12px; color: #1D9E75; cursor: pointer; border: 1px solid #1D9E75; background: none; border-radius: 6px; padding: 3px 8px; }
+.act-pin:hover { background: #e1f5ee; }
+.act-del { font-size: 12px; color: #e53e3e; cursor: pointer; border: 1px solid #e53e3e; background: none; border-radius: 6px; padding: 3px 8px; }
+.act-del:hover { background: #fff5f5; }
+.admin-acts { margin-left: auto; display: flex; gap: 5px; flex-wrap: wrap; }
+
+/* COMMENTS */
+.comments-wrap { border-top: 1px solid #f0f0f0; padding-top: 10px; display: none; flex-direction: column; gap: 8px; }
+.comments-wrap.open { display: flex; }
+.comment { display: flex; gap: 8px; align-items: flex-start; }
+.comment-av { width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 9px; font-weight: 600; color: #fff; flex-shrink: 0; margin-top: 2px; overflow: hidden; }
+.comment-av img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
+.comment-bubble { background: #f5f5f5; border-radius: 8px; padding: 7px 10px; flex: 1; }
+.comment-author { font-size: 12px; font-weight: 600; margin-bottom: 1px; }
+.comment-text { font-size: 13px; color: #444; line-height: 1.5; white-space: pre-wrap; word-break: break-word; }
+.comment-img { max-width: 100%; border-radius: 6px; margin-top: 5px; max-height: 200px; object-fit: cover; }
+.comment-footer { display: flex; align-items: center; gap: 8px; margin-top: 4px; }
+.comment-time { font-size: 11px; color: #aaa; }
+.comment-edit-btn { font-size: 11px; color: #1D9E75; cursor: pointer; border: none; background: none; padding: 0; }
+.comment-del-btn { font-size: 11px; color: #e53e3e; cursor: pointer; border: none; background: none; padding: 0; }
+
+/* COMMENT REACTIONS */
+.comment-reactions { display: flex; gap: 4px; flex-wrap: wrap; margin-top: 3px; }
+.c-react-btn { display: flex; align-items: center; gap: 2px; border: 1px solid #e5e5e5; border-radius: 12px; padding: 2px 6px; font-size: 12px; cursor: pointer; background: #fff; }
+.c-react-btn.active { background: #e1f5ee; border-color: #1D9E75; }
+.c-add-react { border: 1px dashed #ddd; border-radius: 12px; padding: 2px 6px; font-size: 12px; cursor: pointer; background: none; color: #aaa; }
+
+/* COMMENT COMPOSER */
+.comment-composer { display: flex; gap: 8px; align-items: flex-start; margin-top: 4px; position: relative; }
+.comment-textarea { flex: 1; border: 1px solid #e5e5e5; border-radius: 10px; padding: 7px 12px; font-size: 13px; background: #f9f9f9; color: #1a1a1a; font-family: inherit; outline: none; resize: none; min-height: 36px; max-height: 120px; overflow-y: auto; }
+.comment-textarea:focus { border-color: #1D9E75; }
+.comment-composer-actions { display: flex; flex-direction: column; gap: 4px; }
+.btn-send { background: #1D9E75; color: #fff; border: none; border-radius: 8px; padding: 6px 12px; font-size: 12px; font-weight: 600; cursor: pointer; white-space: nowrap; }
+.btn-attach-comment { border: 1px solid #e5e5e5; background: none; border-radius: 8px; padding: 5px 8px; font-size: 12px; cursor: pointer; color: #666; }
+
+/* MENTION DROPDOWN */
+.mention-dropdown { position: absolute; background: #fff; border: 1px solid #e5e5e5; border-radius: 8px; box-shadow: 0 4px 16px rgba(0,0,0,0.12); z-index: 500; max-height: 180px; overflow-y: auto; min-width: 180px; bottom: 100%; left: 0; margin-bottom: 4px; }
+.mention-item { padding: 7px 12px; font-size: 13px; cursor: pointer; display: flex; align-items: center; gap: 8px; }
+.mention-item:hover { background: #f5f5f5; }
+.mention-av-sm { width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 8px; font-weight: 600; color: #fff; flex-shrink: 0; }
+
+/* SECTIONS */
+.section-feed { display: flex; flex-direction: column; gap: 14px; }
+.section-aula, .section-membri, .section-notifiche, .section-messaggi { display: none; flex-direction: column; gap: 12px; }
 .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px; }
 .section-title { font-size: 16px; font-weight: 600; }
-.add-btn { display: flex; align-items: center; gap: 5px; background: none; border: 1px solid #e5e5e5; border-radius: 8px; padding: 6px 14px; font-size: 13px; cursor: pointer; color: #666; }
-.add-btn:hover { background: #f5f5f5; }
-.file-card { background: #fff; border: 1px solid #e5e5e5; border-radius: 12px; padding: 16px; display: flex; align-items: center; gap: 14px; margin-bottom: 12px; }
-.file-icon { width: 40px; height: 40px; background: #e8f4ff; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
+.btn-add { background: none; border: 1px solid #e5e5e5; border-radius: 8px; padding: 5px 12px; font-size: 13px; cursor: pointer; color: #666; }
+.btn-add:hover { background: #f5f5f5; }
+
+/* FILE CARD */
+.file-card { background: #fff; border: 1px solid #e5e5e5; border-radius: 12px; padding: 14px; display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+.file-icon { width: 38px; height: 38px; background: #e8f4ff; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
 .file-info { flex: 1; }
-.file-name { font-size: 14px; font-weight: 600; margin-bottom: 3px; }
-.file-desc { font-size: 13px; color: #888; }
-.file-actions { display: flex; gap: 8px; align-items: center; }
-.file-dl { background: none; border: 1px solid #e5e5e5; border-radius: 8px; padding: 6px 14px; font-size: 12px; cursor: pointer; color: #666; text-decoration: none; }
-.file-dl:hover { background: #f5f5f5; }
-.file-del { background: none; border: 1px solid #e53e3e; border-radius: 8px; padding: 6px 14px; font-size: 12px; cursor: pointer; color: #e53e3e; }
-.file-del:hover { background: #fff5f5; }
-.upload-progress { font-size: 12px; color: #1D9E75; padding: 4px 0; }
-.member-row { background: #fff; border: 1px solid #e5e5e5; border-radius: 12px; padding: 14px 16px; display: flex; align-items: center; gap: 12px; }
+.file-name { font-size: 14px; font-weight: 600; margin-bottom: 2px; }
+.file-desc { font-size: 12px; color: #888; }
+.file-acts { display: flex; gap: 6px; }
+.btn-open { background: none; border: 1px solid #e5e5e5; border-radius: 8px; padding: 5px 12px; font-size: 12px; cursor: pointer; color: #666; text-decoration: none; }
+.btn-open:hover { background: #f5f5f5; }
+.btn-del-file { background: none; border: 1px solid #e53e3e; border-radius: 8px; padding: 5px 10px; font-size: 12px; cursor: pointer; color: #e53e3e; }
+.btn-del-file:hover { background: #fff5f5; }
+
+/* MEMBER ROW */
+.member-row { background: #fff; border: 1px solid #e5e5e5; border-radius: 12px; padding: 12px 14px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.member-av { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; color: #fff; flex-shrink: 0; overflow: hidden; }
+.member-av img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
 .member-name { font-size: 14px; font-weight: 600; flex: 1; }
-.member-role { font-size: 12px; padding: 2px 10px; border-radius: 20px; }
+.member-role { font-size: 11px; padding: 2px 8px; border-radius: 20px; }
 .role-admin { background: #e1f5ee; color: #0F6E56; }
 .role-member { background: #f5f5f5; color: #666; }
-.member-joined { font-size: 12px; color: #aaa; }
-.sidebar { display: flex; flex-direction: column; gap: 16px; }
-.sidebar-card { background: #fff; border: 1px solid #e5e5e5; border-radius: 12px; padding: 16px; }
-.sidebar-name { font-size: 15px; font-weight: 600; margin-bottom: 4px; }
-.sidebar-desc { font-size: 13px; color: #666; line-height: 1.5; margin-bottom: 14px; }
-.sidebar-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 14px; }
+.member-joined { font-size: 11px; color: #aaa; }
+.member-acts { display: flex; gap: 5px; margin-left: auto; }
+
+/* NOTIFICATION */
+.notif-item { background: #fff; border: 1px solid #e5e5e5; border-radius: 10px; padding: 12px 14px; display: flex; gap: 10px; align-items: flex-start; cursor: pointer; }
+.notif-item:hover { background: #f9f9f9; }
+.notif-item.unread { border-left: 3px solid #1D9E75; }
+.notif-dot { width: 8px; height: 8px; border-radius: 50%; background: #1D9E75; flex-shrink: 0; margin-top: 5px; }
+.notif-text { font-size: 13px; color: #333; flex: 1; line-height: 1.4; }
+.notif-time { font-size: 11px; color: #aaa; white-space: nowrap; }
+
+/* MESSAGES */
+.msg-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px; }
+.msg-conv { background: #fff; border: 1px solid #e5e5e5; border-radius: 10px; padding: 12px 14px; display: flex; align-items: center; gap: 10px; cursor: pointer; }
+.msg-conv:hover { background: #f9f9f9; }
+.msg-conv.active { border-color: #1D9E75; background: #f0faf6; }
+.msg-conv-name { font-size: 14px; font-weight: 600; flex: 1; }
+.msg-conv-last { font-size: 12px; color: #888; flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.msg-conv-time { font-size: 11px; color: #aaa; }
+.msg-unread { background: #1D9E75; color: #fff; border-radius: 50%; width: 18px; height: 18px; font-size: 10px; display: flex; align-items: center; justify-content: center; font-weight: 700; }
+.chat-window { background: #fff; border: 1px solid #e5e5e5; border-radius: 12px; display: flex; flex-direction: column; height: 400px; }
+.chat-header { padding: 12px 16px; border-bottom: 1px solid #f0f0f0; font-size: 14px; font-weight: 600; display: flex; align-items: center; gap: 8px; }
+.chat-back { border: none; background: none; cursor: pointer; font-size: 16px; color: #666; padding: 0 4px; }
+.chat-messages { flex: 1; overflow-y: auto; padding: 12px; display: flex; flex-direction: column; gap: 8px; }
+.chat-msg { max-width: 75%; }
+.chat-msg.mine { align-self: flex-end; }
+.chat-msg.theirs { align-self: flex-start; }
+.chat-bubble { border-radius: 12px; padding: 8px 12px; font-size: 13px; line-height: 1.5; }
+.chat-msg.mine .chat-bubble { background: #1D9E75; color: #fff; border-bottom-right-radius: 4px; }
+.chat-msg.theirs .chat-bubble { background: #f0f0f0; color: #1a1a1a; border-bottom-left-radius: 4px; }
+.chat-msg-img { max-width: 200px; border-radius: 8px; margin-top: 4px; }
+.chat-time { font-size: 10px; color: #aaa; margin-top: 2px; text-align: right; }
+.chat-msg.theirs .chat-time { text-align: left; }
+.chat-composer { padding: 10px 12px; border-top: 1px solid #f0f0f0; display: flex; gap: 8px; align-items: flex-end; }
+.chat-input { flex: 1; border: 1px solid #e5e5e5; border-radius: 20px; padding: 8px 14px; font-size: 13px; background: #f9f9f9; font-family: inherit; outline: none; resize: none; max-height: 100px; overflow-y: auto; }
+.chat-input:focus { border-color: #1D9E75; }
+.chat-send { background: #1D9E75; color: #fff; border: none; border-radius: 50%; width: 34px; height: 34px; font-size: 16px; cursor: pointer; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+.chat-attach { background: none; border: 1px solid #e5e5e5; border-radius: 50%; width: 34px; height: 34px; font-size: 14px; cursor: pointer; flex-shrink: 0; display: flex; align-items: center; justify-content: center; color: #666; }
+
+/* SIDEBAR */
+.sidebar { display: flex; flex-direction: column; gap: 14px; }
+.sidebar-card { background: #fff; border: 1px solid #e5e5e5; border-radius: 12px; padding: 14px; }
+.sidebar-name { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
+.sidebar-desc { font-size: 12px; color: #666; line-height: 1.5; margin-bottom: 12px; }
+.sidebar-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px; }
 .stat { text-align: center; }
 .stat-num { font-size: 16px; font-weight: 700; }
-.stat-label { font-size: 11px; color: #aaa; }
-.invite-btn { width: 100%; background: #1D9E75; color: #fff; border: none; border-radius: 8px; padding: 10px; font-size: 13px; font-weight: 600; cursor: pointer; }
-.invite-btn:hover { background: #0F6E56; }
-.sidebar-section-title { font-size: 12px; font-weight: 600; color: #aaa; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 10px; }
-.online-item { display: flex; align-items: center; gap: 8px; font-size: 13px; margin-bottom: 8px; }
-.online-dot { width: 7px; height: 7px; border-radius: 50%; background: #1D9E75; flex-shrink: 0; }
-.modal-bg { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 200; align-items: center; justify-content: center; }
+.stat-label { font-size: 10px; color: #aaa; }
+.btn-invite { width: 100%; background: #1D9E75; color: #fff; border: none; border-radius: 8px; padding: 9px; font-size: 13px; font-weight: 600; cursor: pointer; }
+.btn-invite:hover { background: #0F6E56; }
+
+/* PROFILE PHOTO UPLOAD */
+.profile-photo-wrap { position: relative; cursor: pointer; }
+.profile-photo-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.4); border-radius: 50%; display: none; align-items: center; justify-content: center; font-size: 10px; color: #fff; }
+.profile-photo-wrap:hover .profile-photo-overlay { display: flex; }
+
+/* MODALS */
+.modal-bg { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.45); z-index: 200; align-items: center; justify-content: center; }
 .modal-bg.open { display: flex; }
-.modal { background: #fff; border-radius: 12px; padding: 24px; width: 480px; max-width: 94vw; }
-.modal-title { font-size: 16px; font-weight: 600; margin-bottom: 16px; }
-.modal-input { width: 100%; border: 1px solid #e5e5e5; border-radius: 8px; padding: 10px 14px; font-size: 14px; background: #f9f9f9; color: #1a1a1a; font-family: inherit; margin-bottom: 10px; outline: none; }
-.modal-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 6px; }
-.modal-cancel { border: 1px solid #e5e5e5; background: none; color: #666; border-radius: 8px; padding: 8px 18px; font-size: 13px; cursor: pointer; }
-.modal-submit { background: #1D9E75; color: #fff; border: none; border-radius: 8px; padding: 8px 18px; font-size: 13px; font-weight: 600; cursor: pointer; }
-.upload-area { border: 2px dashed #e5e5e5; border-radius: 8px; padding: 20px; text-align: center; cursor: pointer; margin-bottom: 10px; font-size: 13px; color: #aaa; }
-.upload-area:hover { border-color: #1D9E75; color: #1D9E75; }
-.invite-link-box { display: flex; gap: 8px; align-items: center; background: #f9f9f9; border: 1px solid #e5e5e5; border-radius: 8px; padding: 10px 14px; margin-bottom: 16px; }
-.invite-link-url { font-size: 13px; color: #666; flex: 1; word-break: break-all; }
-.copy-btn { background: none; border: 1px solid #e5e5e5; border-radius: 8px; padding: 5px 12px; font-size: 12px; cursor: pointer; color: #666; white-space: nowrap; }
-.copy-btn:hover { background: #f5f5f5; }
-.toast { position: fixed; bottom: 24px; right: 24px; background: #1D9E75; color: #fff; padding: 10px 20px; border-radius: 8px; font-size: 13px; font-weight: 600; z-index: 300; opacity: 0; transition: opacity 0.3s; pointer-events: none; }
+.modal { background: #fff; border-radius: 14px; padding: 22px; width: 460px; max-width: 94vw; max-height: 90vh; overflow-y: auto; }
+.modal-title { font-size: 16px; font-weight: 700; margin-bottom: 14px; }
+.modal-input { width: 100%; border: 1px solid #e5e5e5; border-radius: 8px; padding: 9px 12px; font-size: 14px; background: #f9f9f9; color: #1a1a1a; font-family: inherit; margin-bottom: 8px; outline: none; }
+.modal-textarea { width: 100%; border: 1px solid #e5e5e5; border-radius: 8px; padding: 9px 12px; font-size: 14px; background: #f9f9f9; color: #1a1a1a; font-family: inherit; margin-bottom: 8px; outline: none; resize: vertical; min-height: 90px; }
+.modal-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 10px; }
+.modal-cancel { border: 1px solid #e5e5e5; background: none; color: #666; border-radius: 8px; padding: 7px 16px; font-size: 13px; cursor: pointer; }
+.modal-submit { background: #1D9E75; color: #fff; border: none; border-radius: 8px; padding: 7px 16px; font-size: 13px; font-weight: 600; cursor: pointer; }
+.invite-link-box { display: flex; gap: 8px; align-items: center; background: #f5f5f5; border-radius: 8px; padding: 9px 12px; margin-bottom: 12px; }
+.invite-link-url { font-size: 12px; color: #555; flex: 1; word-break: break-all; }
+.btn-copy { background: none; border: 1px solid #e5e5e5; border-radius: 8px; padding: 4px 10px; font-size: 12px; cursor: pointer; color: #666; }
+.react-picker { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; padding: 8px 0; }
+.react-pick-btn { font-size: 26px; border: none; background: none; cursor: pointer; padding: 6px; border-radius: 8px; }
+.react-pick-btn:hover { background: #f0f0f0; }
+
+/* TOAST */
+.toast { position: fixed; bottom: 20px; right: 20px; background: #1a1a1a; color: #fff; padding: 9px 18px; border-radius: 8px; font-size: 13px; font-weight: 500; z-index: 999; opacity: 0; transition: opacity 0.25s; pointer-events: none; }
 .toast.show { opacity: 1; }
-.empty { text-align: center; padding: 60px 20px; color: #aaa; font-size: 14px; line-height: 1.6; }
-.empty-icon { font-size: 36px; margin-bottom: 12px; }
+
+/* EMPTY STATE */
+.empty-state { text-align: center; padding: 50px 20px; color: #aaa; font-size: 14px; line-height: 1.7; }
+.empty-icon { font-size: 32px; margin-bottom: 10px; }
+
+/* LOGIN */
 .login-screen { position: fixed; inset: 0; background: #f5f5f0; display: flex; align-items: center; justify-content: center; z-index: 500; }
-.login-box { background: #fff; border: 1px solid #e5e5e5; border-radius: 16px; padding: 32px; width: 360px; max-width: 94vw; text-align: center; }
-.login-logo { width: 56px; height: 56px; border-radius: 50%; background: #1D9E75; display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: 700; color: #fff; margin: 0 auto 16px; }
-.login-title { font-size: 20px; font-weight: 700; margin-bottom: 6px; }
-.login-sub { font-size: 13px; color: #888; margin-bottom: 24px; }
-.login-input { width: 100%; border: 1px solid #e5e5e5; border-radius: 8px; padding: 10px 14px; font-size: 14px; background: #f9f9f9; color: #1a1a1a; font-family: inherit; margin-bottom: 12px; outline: none; text-align: left; }
-.login-btn { width: 100%; background: #1D9E75; color: #fff; border: none; border-radius: 8px; padding: 12px; font-size: 14px; font-weight: 600; cursor: pointer; }
+.login-box { background: #fff; border: 1px solid #e5e5e5; border-radius: 16px; padding: 30px 24px; width: 340px; max-width: 92vw; text-align: center; }
+.login-logo { width: 54px; height: 54px; border-radius: 50%; background: #1D9E75; display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 700; color: #fff; margin: 0 auto 12px; }
+.login-title { font-size: 19px; font-weight: 700; margin-bottom: 5px; }
+.login-sub { font-size: 13px; color: #888; margin-bottom: 20px; }
+.login-input { width: 100%; border: 1px solid #e5e5e5; border-radius: 8px; padding: 10px 12px; font-size: 14px; background: #f9f9f9; color: #1a1a1a; font-family: inherit; margin-bottom: 10px; outline: none; text-align: left; }
+.login-btn { width: 100%; background: #1D9E75; color: #fff; border: none; border-radius: 8px; padding: 11px; font-size: 14px; font-weight: 600; cursor: pointer; }
 .login-btn:hover { background: #0F6E56; }
-.login-note { font-size: 12px; color: #aaa; margin-top: 16px; }
-@media (max-width: 700px) {
-  .layout { grid-template-columns: 1fr; padding: 12px 10px; gap: 12px; }
-  .sidebar { display: flex; flex-direction: column; gap: 12px; }
-  .sidebar-card { padding: 12px; }
-  .nav { padding: 0 12px; gap: 8px; }
+.login-note { font-size: 11px; color: #bbb; margin-top: 12px; }
+
+/* MOBILE */
+@media (max-width: 720px) {
+  .layout { grid-template-columns: 1fr; padding: 10px; gap: 10px; }
+  .sidebar { order: -1; }
+  .sidebar-card { padding: 10px; }
+  .nav { padding: 0 10px; gap: 6px; }
   .nav-brand { font-size: 13px; }
-  .nav-tab { padding: 5px 10px; font-size: 12px; }
-  .post-card { padding: 14px; }
+  .nav-tab { padding: 5px 8px; font-size: 12px; }
+  .nav-exit { display: none; }
+  .post-card { padding: 12px; }
   .post-title { font-size: 14px; }
   .post-body { font-size: 13px; }
-  .composer-trigger { padding: 12px; }
-  .composer-title-input, .composer-body-input { padding: 10px 12px; }
-  .composer-footer { gap: 6px; padding: 8px 12px; }
-  .btn-publish, .btn-cancel { padding: 8px 14px; font-size: 13px; }
-  .attach-btn { padding: 6px 10px; font-size: 12px; }
-  .action-btn { font-size: 12px; padding: 6px 8px; }
-  .pin-btn, .del-btn { font-size: 11px; padding: 5px 8px; }
-  .comment-input { font-size: 13px; padding: 8px 12px; }
-  .comment-send { padding: 8px 12px; font-size: 12px; }
-  .invite-btn { padding: 12px; font-size: 14px; }
+  .composer-footer { padding: 8px 10px; }
+  .admin-acts { width: 100%; justify-content: flex-end; }
+  .chat-window { height: 350px; }
+  .member-acts { width: 100%; justify-content: flex-end; }
   .file-card { flex-wrap: wrap; }
-  .file-actions { width: 100%; justify-content: flex-end; margin-top: 6px; }
-  .search-input { font-size: 14px; }
-  .member-row { flex-wrap: wrap; gap: 8px; }
-  .admin-actions { flex-wrap: wrap; }
-  .post-actions { flex-wrap: wrap; gap: 8px; }
-  .login-box { padding: 24px 20px; }
-  .nav-right button { display: none; }
+  .file-acts { width: 100%; justify-content: flex-end; margin-top: 6px; }
 }
 </style>
 </head>
 <body>
 
+<!-- LOGIN -->
 <div class="login-screen" id="login-screen">
   <div class="login-box">
     <div class="login-logo">CB</div>
@@ -190,37 +281,48 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
   </div>
 </div>
 
+<!-- NAV -->
 <div class="nav">
-  <div class="nav-avatar">CB</div>
+  <div class="nav-logo">CB</div>
   <div class="nav-brand">La Cricca del Brunetti</div>
   <div class="nav-tabs">
     <button class="nav-tab active" onclick="switchTab('feed',this)">Comunità</button>
     <button class="nav-tab" onclick="switchTab('aula',this)">Aula</button>
     <button class="nav-tab" onclick="switchTab('membri',this)">Membri</button>
+    <button class="nav-tab" id="tab-notifiche" onclick="switchTab('notifiche',this)">🔔 <span id="notif-badge" class="nav-badge" style="display:none">0</span></button>
+    <button class="nav-tab" id="tab-messaggi" onclick="switchTab('messaggi',this)">💬 <span id="msg-badge" class="nav-badge" style="display:none">0</span></button>
   </div>
-  <div class="nav-right" style="display:flex;align-items:center;gap:10px;">
-    <button onclick="doLogout()" style="border:1px solid #e5e5e5;background:none;border-radius:8px;padding:5px 12px;font-size:12px;color:#666;cursor:pointer;">Esci</button>
-    <div class="nav-user" id="nav-user-initials">?</div>
+  <div class="nav-right">
+    <button class="nav-exit" onclick="doLogout()">Esci</button>
+    <div class="nav-user profile-photo-wrap" id="nav-user-av" onclick="openProfileModal()">
+      <span id="nav-user-initials">?</span>
+      <div class="profile-photo-overlay">📷</div>
+    </div>
   </div>
 </div>
 
+<!-- LAYOUT -->
 <div class="layout">
   <div class="main">
+
+    <!-- FEED -->
     <div class="section-feed" id="section-feed">
       <div class="composer-box">
         <div class="composer-trigger" id="composer-trigger" onclick="openComposer()">
-          <div class="nav-user" id="composer-avatar">?</div>
+          <div class="composer-trigger-avatar" id="composer-av"><span id="composer-initials">?</span></div>
           <div class="composer-trigger-text">Scrivi qualcosa alla community...</div>
         </div>
         <div class="composer-expanded" id="composer-expanded">
-          <input class="composer-title-input" id="post-title-input" placeholder="Titolo del post" />
-          <textarea class="composer-body-input" id="post-body-input" placeholder="Scrivi il tuo messaggio..." rows="4"></textarea>
-          <div id="post-attach-preview"></div>
+          <input class="composer-input-title" id="post-title" placeholder="Titolo del post" />
+          <textarea class="composer-input-body" id="post-body" placeholder="Scrivi il tuo messaggio..." rows="4"></textarea>
+          <div id="post-attach-bar" style="display:none" class="attach-preview-bar">
+            <span id="post-attach-name"></span>
+            <span class="attach-remove" onclick="removePostAttach()">✕ rimuovi</span>
+          </div>
           <div class="composer-footer">
-            <button class="attach-btn" onclick="document.getElementById('post-file-input').click()">📎 Allega</button>
-            <input type="file" id="post-file-input" accept="image/*,.pdf" style="display:none" onchange="handlePostAttach(this)" />
-            <input id="post-link-input" placeholder="🔗 Incolla un link (opzionale)" style="flex:1;border:1px solid #e5e5e5;border-radius:8px;padding:6px 12px;font-size:12px;background:#fff;color:#1a1a1a;font-family:inherit;outline:none;" />
-            <div id="post-upload-progress"></div>
+            <button class="btn-attach" onclick="document.getElementById('post-file-inp').click()">📎 Foto/Immagine</button>
+            <input type="file" id="post-file-inp" accept="image/*" style="display:none" onchange="handlePostFile(this)" />
+            <input class="link-input" id="post-link" placeholder="🔗 Link (opzionale)" />
             <div class="composer-actions">
               <button class="btn-cancel" onclick="closeComposer()">Annulla</button>
               <button class="btn-publish" onclick="submitPost()">Pubblica</button>
@@ -228,110 +330,169 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
           </div>
         </div>
       </div>
-      <div class="search-bar">
+      <div class="search-wrap">
         <span class="search-icon">🔍</span>
-        <input class="search-input" id="search-input" placeholder="Cerca nelle discussioni..." oninput="filterBySearch(this.value)" />
+        <input id="search-inp" placeholder="Cerca nelle discussioni..." oninput="onSearch(this.value)" />
       </div>
-      <div id="posts-container"><div class="empty"><div class="empty-icon">💬</div>Nessun post ancora.<br>Sii il primo a scrivere qualcosa!</div></div>
+      <div id="posts-list"></div>
     </div>
 
+    <!-- AULA -->
     <div class="section-aula" id="section-aula">
       <div class="section-header">
         <span class="section-title">Materiali del corso</span>
-        <button class="add-btn" id="btn-add-file" style="display:none" onclick="openFileModal()">+ Aggiungi file</button>
+        <button class="btn-add" id="btn-add-file" style="display:none" onclick="openModal('file-modal')">+ Aggiungi</button>
       </div>
-      <div id="files-container"><div class="empty"><div class="empty-icon">📚</div>Nessun materiale ancora.</div></div>
+      <div id="files-list"></div>
     </div>
 
+    <!-- MEMBRI -->
     <div class="section-membri" id="section-membri">
       <div class="section-header">
-        <span class="section-title">Membri della community</span>
-        <span style="font-size:13px;color:#aaa;" id="member-count">0 membri</span>
+        <span class="section-title">Membri</span>
+        <span id="members-count" style="font-size:12px;color:#aaa;"></span>
       </div>
-      <div id="members-container"></div>
+      <div id="members-list"></div>
     </div>
+
+    <!-- NOTIFICHE -->
+    <div class="section-notifiche" id="section-notifiche">
+      <div class="section-header">
+        <span class="section-title">🔔 Notifiche</span>
+        <button class="btn-add" onclick="markAllRead()" id="mark-read-btn" style="display:none">Segna tutte lette</button>
+      </div>
+      <div id="notif-list"></div>
+    </div>
+
+    <!-- MESSAGGI -->
+    <div class="section-messaggi" id="section-messaggi">
+      <div class="section-header">
+        <span class="section-title">💬 Messaggi privati</span>
+      </div>
+      <div id="msg-conversations"></div>
+      <div id="chat-window" style="display:none"></div>
+    </div>
+
   </div>
 
+  <!-- SIDEBAR -->
   <div class="sidebar">
     <div class="sidebar-card">
-      <div class="nav-avatar" style="width:48px;height:48px;font-size:16px;margin-bottom:12px;">CB</div>
+      <div class="nav-logo" style="width:44px;height:44px;font-size:15px;margin-bottom:10px;">CB</div>
       <div class="sidebar-name">La Cricca del Brunetti</div>
-      <div class="sidebar-desc">Il gruppo riservato agli studenti della masterclass. Confrontati, chiedi aiuto, condividi i tuoi progressi.</div>
+      <div class="sidebar-desc">Il gruppo riservato agli studenti della masterclass.</div>
       <div class="sidebar-stats">
         <div class="stat"><div class="stat-num" id="stat-members">0</div><div class="stat-label">Membri</div></div>
         <div class="stat"><div class="stat-num" id="stat-posts">0</div><div class="stat-label">Post</div></div>
       </div>
-      <div id="invite-btn-container"></div>
+      <div id="invite-btn-wrap"></div>
     </div>
-
   </div>
 </div>
 
-<!-- MODAL file aula -->
+<!-- MODAL: reazioni post -->
+<div class="modal-bg" id="react-modal">
+  <div class="modal" style="width:300px">
+    <div class="modal-title">Aggiungi reazione</div>
+    <input type="hidden" id="react-post-id" />
+    <div class="react-picker">
+      <button class="react-pick-btn" onclick="doReact(document.getElementById('react-post-id').value,'👍');closeModal('react-modal')">👍</button>
+      <button class="react-pick-btn" onclick="doReact(document.getElementById('react-post-id').value,'❤️');closeModal('react-modal')">❤️</button>
+      <button class="react-pick-btn" onclick="doReact(document.getElementById('react-post-id').value,'😂');closeModal('react-modal')">😂</button>
+      <button class="react-pick-btn" onclick="doReact(document.getElementById('react-post-id').value,'🔥');closeModal('react-modal')">🔥</button>
+      <button class="react-pick-btn" onclick="doReact(document.getElementById('react-post-id').value,'👏');closeModal('react-modal')">👏</button>
+      <button class="react-pick-btn" onclick="doReact(document.getElementById('react-post-id').value,'😮');closeModal('react-modal')">😮</button>
+      <button class="react-pick-btn" onclick="doReact(document.getElementById('react-post-id').value,'😢');closeModal('react-modal')">😢</button>
+      <button class="react-pick-btn" onclick="doReact(document.getElementById('react-post-id').value,'💪');closeModal('react-modal')">💪</button>
+    </div>
+    <div class="modal-actions"><button class="modal-cancel" onclick="closeModal('react-modal')">Chiudi</button></div>
+  </div>
+</div>
+
+<!-- MODAL: reazioni commento -->
+<div class="modal-bg" id="creact-modal">
+  <div class="modal" style="width:300px">
+    <div class="modal-title">Reazione al commento</div>
+    <input type="hidden" id="creact-post-id" />
+    <input type="hidden" id="creact-comment-id" />
+    <div class="react-picker">
+      <button class="react-pick-btn" onclick="doCommentReact(document.getElementById('creact-post-id').value,document.getElementById('creact-comment-id').value,'👍');closeModal('creact-modal')">👍</button>
+      <button class="react-pick-btn" onclick="doCommentReact(document.getElementById('creact-post-id').value,document.getElementById('creact-comment-id').value,'❤️');closeModal('creact-modal')">❤️</button>
+      <button class="react-pick-btn" onclick="doCommentReact(document.getElementById('creact-post-id').value,document.getElementById('creact-comment-id').value,'😂');closeModal('creact-modal')">😂</button>
+      <button class="react-pick-btn" onclick="doCommentReact(document.getElementById('creact-post-id').value,document.getElementById('creact-comment-id').value,'🔥');closeModal('creact-modal')">🔥</button>
+      <button class="react-pick-btn" onclick="doCommentReact(document.getElementById('creact-post-id').value,document.getElementById('creact-comment-id').value,'👏');closeModal('creact-modal')">👏</button>
+    </div>
+    <div class="modal-actions"><button class="modal-cancel" onclick="closeModal('creact-modal')">Chiudi</button></div>
+  </div>
+</div>
+
+<!-- MODAL: modifica post -->
+<div class="modal-bg" id="edit-post-modal">
+  <div class="modal">
+    <div class="modal-title">Modifica post</div>
+    <input class="modal-input" id="edit-post-title" placeholder="Titolo" />
+    <textarea class="modal-textarea" id="edit-post-body" placeholder="Testo"></textarea>
+    <input class="modal-input" id="edit-post-link" placeholder="🔗 Link (opzionale)" />
+    <input type="hidden" id="edit-post-id" />
+    <div class="modal-actions">
+      <button class="modal-cancel" onclick="closeModal('edit-post-modal')">Annulla</button>
+      <button class="modal-submit" onclick="savePost()">Salva</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: modifica commento -->
+<div class="modal-bg" id="edit-comment-modal">
+  <div class="modal">
+    <div class="modal-title">Modifica commento</div>
+    <textarea class="modal-textarea" id="edit-comment-text" placeholder="Testo"></textarea>
+    <input type="hidden" id="edit-comment-post-id" />
+    <input type="hidden" id="edit-comment-id" />
+    <div class="modal-actions">
+      <button class="modal-cancel" onclick="closeModal('edit-comment-modal')">Annulla</button>
+      <button class="modal-submit" onclick="saveComment()">Salva</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: aggiungi file aula -->
 <div class="modal-bg" id="file-modal">
   <div class="modal">
     <div class="modal-title">Aggiungi materiale</div>
-    <input class="modal-input" id="file-name-input" placeholder="Nome del materiale" />
-    <input class="modal-input" id="file-desc-input" placeholder="Descrizione breve (opzionale)" />
-    <div class="upload-area" onclick="document.getElementById('aula-file-input').click()">
-      📂 Clicca per caricare un file (PDF, DOC, DOCX)
-    </div>
-    <input type="file" id="aula-file-input" accept=".pdf,.doc,.docx" style="display:none" onchange="handleAulaFile(this)" />
-    <div id="aula-upload-progress"></div>
+    <input class="modal-input" id="file-name" placeholder="Nome del materiale" />
+    <input class="modal-input" id="file-desc" placeholder="Descrizione breve (opzionale)" />
+    <input class="modal-input" id="file-url" placeholder="🔗 Link Google Drive o altro" />
+    <p style="font-size:11px;color:#aaa;margin-top:-4px;margin-bottom:8px">Su Drive: tasto destro → Ottieni link → Chiunque abbia il link → Copia</p>
     <div class="modal-actions">
       <button class="modal-cancel" onclick="closeModal('file-modal')">Annulla</button>
-      <button class="modal-submit" id="aula-submit-btn" onclick="submitFile()">Aggiungi</button>
+      <button class="modal-submit" onclick="submitFile()">Aggiungi</button>
     </div>
   </div>
 </div>
 
-<!-- MODAL invito -->
+<!-- MODAL: link invito -->
 <div class="modal-bg" id="invite-modal">
   <div class="modal">
     <div class="modal-title">Link di invito</div>
-    <p style="font-size:13px;color:#666;margin-bottom:14px;">Condividi questo link. Solo chi ha il link può accedere.</p>
+    <p style="font-size:13px;color:#666;margin-bottom:10px">Condividi questo link. Solo chi ce l'ha può accedere.</p>
     <div class="invite-link-box">
       <span class="invite-link-url" id="invite-url"></span>
-      <button class="copy-btn" onclick="copyInvite()">Copia</button>
+      <button class="btn-copy" onclick="copyInvite()">Copia</button>
     </div>
-    <div class="modal-actions">
-      <button class="modal-submit" onclick="closeModal('invite-modal')">Chiudi</button>
-    </div>
+    <div class="modal-actions"><button class="modal-submit" onclick="closeModal('invite-modal')">Chiudi</button></div>
   </div>
 </div>
 
-
-<!-- MODAL reazioni -->
-<div class="modal-bg" id="reaction-modal">
-  <div class="modal" style="width:300px">
-    <div class="modal-title">Aggiungi reazione</div>
-    <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center;padding:10px 0">
-      <input type="hidden" id="reaction-post-id">
-      <button onclick="toggleReaction(document.getElementById('reaction-post-id').value,'👍');closeModal('reaction-modal')" style="font-size:28px;border:none;background:none;cursor:pointer;padding:8px;border-radius:8px">👍</button>
-      <button onclick="toggleReaction(document.getElementById('reaction-post-id').value,'❤️');closeModal('reaction-modal')" style="font-size:28px;border:none;background:none;cursor:pointer;padding:8px;border-radius:8px">❤️</button>
-      <button onclick="toggleReaction(document.getElementById('reaction-post-id').value,'😂');closeModal('reaction-modal')" style="font-size:28px;border:none;background:none;cursor:pointer;padding:8px;border-radius:8px">😂</button>
-      <button onclick="toggleReaction(document.getElementById('reaction-post-id').value,'🔥');closeModal('reaction-modal')" style="font-size:28px;border:none;background:none;cursor:pointer;padding:8px;border-radius:8px">🔥</button>
-      <button onclick="toggleReaction(document.getElementById('reaction-post-id').value,'👏');closeModal('reaction-modal')" style="font-size:28px;border:none;background:none;cursor:pointer;padding:8px;border-radius:8px">👏</button>
-      <button onclick="toggleReaction(document.getElementById('reaction-post-id').value,'😮');closeModal('reaction-modal')" style="font-size:28px;border:none;background:none;cursor:pointer;padding:8px;border-radius:8px">😮</button>
-      <button onclick="toggleReaction(document.getElementById('reaction-post-id').value,'😢');closeModal('reaction-modal')" style="font-size:28px;border:none;background:none;cursor:pointer;padding:8px;border-radius:8px">😢</button>
-      <button onclick="toggleReaction(document.getElementById('reaction-post-id').value,'💪');closeModal('reaction-modal')" style="font-size:28px;border:none;background:none;cursor:pointer;padding:8px;border-radius:8px">💪</button>
-    </div>
-    <div class="modal-actions"><button class="modal-cancel" onclick="closeModal('reaction-modal')">Chiudi</button></div>
-  </div>
-</div>
-
-<!-- MODAL modifica post -->
-<div class="modal-bg" id="edit-modal">
-  <div class="modal">
-    <div class="modal-title">Modifica post</div>
-    <input class="modal-input" id="edit-title-input" placeholder="Titolo del post" />
-    <textarea class="modal-input" id="edit-body-input" placeholder="Testo del post..." rows="5" style="resize:vertical;min-height:100px;"></textarea>
-    <input class="modal-input" id="edit-link-input" placeholder="🔗 Link (opzionale)" />
-    <input type="hidden" id="edit-post-id" />
-    <div class="modal-actions">
-      <button class="modal-cancel" onclick="closeModal('edit-modal')">Annulla</button>
-      <button class="modal-submit" onclick="saveEditPost()">Salva</button>
-    </div>
+<!-- MODAL: profilo / foto -->
+<div class="modal-bg" id="profile-modal">
+  <div class="modal" style="width:320px;text-align:center">
+    <div class="modal-title">Il tuo profilo</div>
+    <div id="profile-av-preview" style="width:80px;height:80px;border-radius:50%;margin:0 auto 12px;display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:700;color:#fff;overflow:hidden;"></div>
+    <p style="font-size:13px;color:#666;margin-bottom:12px">Carica una foto profilo</p>
+    <input type="file" id="profile-photo-inp" accept="image/*" style="display:none" onchange="uploadProfilePhoto(this)" />
+    <button class="modal-submit" onclick="document.getElementById('profile-photo-inp').click()" style="width:100%;margin-bottom:8px">📷 Scegli foto</button>
+    <div id="profile-upload-status" style="font-size:12px;color:#1D9E75;min-height:16px;margin-bottom:8px"></div>
+    <div class="modal-actions"><button class="modal-cancel" onclick="closeModal('profile-modal')">Chiudi</button></div>
   </div>
 </div>
 
@@ -339,9 +500,9 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getFirestore, collection, addDoc, onSnapshot, orderBy, query, serverTimestamp, doc, setDoc, getDocs, updateDoc, deleteDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import { getFirestore, collection, addDoc, onSnapshot, orderBy, query, serverTimestamp, doc, setDoc, getDocs, updateDoc, deleteDoc, getDoc, where, limit } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-const firebaseConfig = {
+const FB = {
   apiKey: "AIzaSyAV8eYoJstkfiSv2Uev1vEZAUq-jDSEl-I",
   authDomain: "cricca-del-brunetti.firebaseapp.com",
   projectId: "cricca-del-brunetti",
@@ -349,455 +510,700 @@ const firebaseConfig = {
   messagingSenderId: "756539038617",
   appId: "1:756539038617:web:7c130f0413317aef9f9108"
 };
+const CL_CLOUD = 'dvipaltpm';
+const CL_PRESET = 'cricca-upload';
 
-const CLOUDINARY_CLOUD = 'dvipaltpm';
-const CLOUDINARY_PRESET = 'cricca-upload';
-
-const app = initializeApp(firebaseConfig);
+const app = initializeApp(FB);
 const db = getFirestore(app);
 
-const ADMINS = ['samanta', 'michela'];
+const ADMINS = ['samanta','michela'];
 const COLORS = ['#1D9E75','#185FA5','#BA7517','#993556','#534AB7','#D85A30','#639922','#A32D2D'];
-let currentUser = null;
+const EMOJIS = ['👍','❤️','😂','🔥','👏','😮','😢','💪'];
+
+let me = null;
 let allPosts = [];
-let searchQuery = '';
+let allMembers = [];
+let searchQ = '';
 let commentsOpen = {};
 let commentsListeners = {};
-let pendingAttachment = null;
-let pendingAulaFile = null;
+let pendingPostFile = null;
+let activeChatId = null;
+let chatListener = null;
+let lastSeenPosts = parseInt(localStorage.getItem('lastSeenPosts')||'0');
+let lastSeenMsgs = {};
+try { lastSeenMsgs = JSON.parse(localStorage.getItem('lastSeenMsgs')||'{}'); } catch(e){}
 
-function getInitials(name) {
-  return name.trim().split(' ').filter(x=>x.length>0).map(x=>x[0].toUpperCase()).join('').slice(0,2)||'??';
+// ─── UTILS ───────────────────────────────────────────────
+function getInitials(n){ return n.trim().split(' ').filter(x=>x).map(x=>x[0].toUpperCase()).join('').slice(0,2)||'?'; }
+function getColor(n){ let h=0; for(let c of n) h=(h*31+c.charCodeAt(0))%COLORS.length; return COLORS[h]; }
+function isAdmin(n){ return ADMINS.includes(n.toLowerCase().trim()); }
+function timeAgo(ts){
+  if(!ts) return '';
+  const d = ts.toDate ? ts.toDate() : new Date(ts);
+  const diff = Math.floor((Date.now()-d)/1000);
+  if(diff<60) return 'adesso';
+  if(diff<3600) return Math.floor(diff/60)+'m fa';
+  if(diff<86400) return Math.floor(diff/3600)+'h fa';
+  if(diff<604800) return Math.floor(diff/86400)+'g fa';
+  return d.toLocaleDateString('it');
 }
-function getColor(name) {
-  let h=0; for(let c of name) h=(h*31+c.charCodeAt(0))%COLORS.length; return COLORS[h];
-}
-function isAdmin(name) { return ADMINS.includes(name.toLowerCase().trim()); }
-function showToast(msg) {
-  const t=document.getElementById('toast');
-  t.textContent=msg; t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'),2500);
-}
-function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+function highlightMentions(t){ if(!t) return ''; return t.replace(/@([^\s]+)/g,'<span class="mention-highlight">@$1</span>'); }
+function showToast(m){ const t=document.getElementById('toast'); t.textContent=m; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2500); }
+function openModal(id){ document.getElementById(id).classList.add('open'); }
+window.closeModal = function(id){ document.getElementById(id).classList.remove('open'); }
+document.querySelectorAll('.modal-bg').forEach(m=>m.addEventListener('click',e=>{ if(e.target===m) m.classList.remove('open'); }));
 
-async function uploadToCloudinary(file, onProgress) {
+function avatarHTML(initials, color, photoUrl, size=36, cls='post-av'){
+  if(photoUrl) return `<div class="${cls}" style="width:${size}px;height:${size}px"><img src="${photoUrl}" onerror="this.style.display='none';this.nextSibling.style.display='flex'"><span style="display:none;width:${size}px;height:${size}px;border-radius:50%;background:${color};align-items:center;justify-content:center;font-size:${Math.floor(size*0.35)}px;font-weight:600;color:#fff">${initials}</span></div>`;
+  return `<div class="${cls}" style="background:${color};width:${size}px;height:${size}px;font-size:${Math.floor(size*0.35)}px">${initials}</div>`;
+}
+
+async function uploadCloudinary(file){
   const fd = new FormData();
-  fd.append('file', file);
-  fd.append('upload_preset', CLOUDINARY_PRESET);
-  const resourceType = file.type.startsWith('image/') ? 'image' : 'raw';
-  const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD}/${resourceType}/upload`, {
-    method: 'POST', body: fd
-  });
-  const data = await res.json();
-  if(data.error) throw new Error(data.error.message);
-  return { url: data.secure_url, type: resourceType, name: file.name };
+  fd.append('file',file);
+  fd.append('upload_preset',CL_PRESET);
+  const rt = file.type.startsWith('image/') ? 'image' : 'raw';
+  const r = await fetch(`https://api.cloudinary.com/v1_1/${CL_CLOUD}/${rt}/upload`,{method:'POST',body:fd});
+  const d = await r.json();
+  if(d.error) throw new Error(d.error.message);
+  return {url:d.secure_url, type:rt, name:file.name};
 }
 
-window.handlePostAttach = function(input) {
-  const file = input.files[0];
-  if(!file) return;
-  const preview = document.getElementById('post-attach-preview');
-  const isImg = file.type.startsWith('image/');
-  preview.innerHTML = `<div style="padding:8px 16px;display:flex;align-items:center;gap:8px;background:#f9f9f9;border-top:1px solid #f0f0f0">
-    <span style="font-size:13px">${isImg?'🖼':'📄'} ${file.name}</span>
-    <span class="attach-remove" onclick="removeAttach()">✕</span>
-  </div>`;
-  pendingAttachment = file;
-};
-
-window.removeAttach = function() {
-  pendingAttachment = null;
-  document.getElementById('post-attach-preview').innerHTML = '';
-  document.getElementById('post-file-input').value = '';
-};
-
-window.handleAulaFile = function(input) {
-  const file = input.files[0];
-  if(!file) return;
-  pendingAulaFile = file;
-  document.getElementById('aula-upload-progress').innerHTML = `<div style="font-size:12px;color:#666;padding:4px 0">📄 ${file.name} pronto per il caricamento</div>`;
-};
-
-window.doLogin = async function() {
+// ─── LOGIN ───────────────────────────────────────────────
+window.doLogin = async function(){
   const name = document.getElementById('login-name').value.trim();
   if(!name){ showToast('Inserisci il tuo nome'); return; }
-  currentUser = { name, initials: getInitials(name), color: getColor(name), isAdmin: isAdmin(name) };
-  localStorage.setItem('cricca_user', name);
-  // Check if banned
-  const memberSnap = await getDoc(doc(db,'members',name)).catch(()=>null);
-  if(memberSnap&&memberSnap.exists()&&memberSnap.data().status==='banned') {
-    showToast('Accesso negato. Contatta un amministratore.');
-    return;
-  }
+  const snap = await getDoc(doc(db,'members',name)).catch(()=>null);
+  if(snap&&snap.exists()&&snap.data().status==='banned'){ showToast('Accesso negato. Contatta un admin.'); return; }
+  me = { name, initials:getInitials(name), color:getColor(name), isAdmin:isAdmin(name), photoUrl: snap&&snap.exists()?snap.data().photoUrl||null:null };
+  localStorage.setItem('cricca_user',name);
   document.getElementById('login-screen').style.display='none';
-  document.getElementById('nav-user-initials').textContent=currentUser.initials;
-  document.getElementById('nav-user-initials').style.background=currentUser.color;
-  document.getElementById('nav-user-initials').style.color='#fff';
-  document.getElementById('composer-avatar').textContent=currentUser.initials;
-  document.getElementById('composer-avatar').style.background=currentUser.color;
-  document.getElementById('composer-avatar').style.color='#fff';
+  // Nav avatar
+  const navAv = document.getElementById('nav-user-av');
+  if(me.photoUrl){ navAv.innerHTML=`<img src="${me.photoUrl}"><div class="profile-photo-overlay">📷</div>`; }
+  else { document.getElementById('nav-user-initials').textContent=me.initials; navAv.style.background=me.color; navAv.style.color='#fff'; }
+  // Composer avatar
+  const compAv = document.getElementById('composer-av');
+  if(me.photoUrl){ compAv.innerHTML=`<img src="${me.photoUrl}">`; }
+  else { document.getElementById('composer-initials').textContent=me.initials; compAv.style.background=me.color; }
   document.getElementById('invite-url').textContent=window.location.href;
-  if(currentUser.isAdmin) {
+  if(me.isAdmin) {
     document.getElementById('btn-add-file').style.display='flex';
-    document.getElementById('invite-btn-container').innerHTML='<button class="invite-btn" onclick="openInviteModal()">🔗 Copia link invito</button>';
+    document.getElementById('invite-btn-wrap').innerHTML='<button class="btn-invite" onclick="openModal(\'invite-modal\')">🔗 Copia link invito</button>';
   }
-  await setDoc(doc(db,'members',name), { name, initials:currentUser.initials, color:currentUser.color, role:currentUser.isAdmin?'admin':'member', joined:new Date().toLocaleDateString('it') }, {merge:true});
-  loadMembers();
+  await setDoc(doc(db,'members',name),{name,initials:me.initials,color:me.color,role:me.isAdmin?'admin':'member',joined:new Date().toLocaleDateString('it'),photoUrl:me.photoUrl||null},{merge:true});
+  initApp();
+};
+
+function initApp(){
   listenPosts();
   loadFiles();
+  loadMembers();
+  listenNotifications();
+  listenMessageBadge();
+}
+
+window.doLogout = function(){ localStorage.removeItem('cricca_user'); location.reload(); };
+
+// ─── PROFILE PHOTO ───────────────────────────────────────
+window.openProfileModal = function(){
+  if(!me) return;
+  const pv = document.getElementById('profile-av-preview');
+  if(me.photoUrl){ pv.innerHTML=`<img src="${me.photoUrl}" style="width:100%;height:100%;object-fit:cover;border-radius:50%">`; }
+  else { pv.style.background=me.color; pv.textContent=me.initials; }
+  openModal('profile-modal');
+};
+window.uploadProfilePhoto = async function(inp){
+  const file = inp.files[0]; if(!file) return;
+  document.getElementById('profile-upload-status').textContent='⬆️ Caricamento...';
+  try {
+    const res = await uploadCloudinary(file);
+    me.photoUrl = res.url;
+    await setDoc(doc(db,'members',me.name),{photoUrl:res.url},{merge:true});
+    // Update UI
+    const navAv = document.getElementById('nav-user-av');
+    navAv.innerHTML=`<img src="${res.url}"><div class="profile-photo-overlay">📷</div>`;
+    const compAv = document.getElementById('composer-av');
+    compAv.innerHTML=`<img src="${res.url}">`;
+    const pv = document.getElementById('profile-av-preview');
+    pv.innerHTML=`<img src="${res.url}" style="width:100%;height:100%;object-fit:cover;border-radius:50%">`;
+    document.getElementById('profile-upload-status').textContent='✅ Foto aggiornata!';
+    showToast('Foto profilo aggiornata!');
+  } catch(e){ document.getElementById('profile-upload-status').textContent='❌ Errore caricamento'; }
 };
 
-window.openComposer = function() {
-  document.getElementById('composer-trigger').style.display='none';
-  document.getElementById('composer-expanded').classList.add('open');
-  document.getElementById('post-title-input').focus();
-};
-window.closeComposer = function() {
-  document.getElementById('composer-trigger').style.display='flex';
-  document.getElementById('composer-expanded').classList.remove('open');
-  document.getElementById('post-title-input').value='';
-  document.getElementById('post-body-input').value='';
-  document.getElementById('post-attach-preview').innerHTML='';
-  document.getElementById('post-upload-progress').innerHTML='';
-  pendingAttachment=null;
-  document.getElementById('post-link-input').value='';
-};
-window.filterBySearch = function(val) { searchQuery=val.toLowerCase(); renderPosts(); };
-
-function listenPosts() {
-  const q = query(collection(db,'posts'), orderBy('pinned','desc'), orderBy('createdAt','desc'));
-  onSnapshot(q, snap => {
+// ─── POSTS ───────────────────────────────────────────────
+function listenPosts(){
+  const q = query(collection(db,'posts'),orderBy('pinned','desc'),orderBy('createdAt','desc'));
+  onSnapshot(q, snap=>{
     allPosts = snap.docs.map(d=>({id:d.id,...d.data()}));
     document.getElementById('stat-posts').textContent=allPosts.length;
     renderPosts();
+    updateNotifBadge();
   });
 }
 
-function listenComments(postId) {
-  if(commentsListeners[postId]) return;
-  const q = query(collection(db,'posts',postId,'comments'), orderBy('createdAt','asc'));
-  commentsListeners[postId] = onSnapshot(q, snap => {
-    const comments = snap.docs.map(d=>({id:d.id,...d.data()}));
-    const list = document.getElementById('clist-'+postId);
-    if(!list) return;
-    list.innerHTML = comments.length===0
-      ? '<div style="font-size:13px;color:#aaa;padding:4px 0">Nessun commento ancora.</div>'
-      : comments.map(c=>`
-        <div class="comment">
-          <div class="comment-avatar" style="background:${c.color}">${c.initials}</div>
-          <div class="comment-bubble">
-            <div class="comment-author">${c.author}</div>
-            <div class="comment-text">${highlightMentions(c.text)}</div>
-            ${c.imageUrl?`<img src="${c.imageUrl}" style="max-width:100%;border-radius:6px;margin-top:6px;max-height:200px;object-fit:cover">`:''}
-            <div class="comment-time">${c.time||''}</div>
-          </div>
-        </div>`).join('');
-  });
-}
-
-window.toggleComments = function(postId) {
-  const section = document.getElementById('cs-'+postId);
-  if(!section) return;
-  commentsOpen[postId] = !commentsOpen[postId];
-  section.classList.toggle('open', commentsOpen[postId]);
-  if(commentsOpen[postId]) listenComments(postId);
+window.openComposer = function(){
+  document.getElementById('composer-trigger').style.display='none';
+  document.getElementById('composer-expanded').classList.add('open');
+  document.getElementById('post-title').focus();
+};
+window.closeComposer = function(){
+  document.getElementById('composer-trigger').style.display='flex';
+  document.getElementById('composer-expanded').classList.remove('open');
+  document.getElementById('post-title').value='';
+  document.getElementById('post-body').value='';
+  document.getElementById('post-link').value='';
+  document.getElementById('post-attach-bar').style.display='none';
+  pendingPostFile=null;
+  document.getElementById('post-file-inp').value='';
+};
+window.handlePostFile = function(inp){
+  const file=inp.files[0]; if(!file) return;
+  pendingPostFile=file;
+  document.getElementById('post-attach-name').textContent='🖼 '+file.name;
+  document.getElementById('post-attach-bar').style.display='flex';
+};
+window.removePostAttach = function(){
+  pendingPostFile=null;
+  document.getElementById('post-file-inp').value='';
+  document.getElementById('post-attach-bar').style.display='none';
 };
 
-window.sendComment = async function(postId) {
-  const input = document.getElementById('cinput-'+postId);
-  const text = input ? input.value.trim() : '';
-  if(!text) return;
-  const now = new Date();
-  await addDoc(collection(db,'posts',postId,'comments'), {
-    author:currentUser.name, initials:currentUser.initials, color:currentUser.color,
-    text, time:now.toLocaleTimeString('it',{hour:'2-digit',minute:'2-digit'}),
-    createdAt:serverTimestamp()
-  });
-  const post = allPosts.find(p=>p.id===postId);
-  await updateDoc(doc(db,'posts',postId), { comments:(post?.comments||0)+1 });
-  input.value='';
-};
-
-async function loadMembers() {
-  const snap = await getDocs(collection(db,'members'));
-  const members = snap.docs.map(d=>({id:d.id,...d.data()}));
-  mentionMembers = members;
-  document.getElementById('stat-members').textContent=members.length;
-  document.getElementById('member-count').textContent=members.length+' membri';
-  document.getElementById('members-container').innerHTML = members.map(m=>`
-    <div class="member-row" style="${m.status==='banned'?'opacity:0.5':''}">
-      <div class="post-avatar" style="background:${m.color};width:36px;height:36px;font-size:13px">${m.initials}</div>
-      <div class="member-name">${m.name}${m.status==='silenced'?' 🔇':''}${m.status==='banned'?' 🚫':''}</div>
-      <span class="member-role ${m.role==='admin'?'role-admin':'role-member'}">${m.role==='admin'?'Admin':'Membro'}</span>
-      <span class="member-joined">${m.joined}</span>
-      ${currentUser&&currentUser.isAdmin&&m.role!=='admin'?`
-        <div style="display:flex;gap:6px;margin-left:auto">
-          ${m.status==='silenced'?
-            `<button class="pin-btn" onclick="setMemberStatus('${m.name}','normal')">Togli silenzio</button>`:
-            `<button class="attach-btn" style="font-size:11px" onclick="setMemberStatus('${m.name}','silenced')">🔇 Silenzia</button>`}
-          ${m.status==='banned'?
-            `<button class="pin-btn" onclick="setMemberStatus('${m.name}','normal')">Rimuovi ban</button>`:
-            `<button class="del-btn" onclick="setMemberStatus('${m.name}','banned')">🚫 Banna</button>`}
-        </div>`:''}
-    </div>`).join('');
-
-}
-
-async function loadFiles() {
-  const snap = await getDocs(collection(db,'files'));
-  const files = snap.docs.map(d=>({id:d.id,...d.data()}));
-  const c = document.getElementById('files-container');
-  if(!files.length){ c.innerHTML='<div class="empty"><div class="empty-icon">📚</div>Nessun materiale ancora.'+(currentUser&&currentUser.isAdmin?' Aggiungine uno con il pulsante qui sopra.':'')+'</div>'; return; }
-  c.innerHTML = files.map(f=>`
-    <div class="file-card">
-      <div class="file-icon">📄</div>
-      <div class="file-info"><div class="file-name">${f.name}</div><div class="file-desc">${f.desc||''}</div></div>
-      <div class="file-actions">
-        ${f.url?`<a href="${f.url}" target="_blank" class="file-dl">📂 Apri</a>`:''}
-        ${currentUser&&currentUser.isAdmin?`<button class="file-del" onclick="deleteFile('${f.id}')">🗑</button>`:''}
-      </div>
-    </div>`).join('');
-}
-
-window.renderPosts = function() {
-  const c=document.getElementById('posts-container');
-  let filtered = allPosts;
-  if(searchQuery) filtered = filtered.filter(p=>
-    p.title.toLowerCase().includes(searchQuery)||
-    p.body.toLowerCase().includes(searchQuery)||
-    p.author.toLowerCase().includes(searchQuery));
-  if(!filtered.length){ c.innerHTML='<div class="empty"><div class="empty-icon">💬</div>'+(searchQuery?'Nessun risultato.':'Nessun post ancora.<br>Sii il primo a scrivere qualcosa!')+'</div>'; return; }
-  c.innerHTML=filtered.map(p=>`
-    <div class="post-card ${p.pinned?'pinned':''}">
-      <div class="post-header">
-        <div class="post-avatar" style="background:${p.color}">${p.initials}</div>
-        <div class="post-meta"><div class="post-author">${p.author}</div><div class="post-time">${p.time||''}</div></div>
-        ${p.pinned?'<span class="pin-badge">📌 Fissato</span>':''}
-      </div>
-      <div class="post-title">${p.title}</div>
-      <div class="post-body">${highlightMentions(p.body)}</div>
-      <div class="reactions" id="reactions-${p.id}">
-        ${['👍','❤️','😂','🔥','👏'].map(e=>{
-          const count = (p.reactions&&p.reactions[e])||0;
-          const reacted = p.reactedBy&&p.reactedBy[e]&&p.reactedBy[e].includes(currentUser?currentUser.name:'');
-          return count>0||reacted?`<button class="reaction-btn ${reacted?'reacted':''}" onclick="toggleReaction('${p.id}','${e}')">${e} <span class="reaction-count">${count}</span></button>`:''
-        }).join('')}
-        <button class="add-reaction" onclick="showReactionPicker('${p.id}')">😊 +</button>
-      </div>
-      ${p.attachUrl && p.attachType==='image'?`<img src="${p.attachUrl}" class="post-image" onclick="window.open('${p.attachUrl}')">`:''}
-      ${p.attachUrl && p.attachType==='raw'?`<a href="${p.attachUrl}" target="_blank" class="post-file">📄 ${p.attachName||'Scarica allegato'}</a>`:''}
-      ${p.postLink?`<a href="${p.postLink.startsWith('http')?p.postLink:'https://'+p.postLink}" target="_blank" class="post-file">🔗 ${p.postLink}</a>`:''}
-      <div class="post-actions">
-        <button class="action-btn" onclick="toggleComments('${p.id}')">💬 ${p.comments||0} commenti</button>
-        ${currentUser&&(currentUser.isAdmin||currentUser.name===p.author)?`<button class="attach-btn" style="font-size:12px" onclick="openEditPost('${p.id}')">✏️ Modifica</button>`:''}
-        ${currentUser&&currentUser.isAdmin?`<div class="admin-actions"><button class="del-btn" onclick="deletePost('${p.id}')">🗑 Elimina</button><button class="pin-btn" onclick="togglePin('${p.id}',${!!p.pinned})">${p.pinned?'📌 Sfissa':'📌 Fissa'}</button></div>`:''}
-      </div>
-      <div class="comments-section ${commentsOpen[p.id]?'open':''}" id="cs-${p.id}">
-        <div id="clist-${p.id}"><div style="font-size:13px;color:#aaa;">Caricamento...</div></div>
-        <div style="position:relative" id="mention-container-wrapper"><div class="mention-dropdown" id="mention-dropdown" style="display:none;position:absolute;bottom:45px;left:0;"></div>
-        <div class="comment-composer">
-          <div class="comment-avatar" style="background:${currentUser?currentUser.color:'#ccc'}">${currentUser?currentUser.initials:'?'}</div>
-          <input class="comment-input" id="cinput-${p.id}" placeholder="Scrivi un commento..." onkeypress="if(event.key==='Enter'&&!window.mentionActive) sendComment('${p.id}')" oninput="handleMentionInput(this,'${p.id}')" />
-          <button class="comment-send" onclick="sendComment('${p.id}')">Invia</button>
-        </div></div>
-      </div>
-    </div>`).join('');
-  Object.keys(commentsOpen).forEach(id=>{ if(commentsOpen[id]) listenComments(id); });
-};
-
-window.showReactionPicker = function(postId) {
-  document.getElementById('reaction-post-id').value = postId;
-  document.getElementById('reaction-modal').classList.add('open');
-};
-window.toggleReaction = async function(postId, emoji) {
-  if(!currentUser) return;
-  const post = allPosts.find(p=>p.id===postId);
-  if(!post) return;
-  const reactions = post.reactions || {};
-  const reactedBy = post.reactedBy || {};
-  const users = reactedBy[emoji] || [];
-  const alreadyReacted = users.includes(currentUser.name);
-  if(alreadyReacted) {
-    reactions[emoji] = Math.max((reactions[emoji]||1)-1, 0);
-    reactedBy[emoji] = users.filter(u=>u!==currentUser.name);
-  } else {
-    reactions[emoji] = (reactions[emoji]||0)+1;
-    reactedBy[emoji] = [...users, currentUser.name];
-  }
-  await updateDoc(doc(db,'posts',postId), { reactions, reactedBy });
-};
-window.setMemberStatus = async function(memberName, status) {
-  const labels = { silenced: 'silenziare', banned: 'bannare', normal: 'ripristinare' };
-  if(!confirm(`Vuoi ${labels[status]} ${memberName}?`)) return;
-  await setDoc(doc(db,'members',memberName), { status }, { merge: true });
-  loadMembers();
-  showToast(status==='normal' ? `${memberName} ripristinato` : `${memberName} ${status==='banned'?'bannato':'silenziato'}`);
-};
-function highlightMentions(text) {
-  if(!text) return '';
-  return text.replace(/@(\S+)/g, '<span class="mention-highlight">@$1</span>');
-}
-let mentionMembers = [];
-let mentionActive = false;
-let currentMentionInput = null;
-
-window.handleMentionInput = function(input, postId) {
-  currentMentionInput = input;
-  const val = input.value;
-  const cursor = input.selectionStart;
-  const textBefore = val.substring(0, cursor);
-  const atMatch = textBefore.match(/@(\w*)$/);
-  const dropdown = document.getElementById('mention-dropdown');
-  if(!atMatch) {
-    dropdown.style.display='none';
-    mentionActive=false;
-    return;
-  }
-  const query = atMatch[1].toLowerCase();
-  const filtered = mentionMembers.filter(m=>m.name.toLowerCase().includes(query) && m.name !== currentUser.name);
-  if(!filtered.length){ dropdown.style.display='none'; mentionActive=false; return; }
-  mentionActive=true;
-  dropdown.style.display='block';
-  dropdown.innerHTML = filtered.slice(0,6).map(m=>`
-    <div class="mention-item" onclick="insertMention('${m.name}')">
-      <div class="mention-avatar-sm" style="background:${m.color}">${m.initials}</div>
-      <span>${m.name}</span>
-    </div>`).join('');
-};
-
-window.insertMention = function(name) {
-  if(!currentMentionInput) return;
-  const val = currentMentionInput.value;
-  const cursor = currentMentionInput.selectionStart;
-  const textBefore = val.substring(0, cursor);
-  const textAfter = val.substring(cursor);
-  const newText = textBefore.replace(/@\w*$/, '@'+name+' ') + textAfter;
-  currentMentionInput.value = newText;
-  document.getElementById('mention-dropdown').style.display='none';
-  mentionActive=false;
-  currentMentionInput.focus();
-};
-
-window.doLogout = function() {
-  localStorage.removeItem('cricca_user');
-  location.reload();
-};
-window.openEditPost = function(postId) {
-  const post = allPosts.find(p=>p.id===postId);
-  if(!post) return;
-  document.getElementById('edit-post-id').value = postId;
-  document.getElementById('edit-title-input').value = post.title || '';
-  document.getElementById('edit-body-input').value = post.body || '';
-  document.getElementById('edit-link-input').value = post.postLink || '';
-  document.getElementById('edit-modal').classList.add('open');
-};
-window.saveEditPost = async function() {
-  const postId = document.getElementById('edit-post-id').value;
-  const title = document.getElementById('edit-title-input').value.trim();
-  const body = document.getElementById('edit-body-input').value.trim();
-  const postLink = document.getElementById('edit-link-input').value.trim();
+window.submitPost = async function(){
+  if(!me) return;
+  const snap = await getDoc(doc(db,'members',me.name)).catch(()=>null);
+  if(snap&&snap.exists()&&snap.data().status==='silenced'){ showToast('Sei silenziato. Non puoi pubblicare.'); return; }
+  const title=document.getElementById('post-title').value.trim();
+  const body=document.getElementById('post-body').value.trim();
   if(!title||!body){ showToast('Inserisci titolo e testo'); return; }
-  await updateDoc(doc(db,'posts',postId), { title, body, postLink: postLink||null, edited: true });
-  closeModal('edit-modal');
-  showToast('Post modificato!');
-};
-window.togglePin = async function(postId, currentlyPinned) {
-  await updateDoc(doc(db,'posts',postId), { pinned: !currentlyPinned });
-  showToast(currentlyPinned ? 'Post sfissato' : 'Post fissato in cima!');
-};
-window.deletePost = async function(postId) {
-  if(!confirm('Eliminare questo post?')) return;
-  await deleteDoc(doc(db,'posts',postId));
-  showToast('Post eliminato.');
-};
-window.deleteFile = async function(fileId) {
-  if(!confirm('Eliminare questo materiale?')) return;
-  await deleteDoc(doc(db,'files',fileId));
-  loadFiles();
-  showToast('Materiale eliminato.');
-};
-
-window.submitPost = async function() {
-  const memberDoc = await getDoc(doc(db,'members',currentUser.name)).catch(()=>null);
-  if(memberDoc&&memberDoc.exists()&&memberDoc.data().status==='silenced'){ showToast('Sei silenziato. Non puoi pubblicare.'); return; }
-  const title=document.getElementById('post-title-input').value.trim();
-  const body=document.getElementById('post-body-input').value.trim();
-  if(!title||!body){ showToast('Inserisci titolo e testo'); return; }
-  let attachUrl=null, attachType=null, attachName=null;
-  const postLink=document.getElementById("post-link-input").value.trim();
-  if(pendingAttachment){
-    document.getElementById('post-upload-progress').innerHTML='<div class="upload-progress">⬆️ Caricamento in corso...</div>';
-    try {
-      const result = await uploadToCloudinary(pendingAttachment);
-      attachUrl=result.url; attachType=result.type; attachName=result.name;
-    } catch(e){ showToast('Errore caricamento file'); return; }
+  const link=document.getElementById('post-link').value.trim();
+  let imgUrl=null;
+  if(pendingPostFile){
+    showToast('⬆️ Caricamento immagine...');
+    try{ const r=await uploadCloudinary(pendingPostFile); imgUrl=r.url; }catch(e){ showToast('Errore caricamento immagine'); return; }
   }
   const now=new Date();
   await addDoc(collection(db,'posts'),{
-    author:currentUser.name, initials:currentUser.initials, color:currentUser.color,
-    title, body, cat:'discussione', likes:0, comments:0, pinned:false,
-    attachUrl, attachType, attachName, postLink: postLink||null,
-    time:'Oggi alle '+now.toLocaleTimeString('it',{hour:'2-digit',minute:'2-digit'}),
+    author:me.name,initials:me.initials,color:me.color,photoUrl:me.photoUrl||null,
+    title,body,imgUrl,
+    postLink:link?( link.startsWith('http')?link:'https://'+link ):null,
+    likes:0,comments:0,pinned:false,edited:false,
+    reactions:{},reactedBy:{},
+    time:now.toLocaleTimeString('it',{hour:'2-digit',minute:'2-digit'}),
     createdAt:serverTimestamp()
   });
   closeComposer();
   showToast('Post pubblicato!');
 };
 
-window.submitFile = async function() {
-  if(!currentUser||!currentUser.isAdmin){ showToast('Solo gli admin possono aggiungere file'); return; }
-  const name=document.getElementById('file-name-input').value.trim();
-  const desc=document.getElementById('file-desc-input').value.trim();
-  if(!name){ showToast('Inserisci il nome del materiale'); return; }
-  if(!pendingAulaFile){ showToast('Seleziona un file da caricare'); return; }
-  document.getElementById('aula-upload-progress').innerHTML='<div class="upload-progress">⬆️ Caricamento in corso...</div>';
-  document.getElementById('aula-submit-btn').disabled=true;
-  try {
-    const result = await uploadToCloudinary(pendingAulaFile);
-    await addDoc(collection(db,'files'),{name,desc,url:result.url,fileName:result.name,createdAt:serverTimestamp()});
-    document.getElementById('file-name-input').value='';
-    document.getElementById('file-desc-input').value='';
-    document.getElementById('aula-upload-progress').innerHTML='';
-    document.getElementById('aula-submit-btn').disabled=false;
-    pendingAulaFile=null;
-    document.getElementById('aula-file-input').value='';
-    closeModal('file-modal');
-    loadFiles();
-    showToast('Materiale caricato!');
-  } catch(e){
-    document.getElementById('aula-upload-progress').innerHTML='<div style="color:#e53e3e;font-size:12px">Errore nel caricamento</div>';
-    document.getElementById('aula-submit-btn').disabled=false;
+window.onSearch = function(v){ searchQ=v.toLowerCase(); renderPosts(); };
+
+function renderPosts(){
+  const c=document.getElementById('posts-list');
+  let list = allPosts;
+  if(searchQ) list=list.filter(p=>(p.title||'').toLowerCase().includes(searchQ)||(p.body||'').toLowerCase().includes(searchQ)||(p.author||'').toLowerCase().includes(searchQ));
+  if(!list.length){ c.innerHTML=`<div class="empty-state"><div class="empty-icon">💬</div>${searchQ?'Nessun risultato.':'Nessun post ancora.<br>Sii il primo!'}</div>`; return; }
+  c.innerHTML=list.map(p=>{
+    const reacts = EMOJIS.map(e=>{
+      const cnt=(p.reactions&&p.reactions[e])||0;
+      const mine=p.reactedBy&&p.reactedBy[e]&&p.reactedBy[e].includes(me?me.name:'');
+      return cnt>0||mine?`<button class="react-btn${mine?' active':''}" onclick="doReact('${p.id}','${e}')">${e}<span class="react-count">${cnt}</span></button>`:'';
+    }).join('');
+    return `<div class="post-card${p.pinned?' pinned':''}">
+      <div class="post-header">
+        ${avatarHTML(p.initials||'?',p.color||'#ccc',p.photoUrl,36,'post-av')}
+        <div class="post-meta">
+          <div class="post-author">${p.author}</div>
+          <div class="post-time">${p.time||''} ${p.createdAt?'· '+timeAgo(p.createdAt):''}</div>
+        </div>
+        ${p.pinned?'<span class="pin-badge">📌 Fissato</span>':''}
+        ${p.edited?'<span class="edited-badge">(modificato)</span>':''}
+      </div>
+      <div class="post-title">${p.title||''}</div>
+      <div class="post-body">${highlightMentions(p.body||'')}</div>
+      ${p.imgUrl?`<img src="${p.imgUrl}" class="post-img" onclick="window.open('${p.imgUrl}')">`:''}
+      ${p.postLink?`<a href="${p.postLink}" target="_blank" class="post-link">🔗 ${p.postLink}</a>`:''}
+      <div class="reactions-row">${reacts}<button class="add-react" onclick="document.getElementById('react-post-id').value='${p.id}';openModal('react-modal')">😊+</button></div>
+      <div class="post-actions">
+        <button class="act-btn" onclick="toggleComments('${p.id}')">💬 ${p.comments||0} commenti</button>
+        ${me&&(me.isAdmin||me.name===p.author)?`<button class="act-btn" onclick="openEditPost('${p.id}')">✏️ Modifica</button>`:''}
+        ${me&&me.isAdmin?`<div class="admin-acts"><button class="act-del" onclick="delPost('${p.id}')">🗑 Elimina</button><button class="act-pin" onclick="togglePin('${p.id}',${!!p.pinned})">${p.pinned?'📌 Sfissa':'📌 Fissa'}</button></div>`:''}
+      </div>
+      <div class="comments-wrap${commentsOpen[p.id]?' open':''}" id="cw-${p.id}">
+        <div id="cl-${p.id}"></div>
+        <div class="comment-composer" id="cc-${p.id}">
+          ${avatarHTML(me?me.initials:'?',me?me.color:'#ccc',me?me.photoUrl:null,26,'comment-av')}
+          <div style="flex:1;position:relative">
+            <div class="mention-dropdown" id="md-${p.id}" style="display:none"></div>
+            <textarea class="comment-textarea" id="ci-${p.id}" placeholder="Scrivi un commento... (@nome per taggare)" rows="1"
+              oninput="autoResize(this);handleMention(this,'${p.id}')"
+              onkeydown="if(event.key==='Enter'&&!event.shiftKey&&!window.mentionActive){event.preventDefault();sendComment('${p.id}');}"></textarea>
+          </div>
+          <div class="comment-composer-actions">
+            <button class="btn-send" onclick="sendComment('${p.id}')">↑</button>
+            <button class="btn-attach-comment" onclick="document.getElementById('cfi-${p.id}').click()">📎</button>
+            <input type="file" id="cfi-${p.id}" accept="image/*" style="display:none" onchange="handleCommentFile(this,'${p.id}')" />
+          </div>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+  // Re-listen open comments
+  Object.keys(commentsOpen).forEach(id=>{ if(commentsOpen[id]) listenComments(id); });
+}
+
+window.autoResize = function(el){ el.style.height='auto'; el.style.height=Math.min(el.scrollHeight,120)+'px'; };
+
+// ─── MENTIONS ────────────────────────────────────────────
+let mentionActive=false; let currentMentionEl=null; let currentMentionPost=null;
+window.handleMention = function(el,postId){
+  currentMentionEl=el; currentMentionPost=postId;
+  const val=el.value, cur=el.selectionStart;
+  const before=val.substring(0,cur);
+  const m=before.match(/@(\w*)$/);
+  const dd=document.getElementById('md-'+postId);
+  if(!m){ dd.style.display='none'; mentionActive=false; return; }
+  const q=m[1].toLowerCase();
+  const filtered=allMembers.filter(mb=>mb.name.toLowerCase().includes(q)&&mb.name!==me.name);
+  if(!filtered.length){ dd.style.display='none'; mentionActive=false; return; }
+  mentionActive=true;
+  dd.style.display='block';
+  dd.innerHTML=filtered.slice(0,6).map(mb=>`<div class="mention-item" onclick="insertMention('${mb.name}','${postId}')">${avatarHTML(mb.initials,mb.color,mb.photoUrl,22,'mention-av-sm')}<span>${mb.name}</span></div>`).join('');
+};
+window.insertMention = function(name,postId){
+  if(!currentMentionEl) return;
+  const val=currentMentionEl.value, cur=currentMentionEl.selectionStart;
+  const before=val.substring(0,cur), after=val.substring(cur);
+  currentMentionEl.value=before.replace(/@\w*$/,'@'+name+' ')+after;
+  document.getElementById('md-'+postId).style.display='none';
+  mentionActive=false;
+  currentMentionEl.focus();
+};
+
+// ─── COMMENTS ────────────────────────────────────────────
+window.toggleComments = function(postId){
+  const cw=document.getElementById('cw-'+postId); if(!cw) return;
+  commentsOpen[postId]=!commentsOpen[postId];
+  cw.classList.toggle('open',commentsOpen[postId]);
+  if(commentsOpen[postId]) listenComments(postId);
+};
+
+let pendingCommentFiles={};
+window.handleCommentFile = function(inp,postId){
+  const file=inp.files[0]; if(!file) return;
+  pendingCommentFiles[postId]=file;
+  showToast('📎 '+file.name+' pronto');
+};
+
+function listenComments(postId){
+  if(commentsListeners[postId]) return;
+  const q=query(collection(db,'posts',postId,'comments'),orderBy('createdAt','asc'));
+  commentsListeners[postId]=onSnapshot(q,snap=>{
+    const comments=snap.docs.map(d=>({id:d.id,...d.data()}));
+    const cl=document.getElementById('cl-'+postId); if(!cl) return;
+    if(!comments.length){ cl.innerHTML='<div style="font-size:12px;color:#aaa;padding:4px 0">Nessun commento ancora.</div>'; return; }
+    cl.innerHTML=comments.map(c=>{
+      const creacts=EMOJIS.slice(0,5).map(e=>{
+        const cnt=(c.reactions&&c.reactions[e])||0;
+        const mine2=c.reactedBy&&c.reactedBy[e]&&c.reactedBy[e].includes(me?me.name:'');
+        return cnt>0||mine2?`<button class="c-react-btn${mine2?' active':''}" onclick="doCommentReact('${postId}','${c.id}','${e}')">${e}${cnt}</button>`:'';
+      }).join('');
+      const canEdit=me&&(me.isAdmin||me.name===c.author);
+      return `<div class="comment" id="cmnt-${c.id}">
+        ${avatarHTML(c.initials||'?',c.color||'#ccc',c.photoUrl,26,'comment-av')}
+        <div class="comment-bubble">
+          <div class="comment-author">${c.author}</div>
+          <div class="comment-text">${highlightMentions(c.text||'')}</div>
+          ${c.imgUrl?`<img src="${c.imgUrl}" class="comment-img">`:''}
+          <div class="comment-reactions">${creacts}<button class="c-add-react" onclick="document.getElementById('creact-post-id').value='${postId}';document.getElementById('creact-comment-id').value='${c.id}';openModal('creact-modal')">😊</button></div>
+          <div class="comment-footer">
+            <span class="comment-time">${c.time||''} ${c.createdAt?'· '+timeAgo(c.createdAt):''}</span>
+            ${canEdit?`<button class="comment-edit-btn" onclick="openEditComment('${postId}','${c.id}','${(c.text||'').replace(/'/g,"\\'")}')">✏️</button>`:''}
+            ${canEdit?`<button class="comment-del-btn" onclick="delComment('${postId}','${c.id}')">🗑</button>`:''}
+          </div>
+        </div>
+      </div>`;
+    }).join('');
+  });
+}
+
+window.sendComment = async function(postId){
+  const inp=document.getElementById('ci-'+postId); if(!inp) return;
+  const text=inp.value.trim();
+  const file=pendingCommentFiles[postId]||null;
+  if(!text&&!file) return;
+  let imgUrl=null;
+  if(file){ try{ const r=await uploadCloudinary(file); imgUrl=r.url; }catch(e){ showToast('Errore caricamento'); return; } }
+  const now=new Date();
+  await addDoc(collection(db,'posts',postId,'comments'),{
+    author:me.name,initials:me.initials,color:me.color,photoUrl:me.photoUrl||null,
+    text:text||'',imgUrl,
+    time:now.toLocaleTimeString('it',{hour:'2-digit',minute:'2-digit'}),
+    createdAt:serverTimestamp(),
+    reactions:{},reactedBy:{}
+  });
+  const post=allPosts.find(p=>p.id===postId);
+  await updateDoc(doc(db,'posts',postId),{comments:(post?.comments||0)+1,lastCommentAt:serverTimestamp()});
+  inp.value=''; inp.style.height='auto';
+  delete pendingCommentFiles[postId];
+  document.getElementById('cfi-'+postId).value='';
+  // Add notification
+  if(post&&post.author!==me.name){
+    await addDoc(collection(db,'notifications'),{
+      toUser:post.author,fromUser:me.name,type:'comment',
+      postId,postTitle:post.title||'',
+      text:`${me.name} ha commentato il tuo post "${post.title||''}"`,
+      createdAt:serverTimestamp(),read:false
+    });
   }
 };
 
-window.openFileModal = function() { pendingAulaFile=null; document.getElementById('aula-upload-progress').innerHTML=''; document.getElementById('file-modal').classList.add('open'); };
-window.openInviteModal = function() { document.getElementById('invite-modal').classList.add('open'); };
-window.closeModal = closeModal;
-window.copyInvite = function() {
+window.openEditComment = function(postId,commentId,text){
+  document.getElementById('edit-comment-post-id').value=postId;
+  document.getElementById('edit-comment-id').value=commentId;
+  document.getElementById('edit-comment-text').value=text;
+  openModal('edit-comment-modal');
+};
+window.saveComment = async function(){
+  const postId=document.getElementById('edit-comment-post-id').value;
+  const commentId=document.getElementById('edit-comment-id').value;
+  const text=document.getElementById('edit-comment-text').value.trim();
+  if(!text){ showToast('Il commento non può essere vuoto'); return; }
+  await updateDoc(doc(db,'posts',postId,'comments',commentId),{text,edited:true});
+  closeModal('edit-comment-modal');
+  showToast('Commento modificato!');
+};
+window.delComment = async function(postId,commentId){
+  if(!confirm('Eliminare il commento?')) return;
+  await deleteDoc(doc(db,'posts',postId,'comments',commentId));
+  const post=allPosts.find(p=>p.id===postId);
+  if(post) await updateDoc(doc(db,'posts',postId),{comments:Math.max((post.comments||1)-1,0)});
+  showToast('Commento eliminato.');
+};
+
+// ─── REACTIONS ───────────────────────────────────────────
+window.doReact = async function(postId,emoji){
+  if(!me) return;
+  const post=allPosts.find(p=>p.id===postId); if(!post) return;
+  const reactions={...post.reactions||{}};
+  const reactedBy={...post.reactedBy||{}};
+  const users=reactedBy[emoji]||[];
+  const already=users.includes(me.name);
+  if(already){ reactions[emoji]=Math.max((reactions[emoji]||1)-1,0); reactedBy[emoji]=users.filter(u=>u!==me.name); }
+  else { reactions[emoji]=(reactions[emoji]||0)+1; reactedBy[emoji]=[...users,me.name]; }
+  await updateDoc(doc(db,'posts',postId),{reactions,reactedBy});
+};
+
+window.doCommentReact = async function(postId,commentId,emoji){
+  if(!me) return;
+  const cSnap=await getDoc(doc(db,'posts',postId,'comments',commentId)).catch(()=>null);
+  if(!cSnap||!cSnap.exists()) return;
+  const c=cSnap.data();
+  const reactions={...c.reactions||{}};
+  const reactedBy={...c.reactedBy||{}};
+  const users=reactedBy[emoji]||[];
+  const already=users.includes(me.name);
+  if(already){ reactions[emoji]=Math.max((reactions[emoji]||1)-1,0); reactedBy[emoji]=users.filter(u=>u!==me.name); }
+  else { reactions[emoji]=(reactions[emoji]||0)+1; reactedBy[emoji]=[...users,me.name]; }
+  await updateDoc(doc(db,'posts',postId,'comments',commentId),{reactions,reactedBy});
+};
+
+// ─── POST EDIT/DELETE/PIN ─────────────────────────────────
+window.openEditPost = function(postId){
+  const p=allPosts.find(x=>x.id===postId); if(!p) return;
+  document.getElementById('edit-post-id').value=postId;
+  document.getElementById('edit-post-title').value=p.title||'';
+  document.getElementById('edit-post-body').value=p.body||'';
+  document.getElementById('edit-post-link').value=p.postLink||'';
+  openModal('edit-post-modal');
+};
+window.savePost = async function(){
+  const id=document.getElementById('edit-post-id').value;
+  const title=document.getElementById('edit-post-title').value.trim();
+  const body=document.getElementById('edit-post-body').value.trim();
+  const link=document.getElementById('edit-post-link').value.trim();
+  if(!title||!body){ showToast('Inserisci titolo e testo'); return; }
+  await updateDoc(doc(db,'posts',id),{title,body,postLink:link?( link.startsWith('http')?link:'https://'+link):null,edited:true});
+  closeModal('edit-post-modal');
+  showToast('Post modificato!');
+};
+window.delPost = async function(postId){
+  if(!confirm('Eliminare il post?')) return;
+  await deleteDoc(doc(db,'posts',postId));
+  showToast('Post eliminato.');
+};
+window.togglePin = async function(postId,current){
+  await updateDoc(doc(db,'posts',postId),{pinned:!current});
+  showToast(current?'Post sfissato':'Post fissato!');
+};
+
+// ─── FILES (AULA) ─────────────────────────────────────────
+async function loadFiles(){
+  const snap=await getDocs(collection(db,'files'));
+  const files=snap.docs.map(d=>({id:d.id,...d.data()}));
+  const c=document.getElementById('files-list');
+  if(!files.length){ c.innerHTML=`<div class="empty-state"><div class="empty-icon">📚</div>Nessun materiale ancora.${me&&me.isAdmin?' Aggiungine uno con il pulsante.':''}</div>`; return; }
+  c.innerHTML=files.map(f=>`<div class="file-card">
+    <div class="file-icon">📄</div>
+    <div class="file-info"><div class="file-name">${f.name}</div><div class="file-desc">${f.desc||''}</div></div>
+    <div class="file-acts">
+      ${f.url?`<a href="${f.url}" target="_blank" class="btn-open">📂 Apri</a>`:''}
+      ${me&&me.isAdmin?`<button class="btn-del-file" onclick="delFile('${f.id}')">🗑</button>`:''}
+    </div>
+  </div>`).join('');
+}
+window.submitFile = async function(){
+  const name=document.getElementById('file-name').value.trim();
+  const desc=document.getElementById('file-desc').value.trim();
+  const url=document.getElementById('file-url').value.trim();
+  if(!name){ showToast('Inserisci il nome'); return; }
+  if(!url){ showToast('Inserisci il link'); return; }
+  await addDoc(collection(db,'files'),{name,desc,url,createdAt:serverTimestamp()});
+  document.getElementById('file-name').value='';
+  document.getElementById('file-desc').value='';
+  document.getElementById('file-url').value='';
+  closeModal('file-modal');
+  loadFiles();
+  showToast('Materiale aggiunto!');
+};
+window.delFile = async function(id){
+  if(!confirm('Eliminare il materiale?')) return;
+  await deleteDoc(doc(db,'files',id));
+  loadFiles();
+  showToast('Eliminato.');
+};
+
+// ─── MEMBERS ─────────────────────────────────────────────
+async function loadMembers(){
+  const snap=await getDocs(collection(db,'members'));
+  allMembers=snap.docs.map(d=>({id:d.id,...d.data()}));
+  document.getElementById('stat-members').textContent=allMembers.length;
+  document.getElementById('members-count').textContent=allMembers.length+' membri';
+  const c=document.getElementById('members-list');
+  c.innerHTML=allMembers.map(m=>`<div class="member-row" style="${m.status==='banned'?'opacity:0.5':''}">
+    ${avatarHTML(m.initials||'?',m.color||'#ccc',m.photoUrl,36,'member-av')}
+    <div class="member-name">${m.name}${m.status==='silenced'?' 🔇':''}${m.status==='banned'?' 🚫':''}</div>
+    <span class="member-role ${m.role==='admin'?'role-admin':'role-member'}">${m.role==='admin'?'Admin':'Membro'}</span>
+    <span class="member-joined">${m.joined||''}</span>
+    ${me&&me.isAdmin&&m.role!=='admin'?`<div class="member-acts">
+      ${m.status==='silenced'?`<button class="act-pin" onclick="setStatus('${m.name}','normal')">Togli silenzio</button>`:`<button class="act-btn" style="border:1px solid #e5e5e5" onclick="setStatus('${m.name}','silenced')">🔇</button>`}
+      ${m.status==='banned'?`<button class="act-pin" onclick="setStatus('${m.name}','normal')">Sbanna</button>`:`<button class="act-del" onclick="setStatus('${m.name}','banned')">🚫</button>`}
+    </div>`:''}
+  </div>`).join('');
+}
+window.setStatus = async function(name,status){
+  const labels={silenced:'silenziare',banned:'bannare',normal:'ripristinare'};
+  if(!confirm(`Vuoi ${labels[status]} ${name}?`)) return;
+  await setDoc(doc(db,'members',name),{status},{merge:true});
+  loadMembers();
+  showToast(status==='normal'?`${name} ripristinato`:`${name} ${status==='banned'?'bannato':'silenziato'}`);
+};
+
+// ─── NOTIFICATIONS ────────────────────────────────────────
+function listenNotifications(){
+  if(!me) return;
+  const q=query(collection(db,'notifications'),where('toUser','==',me.name),orderBy('createdAt','desc'));
+  onSnapshot(q,snap=>{
+    const notifs=snap.docs.map(d=>({id:d.id,...d.data()}));
+    const unread=notifs.filter(n=>!n.read).length;
+    const badge=document.getElementById('notif-badge');
+    if(unread>0){ badge.style.display='flex'; badge.textContent=unread; }
+    else { badge.style.display='none'; }
+    document.getElementById('mark-read-btn').style.display=unread>0?'block':'none';
+    const c=document.getElementById('notif-list');
+    if(!notifs.length){ c.innerHTML=`<div class="empty-state"><div class="empty-icon">🔔</div>Nessuna notifica ancora.</div>`; return; }
+    c.innerHTML=notifs.map(n=>`<div class="notif-item${!n.read?' unread':''}" onclick="goToPost('${n.postId||''}','${n.id}')">
+      ${!n.read?'<div class="notif-dot"></div>':'<div style="width:8px"></div>'}
+      <div class="notif-text">${n.text||''}</div>
+      <div class="notif-time">${n.createdAt?timeAgo(n.createdAt):''}</div>
+    </div>`).join('');
+  });
+}
+function updateNotifBadge(){
+  // Also count new posts for all users
+  const newPosts=allPosts.filter(p=>p.createdAt&&p.author!==me.name&&(p.createdAt.seconds||0)*1000>lastSeenPosts).length;
+  // Badge only shown from Firebase listener for comments/mentions
+}
+window.goToPost = async function(postId,notifId){
+  if(notifId) await updateDoc(doc(db,'notifications',notifId),{read:true}).catch(()=>{});
+  switchTab('feed',document.querySelector('.nav-tab'));
+  setTimeout(()=>{ const el=document.getElementById('cw-'+postId); if(el){ el.scrollIntoView({behavior:'smooth'}); if(!commentsOpen[postId]) toggleComments(postId); } },300);
+};
+window.markAllRead = async function(){
+  const q=query(collection(db,'notifications'),where('toUser','==',me.name),where('read','==',false));
+  const snap=await getDocs(q);
+  for(const d of snap.docs) await updateDoc(d.ref,{read:true});
+};
+
+// ─── MESSAGES ─────────────────────────────────────────────
+function listenMessageBadge(){
+  if(!me) return;
+  const q=query(collection(db,'chats'),where('participants','array-contains',me.name));
+  onSnapshot(q,snap=>{
+    let total=0;
+    snap.docs.forEach(d=>{
+      const data=d.data();
+      const lastMsg=data.lastMsgAt?.seconds||0;
+      const seen=lastSeenMsgs[d.id]||0;
+      if(lastMsg>seen&&data.lastMsgBy!==me.name) total++;
+    });
+    const b=document.getElementById('msg-badge');
+    if(total>0){ b.style.display='flex'; b.textContent=total; }
+    else { b.style.display='none'; }
+  });
+}
+
+function getChatId(a,b){ return [a,b].sort().join('__'); }
+
+async function loadConversations(){
+  const c=document.getElementById('msg-conversations');
+  document.getElementById('chat-window').style.display='none';
+  c.style.display='block';
+
+  let partners=[];
+  if(me.isAdmin){
+    // Admin sees all members
+    partners=allMembers.filter(m=>m.name!==me.name);
+  } else {
+    // Member can only chat with admins
+    partners=allMembers.filter(m=>isAdmin(m.name));
+  }
+
+  if(!partners.length){ c.innerHTML=`<div class="empty-state"><div class="empty-icon">💬</div>Nessuna conversazione disponibile.</div>`; return; }
+
+  c.innerHTML='<div class="msg-list">'+partners.map(p=>{
+    const chatId=getChatId(me.name,p.name);
+    return `<div class="msg-conv" id="mc-${chatId}" onclick="openChat('${p.name}')">
+      ${avatarHTML(p.initials||'?',p.color||'#ccc',p.photoUrl,36,'member-av')}
+      <div style="flex:1;overflow:hidden">
+        <div class="msg-conv-name">${p.name}${isAdmin(p.name)?' 👑':''}</div>
+        <div class="msg-conv-last" id="ml-${chatId}">Clicca per aprire</div>
+      </div>
+      <div id="mu-${chatId}"></div>
+    </div>`;
+  }).join('')+'</div>';
+
+  // Load last messages
+  for(const p of partners){
+    const chatId=getChatId(me.name,p.name);
+    const chatSnap=await getDoc(doc(db,'chats',chatId)).catch(()=>null);
+    if(chatSnap&&chatSnap.exists()){
+      const d=chatSnap.data();
+      const el=document.getElementById('ml-'+chatId);
+      if(el) el.textContent=(d.lastMsg||'').substring(0,40);
+      const lastMsgAt=d.lastMsgAt?.seconds||0;
+      const seen=lastSeenMsgs[chatId]||0;
+      if(lastMsgAt>seen&&d.lastMsgBy!==me.name){
+        const ub=document.getElementById('mu-'+chatId);
+        if(ub) ub.innerHTML='<div class="msg-unread">!</div>';
+      }
+    }
+  }
+}
+
+window.openChat = async function(partnerName){
+  activeChatId=getChatId(me.name,partnerName);
+  lastSeenMsgs[activeChatId]=Math.floor(Date.now()/1000);
+  localStorage.setItem('lastSeenMsgs',JSON.stringify(lastSeenMsgs));
+  const partner=allMembers.find(m=>m.name===partnerName)||{name:partnerName,initials:getInitials(partnerName),color:getColor(partnerName)};
+  document.getElementById('msg-conversations').style.display='none';
+  const cw=document.getElementById('chat-window');
+  cw.style.display='flex';
+  cw.innerHTML=`<div class="chat-window">
+    <div class="chat-header">
+      <button class="chat-back" onclick="backToConvs()">←</button>
+      ${avatarHTML(partner.initials,partner.color,partner.photoUrl,30,'member-av')}
+      <span>${partner.name}</span>
+    </div>
+    <div class="chat-messages" id="chat-msgs"></div>
+    <div class="chat-composer">
+      <input type="file" id="chat-file-inp" accept="image/*" style="display:none" onchange="sendChatFile(this)" />
+      <button class="chat-attach" onclick="document.getElementById('chat-file-inp').click()">📎</button>
+      <textarea class="chat-input" id="chat-inp" placeholder="Scrivi un messaggio..." rows="1"
+        oninput="autoResize(this)"
+        onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendChatMsg();}"></textarea>
+      <button class="chat-send" onclick="sendChatMsg()">↑</button>
+    </div>
+  </div>`;
+  // Listen messages
+  if(chatListener) chatListener();
+  const q=query(collection(db,'chats',activeChatId,'messages'),orderBy('createdAt','asc'));
+  chatListener=onSnapshot(q,snap=>{
+    const msgs=snap.docs.map(d=>({id:d.id,...d.data()}));
+    const mc=document.getElementById('chat-msgs'); if(!mc) return;
+    mc.innerHTML=msgs.map(m=>{
+      const mine=m.from===me.name;
+      return `<div class="chat-msg ${mine?'mine':'theirs'}">
+        <div class="chat-bubble">${m.text||''}${m.imgUrl?`<br><img src="${m.imgUrl}" class="chat-msg-img">`:''}
+        </div>
+        <div class="chat-time">${m.time||''}</div>
+      </div>`;
+    }).join('');
+    mc.scrollTop=mc.scrollHeight;
+  });
+};
+
+window.backToConvs = function(){
+  if(chatListener){ chatListener(); chatListener=null; }
+  activeChatId=null;
+  document.getElementById('chat-window').style.display='none';
+  loadConversations();
+};
+
+window.sendChatMsg = async function(){
+  const inp=document.getElementById('chat-inp'); if(!inp||!activeChatId) return;
+  const text=inp.value.trim(); if(!text) return;
+  const now=new Date();
+  const msg={from:me.name,text,time:now.toLocaleTimeString('it',{hour:'2-digit',minute:'2-digit'}),createdAt:serverTimestamp()};
+  await addDoc(collection(db,'chats',activeChatId,'messages'),msg);
+  await setDoc(doc(db,'chats',activeChatId),{participants:[me.name,activeChatId.replace(me.name,'').replace('__','')],lastMsg:text,lastMsgBy:me.name,lastMsgAt:serverTimestamp()},{merge:true});
+  inp.value=''; inp.style.height='auto';
+};
+
+window.sendChatFile = async function(inp){
+  const file=inp.files[0]; if(!file||!activeChatId) return;
+  showToast('⬆️ Caricamento immagine...');
+  try{
+    const r=await uploadCloudinary(file);
+    const now=new Date();
+    await addDoc(collection(db,'chats',activeChatId,'messages'),{from:me.name,text:'',imgUrl:r.url,time:now.toLocaleTimeString('it',{hour:'2-digit',minute:'2-digit'}),createdAt:serverTimestamp()});
+    await setDoc(doc(db,'chats',activeChatId),{participants:[me.name,activeChatId.replace(me.name,'').replace('__','')],lastMsg:'📷 Immagine',lastMsgBy:me.name,lastMsgAt:serverTimestamp()},{merge:true});
+    inp.value='';
+  }catch(e){ showToast('Errore caricamento'); }
+};
+
+// ─── INVITE ───────────────────────────────────────────────
+window.copyInvite = function(){
   const url=document.getElementById('invite-url').textContent;
   if(navigator.clipboard) navigator.clipboard.writeText(url).catch(()=>{});
   showToast('Link copiato!');
 };
-window.switchTab = function(tab,el) {
+
+// ─── TAB SWITCH ───────────────────────────────────────────
+window.switchTab = function(tab,el){
   document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
-  el.classList.add('active');
-  document.getElementById('section-feed').style.display=tab==='feed'?'flex':'none';
-  document.getElementById('section-aula').style.display=tab==='aula'?'flex':'none';
-  document.getElementById('section-membri').style.display=tab==='membri'?'flex':'none';
+  if(el) el.classList.add('active');
+  ['feed','aula','membri','notifiche','messaggi'].forEach(s=>{
+    document.getElementById('section-'+s).style.display='none';
+  });
+  document.getElementById('section-'+tab).style.display='flex';
   if(tab==='aula') loadFiles();
   if(tab==='membri') loadMembers();
+  if(tab==='messaggi') loadConversations();
+  if(tab==='notifiche'){
+    lastSeenPosts=Date.now();
+    localStorage.setItem('lastSeenPosts',lastSeenPosts);
+  }
 };
 
-document.querySelectorAll('.modal-bg').forEach(m=>m.addEventListener('click',e=>{ if(e.target===m) m.classList.remove('open'); }));
+// ─── INIT ─────────────────────────────────────────────────
 document.getElementById('login-name').addEventListener('keypress',e=>{ if(e.key==='Enter') doLogin(); });
-const savedName = localStorage.getItem('cricca_user');
-if(savedName) {
-  document.getElementById('login-name').value = savedName;
-  doLogin();
-}
+['feed','aula','membri','notifiche','messaggi'].forEach(s=>{ document.getElementById('section-'+s).style.display='none'; });
 document.getElementById('section-feed').style.display='flex';
-document.getElementById('section-aula').style.display='none';
-document.getElementById('section-membri').style.display='none';
+
+const saved=localStorage.getItem('cricca_user');
+if(saved){ document.getElementById('login-name').value=saved; doLogin(); }
 </script>
 </body>
 </html>
