@@ -231,6 +231,20 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
 .react-pick-btn { font-size: 26px; border: none; background: none; cursor: pointer; padding: 6px; border-radius: 8px; }
 .react-pick-btn:hover { background: #f0f0f0; }
 
+/* ANNOUNCEMENT BANNER */
+.announcement-bar { background: linear-gradient(135deg, #1D9E75, #185FA5); color: #fff; padding: 10px 16px; border-radius: 10px; margin-bottom: 14px; display: flex; align-items: center; gap: 10px; }
+.announcement-text { flex: 1; font-size: 14px; font-weight: 500; line-height: 1.4; }
+.announcement-close { background: rgba(255,255,255,0.2); border: none; border-radius: 6px; color: #fff; padding: 3px 8px; cursor: pointer; font-size: 12px; white-space: nowrap; }
+.announcement-close:hover { background: rgba(255,255,255,0.35); }
+.announcement-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; opacity: 0.8; margin-bottom: 2px; }
+
+/* ADMIN NOTES */
+.note-card { background: #fffde7; border: 1px solid #f9e04b; border-radius: 10px; padding: 12px 14px; display: flex; gap: 10px; align-items: flex-start; }
+.note-text { flex: 1; font-size: 13px; color: #444; line-height: 1.5; white-space: pre-wrap; word-break: break-word; }
+.note-meta { font-size: 11px; color: #aaa; margin-top: 4px; }
+.note-del { background: none; border: none; cursor: pointer; color: #bbb; font-size: 14px; padding: 0; }
+.note-del:hover { color: #e53e3e; }
+
 /* TOAST */
 .toast { position: fixed; bottom: 20px; right: 20px; background: #1a1a1a; color: #fff; padding: 9px 18px; border-radius: 8px; font-size: 13px; font-weight: 500; z-index: 999; opacity: 0; transition: opacity 0.25s; pointer-events: none; }
 .toast.show { opacity: 1; }
@@ -276,7 +290,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
 <!-- LOGIN -->
 <div class="login-screen" id="login-screen">
   <div class="login-box">
-    <div class="login-logo">CB</div>
+    <img src="https://res.cloudinary.com/dvipaltpm/image/upload/v1779630504/WhatsApp_Image_2026-05-24_at_15.44.07_ruk6jd.jpg" style="width:54px;height:54px;border-radius:50%;object-fit:cover;margin:0 auto 12px;display:block;" alt="Logo">
     <div class="login-title">La Cricca del Brunetti</div>
     <div class="login-sub">Gruppo riservato agli studenti della masterclass</div>
     <input class="login-input" id="login-name" placeholder="Il tuo nome e cognome" />
@@ -287,7 +301,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
 
 <!-- NAV -->
 <div class="nav">
-  <div class="nav-logo">CB</div>
+  <img src="https://res.cloudinary.com/dvipaltpm/image/upload/v1779630504/WhatsApp_Image_2026-05-24_at_15.44.07_ruk6jd.jpg" style="width:36px;height:36px;border-radius:50%;object-fit:cover;flex-shrink:0;" alt="Logo">
   <div class="nav-brand">La Cricca del Brunetti</div>
   <div class="nav-tabs">
     <button class="nav-tab active" onclick="switchTab('feed',this)">Comunità</button>
@@ -295,6 +309,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
     <button class="nav-tab" onclick="switchTab('membri',this)">Membri</button>
     <button class="nav-tab" id="tab-notifiche" onclick="switchTab('notifiche',this)">🔔 <span id="notif-badge" class="nav-badge" style="display:none">0</span></button>
     <button class="nav-tab" id="tab-messaggi" onclick="switchTab('messaggi',this)">💬 <span id="msg-badge" class="nav-badge" style="display:none">0</span></button>
+    <button class="nav-tab" id="tab-admin" onclick="switchTab('admin',this)" style="display:none">⚙️ Admin</button>
   </div>
   <div class="nav-right">
     <button class="nav-exit" onclick="doLogout()">Esci</button>
@@ -311,6 +326,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
 
     <!-- FEED -->
     <div class="section-feed" id="section-feed">
+      <div id="announcements-container"></div>
       <div class="composer-box">
         <div class="composer-trigger" id="composer-trigger" onclick="openComposer()">
           <div class="composer-trigger-avatar" id="composer-av"><span id="composer-initials">?</span></div>
@@ -378,12 +394,36 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
       <div id="chat-window" style="display:none"></div>
     </div>
 
+    <!-- ADMIN PANEL -->
+    <div class="section-admin" id="section-admin" style="display:none;flex-direction:column;gap:16px;">
+      <div>
+        <div class="section-header">
+          <span class="section-title">📢 Annunci in evidenza</span>
+        </div>
+        <div style="background:#fff;border:1px solid #e5e5e5;border-radius:12px;padding:14px;margin-bottom:12px;">
+          <textarea id="announcement-input" class="modal-textarea" placeholder="Scrivi un annuncio per tutti i membri..." style="margin-bottom:8px;width:100%"></textarea>
+          <button class="btn-publish" onclick="publishAnnouncement()">📢 Pubblica annuncio</button>
+        </div>
+        <div id="announcements-admin-list"></div>
+      </div>
+      <div>
+        <div class="section-header">
+          <span class="section-title">📝 Note private admin</span>
+        </div>
+        <div style="background:#fff;border:1px solid #e5e5e5;border-radius:12px;padding:14px;margin-bottom:12px;">
+          <textarea id="note-input" class="modal-textarea" placeholder="Scrivi una nota privata (visibile solo a te e Michela)..." style="margin-bottom:8px;width:100%"></textarea>
+          <button class="btn-publish" onclick="saveNote()" style="background:#BA7517">📝 Salva nota</button>
+        </div>
+        <div id="notes-list"></div>
+      </div>
+    </div>
+
   </div>
 
   <!-- SIDEBAR -->
   <div class="sidebar">
     <div class="sidebar-card">
-      <div class="nav-logo" style="width:44px;height:44px;font-size:15px;margin-bottom:10px;">CB</div>
+      <img src="https://res.cloudinary.com/dvipaltpm/image/upload/v1779630504/WhatsApp_Image_2026-05-24_at_15.44.07_ruk6jd.jpg" style="width:44px;height:44px;border-radius:50%;object-fit:cover;margin-bottom:10px;" alt="Logo">
       <div class="sidebar-name">La Cricca del Brunetti</div>
       <div class="sidebar-desc">Il gruppo riservato agli studenti della masterclass.</div>
       <div class="sidebar-stats">
@@ -596,6 +636,7 @@ window.doLogin = async function(){
   if(me.isAdmin) {
     document.getElementById('btn-add-file').style.display='flex';
     document.getElementById('invite-btn-wrap').innerHTML='<button class="btn-invite" onclick="openModal(\'invite-modal\')">🔗 Copia link invito</button>';
+    document.getElementById('tab-admin').style.display='block';
   }
   await setDoc(doc(db,'members',name),{name,initials:me.initials,color:me.color,role:me.isAdmin?'admin':'member',joined:new Date().toLocaleDateString('it'),photoUrl:me.photoUrl||null},{merge:true});
   initApp();
@@ -607,6 +648,8 @@ function initApp(){
   loadMembers();
   listenNotifications();
   listenMessageBadge();
+  listenAnnouncements();
+  if(me.isAdmin) listenNotes();
 }
 
 window.doLogout = function(){ localStorage.removeItem('cricca_user'); location.reload(); };
@@ -1251,6 +1294,87 @@ window.sendChatFile = async function(inp){
   }catch(e){ showToast('Errore caricamento'); }
 };
 
+// ─── ANNOUNCEMENTS ───────────────────────────────────────────
+function listenAnnouncements(){
+  const q = query(collection(db,'announcements'), orderBy('createdAt','desc'));
+  onSnapshot(q, snap=>{
+    const items = snap.docs.map(d=>({id:d.id,...d.data()}));
+    // Show in feed for everyone
+    const c = document.getElementById('announcements-container');
+    if(c){
+      c.innerHTML = items.map(a=>`
+        <div class="announcement-bar">
+          <div style="flex:1">
+            <div class="announcement-label">📢 Annuncio</div>
+            <div class="announcement-text">${a.text}</div>
+            <div style="font-size:11px;opacity:0.7;margin-top:3px">— ${a.author} · ${a.createdAt?timeAgo(a.createdAt):''}</div>
+          </div>
+          ${me&&me.isAdmin?`<button class="announcement-close" onclick="delAnnouncement('${a.id}')">✕ Rimuovi</button>`:''}
+        </div>`).join('');
+    }
+    // Show in admin panel
+    const ca = document.getElementById('announcements-admin-list');
+    if(ca){
+      ca.innerHTML = items.length===0 ? '<div style="font-size:13px;color:#aaa">Nessun annuncio attivo.</div>' :
+        items.map(a=>`
+          <div class="announcement-bar" style="margin-bottom:8px">
+            <div style="flex:1">
+              <div class="announcement-text">${a.text}</div>
+              <div style="font-size:11px;opacity:0.7;margin-top:3px">— ${a.author} · ${a.createdAt?timeAgo(a.createdAt):''}</div>
+            </div>
+            <button class="announcement-close" onclick="delAnnouncement('${a.id}')">✕</button>
+          </div>`).join('');
+    }
+  });
+}
+
+window.publishAnnouncement = async function(){
+  const text = document.getElementById('announcement-input').value.trim();
+  if(!text){ showToast('Scrivi un annuncio'); return; }
+  await addDoc(collection(db,'announcements'),{text, author:me.name, createdAt:serverTimestamp()});
+  document.getElementById('announcement-input').value='';
+  showToast('Annuncio pubblicato!');
+};
+
+window.delAnnouncement = async function(id){
+  if(!confirm('Rimuovere questo annuncio?')) return;
+  await deleteDoc(doc(db,'announcements',id));
+  showToast('Annuncio rimosso.');
+};
+
+// ─── ADMIN NOTES ──────────────────────────────────────────
+function listenNotes(){
+  const q = query(collection(db,'adminNotes'), orderBy('createdAt','desc'));
+  onSnapshot(q, snap=>{
+    const notes = snap.docs.map(d=>({id:d.id,...d.data()}));
+    const c = document.getElementById('notes-list');
+    if(!c) return;
+    c.innerHTML = notes.length===0 ? '<div style="font-size:13px;color:#aaa">Nessuna nota salvata.</div>' :
+      notes.map(n=>`
+        <div class="note-card">
+          <div style="flex:1">
+            <div class="note-text">${n.text}</div>
+            <div class="note-meta">— ${n.author} · ${n.createdAt?timeAgo(n.createdAt):''}</div>
+          </div>
+          <button class="note-del" onclick="delNote('${n.id}')">🗑</button>
+        </div>`).join('');
+  });
+}
+
+window.saveNote = async function(){
+  const text = document.getElementById('note-input').value.trim();
+  if(!text){ showToast('Scrivi una nota'); return; }
+  await addDoc(collection(db,'adminNotes'),{text, author:me.name, createdAt:serverTimestamp()});
+  document.getElementById('note-input').value='';
+  showToast('Nota salvata!');
+};
+
+window.delNote = async function(id){
+  if(!confirm('Eliminare questa nota?')) return;
+  await deleteDoc(doc(db,'adminNotes',id));
+  showToast('Nota eliminata.');
+};
+
 // ─── INVITE ───────────────────────────────────────────────
 window.copyInvite = function(){
   const url=document.getElementById('invite-url').textContent;
@@ -1262,13 +1386,14 @@ window.copyInvite = function(){
 window.switchTab = function(tab,el){
   document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
   if(el) el.classList.add('active');
-  ['feed','aula','membri','notifiche','messaggi'].forEach(s=>{
+  ['feed','aula','membri','notifiche','messaggi','admin'].forEach(s=>{
     document.getElementById('section-'+s).style.display='none';
   });
   document.getElementById('section-'+tab).style.display='flex';
   if(tab==='aula') loadFiles();
   if(tab==='membri') loadMembers();
   if(tab==='messaggi') loadConversations();
+  if(tab==='admin'){ listenAnnouncements(); if(me&&me.isAdmin) listenNotes(); }
   if(tab==='notifiche'){
     lastSeenPosts=Date.now();
     localStorage.setItem('lastSeenPosts',lastSeenPosts);
