@@ -332,8 +332,9 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
       </div>
       <div class="search-wrap">
         <span class="search-icon">🔍</span>
-        <input id="search-inp" placeholder="Cerca nelle discussioni..." oninput="onSearch(this.value)" />
+        <input id="search-inp" placeholder="🔍 Cerca per parola chiave o nome membro..." oninput="onSearch(this.value)" />
       </div>
+      <div id="search-info" style="font-size:12px;color:#aaa;padding:2px 4px;min-height:16px;"></div>
       <div id="posts-list"></div>
     </div>
 
@@ -638,8 +639,10 @@ window.uploadProfilePhoto = async function(inp){
 function listenPosts(){
   const q = query(collection(db,'posts'),orderBy('pinned','desc'),orderBy('createdAt','desc'));
   onSnapshot(q, snap=>{
+    const wasEmpty = allPosts.length === 0;
     allPosts = snap.docs.map(d=>({id:d.id,...d.data()}));
     document.getElementById('stat-posts').textContent=allPosts.length;
+    if(wasEmpty) postsPage = POSTS_PER_PAGE;
     renderPosts();
     updateNotifBadge();
   });
@@ -699,16 +702,39 @@ window.submitPost = async function(){
   showToast('Post pubblicato!');
 };
 
-window.onSearch = function(v){ searchQ=v.toLowerCase(); renderPosts(); };
+let postsPage = 20; // how many posts to show
+const POSTS_PER_PAGE = 20;
+
+window.onSearch = function(v){
+  searchQ=v.toLowerCase().trim();
+  postsPage = POSTS_PER_PAGE; // reset pagination on new search
+  renderPosts();
+};
+
+window.loadMorePosts = function(){
+  postsPage += POSTS_PER_PAGE;
+  renderPosts();
+  // Scroll to load more button position
+  const btn = document.getElementById('load-more-btn');
+  if(btn) btn.scrollIntoView({behavior:'smooth', block:'center'});
+};
 
 function renderPosts(){
   const c=document.getElementById('posts-list');
   let list = allPosts;
   if(searchQ) list=list.filter(p=>(p.title||'').toLowerCase().includes(searchQ)||(p.body||'').toLowerCase().includes(searchQ)||(p.author||'').toLowerCase().includes(searchQ));
-  if(!list.length){ c.innerHTML=`<div class="empty-state"><div class="empty-icon">💬</div>${searchQ?'Nessun risultato.':'Nessun post ancora.<br>Sii il primo!'}</div>`; return; }
+  // Search info
+  const info=document.getElementById('search-info');
+  if(info){
+    if(searchQ) info.textContent=list.length+' risultat'+(list.length===1?'o':'i')+' per "'+searchQ+'"';
+    else info.textContent='';
+  }
+  if(!list.length){ c.innerHTML=`<div class="empty-state"><div class="empty-icon">💬</div>${searchQ?'Nessun risultato per "'+searchQ+'".':'Nessun post ancora.<br>Sii il primo!'}</div>`; return; }
+  const visible = searchQ ? list : list.slice(0, postsPage);
+  const hasMore = !searchQ && list.length > postsPage;
   const prevOpen = {...commentsOpen};
   commentsListeners = {};
-  c.innerHTML=list.map(p=>{
+  c.innerHTML=visible.map(p=>{
     const reacts = EMOJIS.map(e=>{
       const cnt=(p.reactions&&p.reactions[e])||0;
       const mine=p.reactedBy&&p.reactedBy[e]&&p.reactedBy[e].includes(me?me.name:'');
@@ -755,6 +781,10 @@ function renderPosts(){
   }).join('');
   // Re-listen open comments
   Object.keys(prevOpen).forEach(id=>{ if(prevOpen[id]){ commentsOpen[id]=true; listenComments(id); const cw=document.getElementById('cw-'+id); if(cw) cw.classList.add('open'); } });
+  // Load more button
+  if(hasMore){
+    c.innerHTML += `<div style="text-align:center;padding:16px"><button id="load-more-btn" onclick="loadMorePosts()" style="border:1px solid #e5e5e5;background:#fff;border-radius:8px;padding:9px 24px;font-size:13px;cursor:pointer;color:#666">Carica altri ${Math.min(POSTS_PER_PAGE, list.length-postsPage)} post</button><div style="font-size:11px;color:#aaa;margin-top:6px">${postsPage} di ${list.length} post</div></div>`;
+  }
 }
 
 window.autoResize = function(el){ el.style.height='auto'; el.style.height=Math.min(el.scrollHeight,120)+'px'; };
