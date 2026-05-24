@@ -630,6 +630,7 @@ window.uploadProfilePhoto = async function(inp){
     pv.innerHTML=`<img src="${res.url}" style="width:100%;height:100%;object-fit:cover;border-radius:50%">`;
     document.getElementById('profile-upload-status').textContent='✅ Foto aggiornata!';
     showToast('Foto profilo aggiornata!');
+    await loadMembers();
   } catch(e){ document.getElementById('profile-upload-status').textContent='❌ Errore caricamento'; }
 };
 
@@ -1058,6 +1059,7 @@ function listenMessageBadge(){
 function getChatId(a,b){ return [a,b].sort().join('__'); }
 
 async function loadConversations(){
+  await loadMembers();
   const c=document.getElementById('msg-conversations');
   document.getElementById('chat-window').style.display='none';
   c.style.display='block';
