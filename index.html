@@ -706,6 +706,8 @@ function renderPosts(){
   let list = allPosts;
   if(searchQ) list=list.filter(p=>(p.title||'').toLowerCase().includes(searchQ)||(p.body||'').toLowerCase().includes(searchQ)||(p.author||'').toLowerCase().includes(searchQ));
   if(!list.length){ c.innerHTML=`<div class="empty-state"><div class="empty-icon">💬</div>${searchQ?'Nessun risultato.':'Nessun post ancora.<br>Sii il primo!'}</div>`; return; }
+  const prevOpen = {...commentsOpen};
+  commentsListeners = {};
   c.innerHTML=list.map(p=>{
     const reacts = EMOJIS.map(e=>{
       const cnt=(p.reactions&&p.reactions[e])||0;
@@ -752,7 +754,7 @@ function renderPosts(){
     </div>`;
   }).join('');
   // Re-listen open comments
-  Object.keys(commentsOpen).forEach(id=>{ if(commentsOpen[id]) listenComments(id); });
+  Object.keys(prevOpen).forEach(id=>{ if(prevOpen[id]){ commentsOpen[id]=true; listenComments(id); const cw=document.getElementById('cw-'+id); if(cw) cw.classList.add('open'); } });
 }
 
 window.autoResize = function(el){ el.style.height='auto'; el.style.height=Math.min(el.scrollHeight,120)+'px'; };
@@ -849,7 +851,12 @@ window.sendComment = async function(postId){
   await updateDoc(doc(db,'posts',postId),{comments:(post?.comments||0)+1,lastCommentAt:serverTimestamp()});
   inp.value=''; inp.style.height='auto';
   delete pendingCommentFiles[postId];
-  document.getElementById('cfi-'+postId).value='';
+  const cfiEl = document.getElementById('cfi-'+postId);
+  if(cfiEl) cfiEl.value='';
+  // Keep comments open and re-listen
+  commentsOpen[postId] = true;
+  delete commentsListeners[postId];
+  listenComments(postId);
   // Add notification
   if(post&&post.author!==me.name){
     await addDoc(collection(db,'notifications'),{
