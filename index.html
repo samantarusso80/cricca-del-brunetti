@@ -105,6 +105,10 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
 .comment-time { font-size: 11px; color: #aaa; }
 .comment-edit-btn { font-size: 11px; color: #1D9E75; cursor: pointer; border: none; background: none; padding: 0; }
 .comment-del-btn { font-size: 11px; color: #e53e3e; cursor: pointer; border: none; background: none; padding: 0; }
+.comment-reply-btn { font-size: 11px; color: #1D9E75; cursor: pointer; border: none; background: none; padding: 0; }
+.reply-quote { background: #e8f4ff; border-left: 3px solid #185FA5; border-radius: 6px; padding: 5px 10px; margin-bottom: 5px; font-size: 12px; color: #444; }
+.reply-quote-author { font-weight: 600; color: #185FA5; margin-bottom: 2px; }
+.reply-quote-text { color: #666; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 300px; }
 
 /* COMMENT REACTIONS */
 .comment-reactions { display: flex; gap: 4px; flex-wrap: wrap; margin-top: 3px; }
@@ -824,6 +828,36 @@ window.toggleComments = function(postId){
 };
 
 let pendingCommentFiles={};
+let pendingReplies={}; // postId -> {commentId, author, text}
+
+window.setReply = function(postId, commentId, author, text){
+  pendingReplies[postId] = {commentId, author, text};
+  const inp = document.getElementById('ci-'+postId);
+  if(inp){
+    // Show reply preview above input
+    let preview = document.getElementById('reply-preview-'+postId);
+    if(!preview){
+      preview = document.createElement('div');
+      preview.id = 'reply-preview-'+postId;
+      inp.parentNode.insertBefore(preview, inp);
+    }
+    preview.innerHTML = `<div class="reply-quote" style="margin-bottom:6px">
+      <div class="reply-quote-author">↩ In risposta a ${author}</div>
+      <div class="reply-quote-text">${text}</div>
+      <button onclick="clearReply('${postId}')" style="float:right;border:none;background:none;cursor:pointer;color:#aaa;font-size:12px;margin-top:-16px">✕</button>
+    </div>`;
+    inp.focus();
+    inp.placeholder = 'Rispondi a '+author+'...';
+  }
+};
+
+window.clearReply = function(postId){
+  delete pendingReplies[postId];
+  const preview = document.getElementById('reply-preview-'+postId);
+  if(preview) preview.remove();
+  const inp = document.getElementById('ci-'+postId);
+  if(inp) inp.placeholder = 'Scrivi un commento... (@nome per taggare)';
+};
 window.handleCommentFile = function(inp,postId){
   const file=inp.files[0]; if(!file) return;
   pendingCommentFiles[postId]=file;
@@ -870,13 +904,16 @@ window.sendComment = async function(postId){
   let imgUrl=null;
   if(file){ try{ const r=await uploadCloudinary(file); imgUrl=r.url; }catch(e){ showToast('Errore caricamento'); return; } }
   const now=new Date();
+  const replyData = pendingReplies[postId] || null;
   await addDoc(collection(db,'posts',postId,'comments'),{
     author:me.name,initials:me.initials,color:me.color,photoUrl:me.photoUrl||null,
     text:text||'',imgUrl,
+    replyTo: replyData ? {commentId:replyData.commentId, author:replyData.author, text:replyData.text} : null,
     time:now.toLocaleTimeString('it',{hour:'2-digit',minute:'2-digit'}),
     createdAt:serverTimestamp(),
     reactions:{},reactedBy:{}
   });
+  clearReply(postId);
   const post=allPosts.find(p=>p.id===postId);
   await updateDoc(doc(db,'posts',postId),{comments:(post?.comments||0)+1,lastCommentAt:serverTimestamp()});
   inp.value=''; inp.style.height='auto';
