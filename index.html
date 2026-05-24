@@ -887,6 +887,7 @@ function listenComments(postId){
           <div class="comment-reactions">${creacts}<button class="c-add-react" onclick="document.getElementById('creact-post-id').value='${postId}';document.getElementById('creact-comment-id').value='${c.id}';openModal('creact-modal')">😊</button></div>
           <div class="comment-footer">
             <span class="comment-time">${c.time||''} ${c.createdAt?'· '+timeAgo(c.createdAt):''}</span>
+            <button class="comment-reply-btn" onclick="setReply('${postId}','${c.id}','${c.author}','${(c.text||'').replace(/'/g,"\\'").replace(/\n/g,' ').substring(0,60)}')">↩ Rispondi</button>
             ${canEdit?`<button class="comment-edit-btn" onclick="openEditComment('${postId}','${c.id}','${(c.text||'').replace(/'/g,"\\'")}')">✏️</button>`:''}
             ${canEdit?`<button class="comment-del-btn" onclick="delComment('${postId}','${c.id}')">🗑</button>`:''}
           </div>
