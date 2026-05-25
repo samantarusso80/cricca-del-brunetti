@@ -994,7 +994,9 @@ function listenComments(postId){
         ${avatarHTML(c.initials||'?',c.color||'#ccc',c.photoUrl,26,'comment-av')}
         <div class="comment-bubble">
           ${c.replyTo?`<div class="reply-quote"><div class="reply-quote-author">↩ ${c.replyTo.author}</div><div class="reply-quote-text">${(c.replyTo.text||'').substring(0,80)}</div></div>`:''}
-          <div class="comment-author">${c.author}</div>        ${c.imgUrl?`<img src="${c.imgUrl}" class="comment-img">`:''}
+          <div class="comment-author">${c.author}</div>
+          <div class="comment-text">${highlightMentions(c.text||'')}</div>
+          ${c.imgUrl?`<img src="${c.imgUrl}" class="comment-img">`:''}
           <div class="comment-reactions">${creacts}<button class="c-add-react" onclick="document.getElementById('creact-post-id').value='${postId}';document.getElementById('creact-comment-id').value='${c.id}';openModal('creact-modal')">😊</button></div>
           <div class="comment-footer">
             <span class="comment-time">${c.time||''} ${c.createdAt?'· '+timeAgo(c.createdAt):''}</span>
