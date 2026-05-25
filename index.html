@@ -805,7 +805,7 @@ window.submitPost = async function(){
     try{ const r=await uploadCloudinary(pendingPostFile); imgUrl=r.url; }catch(e){ showToast('Errore caricamento immagine'); return; }
   }
   const now=new Date();
-  await addDoc(collection(db,'posts'),{
+  const newPostRef = await addDoc(collection(db,'posts'),{
     author:me.name,initials:me.initials,color:me.color,photoUrl:me.photoUrl||null,
     title,body,imgUrl,
     postLink:link?( link.startsWith('http')?link:'https://'+link ):null,
@@ -816,6 +816,23 @@ window.submitPost = async function(){
   });
   closeComposer();
   showToast('Post pubblicato!');
+  // Notify all members of new post
+  const membersSnap = await getDocs(collection(db,'members'));
+  for(const mdoc of membersSnap.docs){
+    const mdata = mdoc.data();
+    if(mdata.name !== me.name){
+      await addDoc(collection(db,'notifications'),{
+        toUser: mdata.name,
+        fromUser: me.name,
+        type: 'newpost',
+        postId: newPostRef.id,
+        postTitle: title,
+        text: `${me.name} ha pubblicato un nuovo post: "${title}"`,
+        createdAt: serverTimestamp(),
+        read: false
+      });
+    }
+  }
 };
 
 let postsPage = 20; // how many posts to show
