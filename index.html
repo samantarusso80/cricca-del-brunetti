@@ -231,6 +231,18 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
 .react-pick-btn { font-size: 26px; border: none; background: none; cursor: pointer; padding: 6px; border-radius: 8px; }
 .react-pick-btn:hover { background: #f0f0f0; }
 
+/* PENDING APPROVAL */
+.pending-screen { position: fixed; inset: 0; background: #f5f5f0; display: flex; align-items: center; justify-content: center; z-index: 500; }
+.pending-box { background: #fff; border: 1px solid #e5e5e5; border-radius: 16px; padding: 30px 24px; width: 340px; max-width: 92vw; text-align: center; }
+.pending-icon { font-size: 48px; margin-bottom: 12px; }
+.pending-title { font-size: 18px; font-weight: 700; margin-bottom: 8px; }
+.pending-sub { font-size: 13px; color: #888; line-height: 1.6; }
+.pending-item { background: #fff; border: 1px solid #e5e5e5; border-radius: 10px; padding: 12px 14px; display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+.pending-name { flex: 1; font-size: 14px; font-weight: 600; }
+.pending-time { font-size: 11px; color: #aaa; }
+.btn-approve { background: #1D9E75; color: #fff; border: none; border-radius: 6px; padding: 5px 12px; font-size: 12px; cursor: pointer; font-weight: 600; }
+.btn-reject { background: none; border: 1px solid #e53e3e; color: #e53e3e; border-radius: 6px; padding: 5px 12px; font-size: 12px; cursor: pointer; }
+
 /* ANNOUNCEMENT BANNER */
 .announcement-bar { background: linear-gradient(135deg, #1D9E75, #185FA5); color: #fff; padding: 10px 16px; border-radius: 10px; margin-bottom: 14px; display: flex; align-items: center; gap: 10px; }
 .announcement-text { flex: 1; font-size: 14px; font-weight: 500; line-height: 1.4; }
@@ -296,6 +308,15 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
     <input class="login-input" id="login-name" placeholder="Il tuo nome e cognome" />
     <button class="login-btn" onclick="doLogin()">Entra nella Cricca</button>
     <div class="login-note">Solo chi ha il link può accedere</div>
+  </div>
+</div>
+
+<!-- PENDING APPROVAL SCREEN -->
+<div class="pending-screen" id="pending-screen" style="display:none">
+  <div class="pending-box">
+    <div class="pending-icon">⏳</div>
+    <div class="pending-title">Richiesta inviata!</div>
+    <div class="pending-sub">La tua richiesta di accesso è stata inviata.<br>Attendi l'approvazione di Samanta o Michela.<br><br>Puoi chiudere questa pagina e rientrare più tardi.</div>
   </div>
 </div>
 
@@ -398,11 +419,23 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
     <div class="section-admin" id="section-admin" style="display:none;flex-direction:column;gap:16px;">
       <div>
         <div class="section-header">
+          <span class="section-title">🕐 Richieste di accesso</span>
+          <span id="pending-count" style="font-size:12px;color:#aaa;"></span>
+        </div>
+        <div id="pending-list"><div style="font-size:13px;color:#aaa">Nessuna richiesta in attesa.</div></div>
+      </div>
+      <div>
+        <div class="section-header">
           <span class="section-title">📢 Annunci in evidenza</span>
         </div>
         <div style="background:#fff;border:1px solid #e5e5e5;border-radius:12px;padding:14px;margin-bottom:12px;">
           <textarea id="announcement-input" class="modal-textarea" placeholder="Scrivi un annuncio per tutti i membri..." style="margin-bottom:8px;width:100%"></textarea>
-          <button class="btn-publish" onclick="publishAnnouncement()">📢 Pubblica annuncio</button>
+          <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+            <button class="btn-publish" onclick="publishAnnouncement()">📢 Pubblica annuncio</button>
+            <button class="btn-attach" onclick="document.getElementById('ann-file-inp').click()">📎 Allega file</button>
+            <input type="file" id="ann-file-inp" accept="image/*,.doc,.docx" style="display:none" onchange="handleAnnFile(this)" />
+            <span id="ann-file-preview" style="font-size:12px;color:#666;"></span>
+          </div>
         </div>
         <div id="announcements-admin-list"></div>
       </div>
@@ -541,6 +574,19 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
   </div>
 </div>
 
+<!-- MODAL modifica annuncio -->
+<div class="modal-bg" id="edit-announcement-modal">
+  <div class="modal">
+    <div class="modal-title">Modifica annuncio</div>
+    <textarea class="modal-textarea" id="edit-announcement-text" placeholder="Testo annuncio..."></textarea>
+    <input type="hidden" id="edit-announcement-id" />
+    <div class="modal-actions">
+      <button class="modal-cancel" onclick="closeModal('edit-announcement-modal')">Annulla</button>
+      <button class="modal-submit" onclick="saveAnnouncement()">Salva</button>
+    </div>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
 
 <script type="module">
@@ -621,6 +667,29 @@ window.doLogin = async function(){
   if(!name){ showToast('Inserisci il tuo nome'); return; }
   const snap = await getDoc(doc(db,'members',name)).catch(()=>null);
   if(snap&&snap.exists()&&snap.data().status==='banned'){ showToast('Accesso negato. Contatta un admin.'); return; }
+  
+  // Check if existing member (already approved)
+  const isExisting = snap&&snap.exists()&&snap.data().approved!==false;
+  
+  // If not existing and not admin, put in pending
+  if(!isExisting && !isAdmin(name)){
+    // Check if already pending
+    const pendingSnap = await getDoc(doc(db,'pendingMembers',name)).catch(()=>null);
+    if(pendingSnap&&pendingSnap.exists()){
+      document.getElementById('login-screen').style.display='none';
+      document.getElementById('pending-screen').style.display='flex';
+      return;
+    }
+    // Add to pending
+    await setDoc(doc(db,'pendingMembers',name),{
+      name, initials:getInitials(name), color:getColor(name),
+      requestedAt:serverTimestamp(), status:'pending'
+    });
+    document.getElementById('login-screen').style.display='none';
+    document.getElementById('pending-screen').style.display='flex';
+    return;
+  }
+  
   me = { name, initials:getInitials(name), color:getColor(name), isAdmin:isAdmin(name), photoUrl: snap&&snap.exists()?snap.data().photoUrl||null:null };
   localStorage.setItem('cricca_user',name);
   document.getElementById('login-screen').style.display='none';
@@ -638,7 +707,7 @@ window.doLogin = async function(){
     document.getElementById('invite-btn-wrap').innerHTML='<button class="btn-invite" onclick="openModal(\'invite-modal\')">🔗 Copia link invito</button>';
     document.getElementById('tab-admin').style.display='block';
   }
-  await setDoc(doc(db,'members',name),{name,initials:me.initials,color:me.color,role:me.isAdmin?'admin':'member',joined:new Date().toLocaleDateString('it'),photoUrl:me.photoUrl||null},{merge:true});
+  await setDoc(doc(db,'members',name),{name,initials:me.initials,color:me.color,role:me.isAdmin?'admin':'member',joined:new Date().toLocaleDateString('it'),photoUrl:me.photoUrl||null,approved:true},{merge:true});
   initApp();
 };
 
@@ -649,7 +718,7 @@ function initApp(){
   listenNotifications();
   listenMessageBadge();
   listenAnnouncements();
-  if(me.isAdmin) listenNotes();
+  if(me.isAdmin){ listenNotes(); listenPendingMembers(); }
 }
 
 window.doLogout = function(){ localStorage.removeItem('cricca_user'); location.reload(); };
@@ -924,9 +993,8 @@ function listenComments(postId){
       return `<div class="comment" id="cmnt-${c.id}">
         ${avatarHTML(c.initials||'?',c.color||'#ccc',c.photoUrl,26,'comment-av')}
         <div class="comment-bubble">
-          <div class="comment-author">${c.author}</div>
-          <div class="comment-text">${highlightMentions(c.text||'')}</div>
-          ${c.imgUrl?`<img src="${c.imgUrl}" class="comment-img">`:''}
+          ${c.replyTo?`<div class="reply-quote"><div class="reply-quote-author">↩ ${c.replyTo.author}</div><div class="reply-quote-text">${(c.replyTo.text||'').substring(0,80)}</div></div>`:''}
+          <div class="comment-author">${c.author}</div>        ${c.imgUrl?`<img src="${c.imgUrl}" class="comment-img">`:''}
           <div class="comment-reactions">${creacts}<button class="c-add-react" onclick="document.getElementById('creact-post-id').value='${postId}';document.getElementById('creact-comment-id').value='${c.id}';openModal('creact-modal')">😊</button></div>
           <div class="comment-footer">
             <span class="comment-time">${c.time||''} ${c.createdAt?'· '+timeAgo(c.createdAt):''}</span>
@@ -968,7 +1036,7 @@ window.sendComment = async function(postId){
   commentsOpen[postId] = true;
   delete commentsListeners[postId];
   listenComments(postId);
-  // Add notification
+  // Add notification for post author
   if(post&&post.author!==me.name){
     await addDoc(collection(db,'notifications'),{
       toUser:post.author,fromUser:me.name,type:'comment',
@@ -976,6 +1044,32 @@ window.sendComment = async function(postId){
       text:`${me.name} ha commentato il tuo post "${post.title||''}"`,
       createdAt:serverTimestamp(),read:false
     });
+  }
+  // Add notifications for @ mentions
+  const mentionedNames = (text||'').match(/@([^\s]+)/g)||[];
+  for(const tag of mentionedNames){
+    const taggedName = tag.slice(1); // remove @
+    const taggedMember = allMembers.find(m=>m.name.toLowerCase()===taggedName.toLowerCase());
+    if(taggedMember && taggedMember.name !== me.name){
+      await addDoc(collection(db,'notifications'),{
+        toUser:taggedMember.name, fromUser:me.name, type:'mention',
+        postId, postTitle:post?post.title||'':'',
+        text:`${me.name} ti ha menzionato in un commento: "${(text||'').substring(0,60)}"`,
+        createdAt:serverTimestamp(), read:false
+      });
+    }
+  }
+  // Add notification for reply
+  if(replyData && replyData.author !== me.name){
+    const alreadyNotified = mentionedNames.some(t=>t.slice(1).toLowerCase()===replyData.author.toLowerCase());
+    if(!alreadyNotified){
+      await addDoc(collection(db,'notifications'),{
+        toUser:replyData.author, fromUser:me.name, type:'reply',
+        postId, postTitle:post?post.title||'':'',
+        text:`${me.name} ha risposto al tuo commento: "${(text||'').substring(0,60)}"`,
+        createdAt:serverTimestamp(), read:false
+      });
+    }
   }
 };
 
@@ -1294,45 +1388,146 @@ window.sendChatFile = async function(inp){
   }catch(e){ showToast('Errore caricamento'); }
 };
 
+// ─── PENDING MEMBERS ──────────────────────────────────────────
+function listenPendingMembers(){
+  if(!me||!me.isAdmin) return;
+  onSnapshot(collection(db,'pendingMembers'), snap=>{
+    const pending = snap.docs.map(d=>({id:d.id,...d.data()})).filter(p=>p.status==='pending');
+    // Update admin badge
+    const count = pending.length;
+    document.getElementById('pending-count').textContent = count>0?count+' in attesa':'';
+    // Update tab badge
+    const adminTab = document.getElementById('tab-admin');
+    if(adminTab){
+      const existing = adminTab.querySelector('.nav-badge');
+      if(count>0){
+        if(!existing){ const b=document.createElement('span'); b.className='nav-badge'; b.id='admin-badge'; b.textContent=count; adminTab.appendChild(b); }
+        else existing.textContent=count;
+      } else { if(existing) existing.remove(); }
+    }
+    const c = document.getElementById('pending-list');
+    if(!c) return;
+    if(!pending.length){ c.innerHTML='<div style="font-size:13px;color:#aaa">Nessuna richiesta in attesa.</div>'; return; }
+    c.innerHTML = pending.map(p=>`
+      <div class="pending-item">
+        <div class="member-av" style="background:${p.color};width:36px;height:36px;font-size:12px;font-weight:600;color:#fff;flex-shrink:0;border-radius:50%;display:flex;align-items:center;justify-content:center">${p.initials}</div>
+        <div style="flex:1">
+          <div class="pending-name">${p.name}</div>
+          <div class="pending-time">${p.requestedAt?timeAgo(p.requestedAt):''}</div>
+        </div>
+        <button class="btn-approve" onclick="approveMember('${p.name}')">✅ Approva</button>
+        <button class="btn-reject" onclick="rejectMember('${p.name}')">❌</button>
+      </div>`).join('');
+  });
+}
+
+window.approveMember = async function(name){
+  // Move from pending to members
+  const pendingSnap = await getDoc(doc(db,'pendingMembers',name));
+  if(!pendingSnap.exists()) return;
+  const data = pendingSnap.data();
+  await setDoc(doc(db,'members',name),{
+    name:data.name, initials:data.initials, color:data.color,
+    role:'member', joined:new Date().toLocaleDateString('it'),
+    approved:true, photoUrl:null
+  });
+  await deleteDoc(doc(db,'pendingMembers',name));
+  showToast(name+' approvato!');
+};
+
+window.rejectMember = async function(name){
+  if(!confirm('Rifiutare la richiesta di '+name+'?')) return;
+  await deleteDoc(doc(db,'pendingMembers',name));
+  showToast('Richiesta rifiutata.');
+};
+
 // ─── ANNOUNCEMENTS ───────────────────────────────────────────
 function listenAnnouncements(){
   const q = query(collection(db,'announcements'), orderBy('createdAt','desc'));
   onSnapshot(q, snap=>{
     const items = snap.docs.map(d=>({id:d.id,...d.data()}));
+    const annHtml = (a, adminView=false) => `
+      <div class="announcement-bar" style="${adminView?'margin-bottom:8px':''}">
+        <div style="flex:1">
+          ${!adminView?'<div class="announcement-label">📢 Annuncio</div>':''}
+          <div class="announcement-text">${a.text||''}</div>
+          ${a.fileUrl?`<a href="${a.fileUrl}" target="_blank" style="display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,0.2);border-radius:6px;padding:3px 8px;font-size:12px;color:#fff;text-decoration:none;margin-top:5px">${a.fileType==='image'?'🖼':'📄'} ${a.fileName||'Allegato'}</a>`:''}
+          <div style="display:flex;align-items:center;gap:8px;margin-top:6px;flex-wrap:wrap">
+            ${['👍','❤️','👏'].map(e=>{
+              const cnt=(a.reactions&&a.reactions[e])||0;
+              const mine=a.reactedBy&&a.reactedBy[e]&&a.reactedBy[e].includes(me?me.name:'');
+              return `<button onclick="reactAnnouncement('${a.id}','${e}')" style="display:flex;align-items:center;gap:3px;border:1px solid ${mine?'#1D9E75':'rgba(255,255,255,0.3)'};border-radius:16px;padding:3px 8px;background:${mine?'rgba(255,255,255,0.3)':'none'};color:#fff;cursor:pointer;font-size:13px">${e}${cnt>0?` <span style="font-size:11px">${cnt}</span>`:''}</button>`;
+            }).join('')}
+          </div>
+          <div style="font-size:11px;opacity:0.7;margin-top:3px">— ${a.author} · ${a.createdAt?timeAgo(a.createdAt):''}</div>
+        </div>
+        ${me&&me.isAdmin?`<div style="display:flex;flex-direction:column;gap:4px">
+          <button class="announcement-close" onclick="openEditAnnouncement('${a.id}','${(a.text||'').replace(/'/g,"\\'").replace(/\n/g,' ')}')">✏️</button>
+          <button class="announcement-close" onclick="delAnnouncement('${a.id}')">✕</button>
+        </div>`:''}
+      </div>`;
     // Show in feed for everyone
     const c = document.getElementById('announcements-container');
-    if(c){
-      c.innerHTML = items.map(a=>`
-        <div class="announcement-bar">
-          <div style="flex:1">
-            <div class="announcement-label">📢 Annuncio</div>
-            <div class="announcement-text">${a.text}</div>
-            <div style="font-size:11px;opacity:0.7;margin-top:3px">— ${a.author} · ${a.createdAt?timeAgo(a.createdAt):''}</div>
-          </div>
-          ${me&&me.isAdmin?`<button class="announcement-close" onclick="delAnnouncement('${a.id}')">✕ Rimuovi</button>`:''}
-        </div>`).join('');
-    }
+    if(c){ c.innerHTML = items.map(a=>annHtml(a,false)).join(''); }
     // Show in admin panel
     const ca = document.getElementById('announcements-admin-list');
-    if(ca){
-      ca.innerHTML = items.length===0 ? '<div style="font-size:13px;color:#aaa">Nessun annuncio attivo.</div>' :
-        items.map(a=>`
-          <div class="announcement-bar" style="margin-bottom:8px">
-            <div style="flex:1">
-              <div class="announcement-text">${a.text}</div>
-              <div style="font-size:11px;opacity:0.7;margin-top:3px">— ${a.author} · ${a.createdAt?timeAgo(a.createdAt):''}</div>
-            </div>
-            <button class="announcement-close" onclick="delAnnouncement('${a.id}')">✕</button>
-          </div>`).join('');
-    }
+    if(ca){ ca.innerHTML = items.length===0 ? '<div style="font-size:13px;color:#aaa">Nessun annuncio attivo.</div>' : items.map(a=>annHtml(a,true)).join(''); }
   });
 }
+
+let pendingAnnFile = null;
+
+window.handleAnnFile = function(inp){
+  const file = inp.files[0]; if(!file) return;
+  pendingAnnFile = file;
+  document.getElementById('ann-file-preview').textContent = '📎 '+file.name;
+};
+
+window.openEditAnnouncement = function(id, text){
+  document.getElementById('edit-announcement-id').value = id;
+  document.getElementById('edit-announcement-text').value = text;
+  openModal('edit-announcement-modal');
+};
+
+window.saveAnnouncement = async function(){
+  const id = document.getElementById('edit-announcement-id').value;
+  const text = document.getElementById('edit-announcement-text').value.trim();
+  if(!text){ showToast('Scrivi il testo'); return; }
+  await updateDoc(doc(db,'announcements',id),{text});
+  closeModal('edit-announcement-modal');
+  showToast('Annuncio modificato!');
+};
+
+window.reactAnnouncement = async function(annId, emoji){
+  if(!me) return;
+  const annSnap = await getDoc(doc(db,'announcements',annId)).catch(()=>null);
+  if(!annSnap||!annSnap.exists()) return;
+  const a = annSnap.data();
+  const reactions = {...a.reactions||{}};
+  const reactedBy = {...a.reactedBy||{}};
+  const users = reactedBy[emoji]||[];
+  const already = users.includes(me.name);
+  if(already){ reactions[emoji]=Math.max((reactions[emoji]||1)-1,0); reactedBy[emoji]=users.filter(u=>u!==me.name); }
+  else { reactions[emoji]=(reactions[emoji]||0)+1; reactedBy[emoji]=[...users,me.name]; }
+  await updateDoc(doc(db,'announcements',annId),{reactions,reactedBy});
+};
 
 window.publishAnnouncement = async function(){
   const text = document.getElementById('announcement-input').value.trim();
   if(!text){ showToast('Scrivi un annuncio'); return; }
-  await addDoc(collection(db,'announcements'),{text, author:me.name, createdAt:serverTimestamp()});
+  let fileUrl=null, fileName=null, fileType=null;
+  if(pendingAnnFile){
+    showToast('⬆️ Caricamento file...');
+    try{
+      const r = await uploadCloudinary(pendingAnnFile);
+      fileUrl=r.url; fileName=r.name; fileType=r.type;
+    }catch(e){ showToast('Errore caricamento file'); return; }
+  }
+  await addDoc(collection(db,'announcements'),{text, author:me.name, fileUrl, fileName, fileType, createdAt:serverTimestamp()});
   document.getElementById('announcement-input').value='';
+  document.getElementById('ann-file-preview').textContent='';
+  document.getElementById('ann-file-inp').value='';
+  pendingAnnFile=null;
   showToast('Annuncio pubblicato!');
 };
 
